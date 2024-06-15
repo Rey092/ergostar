@@ -11,6 +11,10 @@ litestar = {extras = ["standard"], version = "^2.9.0"}
 litestar-vite = "^0.1.22"
 pydantic = "^2.7.4"
 pre-commit = "^3.7.1"
+pydantic-settings = "^2.3.3"
+sqlalchemy = "^2.0.30"
+redis = {extras = ["hiredis"], version = "^5.0.6"}
+advanced-alchemy = "^0.14.1"
 
 
 [build-system]
