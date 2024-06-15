@@ -60,7 +60,7 @@ class LitestarBuilder:
             openapi_config=self.get_openapi_config(),
             route_handlers=self.get_route_handlers(),
             plugins=[
-                # plugins.app_config,
+                plugins.app_config,
                 plugins.structlog,
                 plugins.alchemy,
                 #     plugins.vite,

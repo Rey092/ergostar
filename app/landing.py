@@ -9,7 +9,7 @@ from litestar.static_files import StaticFilesConfig
 from litestar.template import TemplateConfig
 from litestar.types import ControllerRouterHandler
 
-from apps.builder import LitestarBuilder
+from app.builder import LitestarBuilder
 from src.landing.controller import LandingController
 
 
