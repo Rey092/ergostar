@@ -36,13 +36,16 @@ class ApplicationConfigurator(InitPluginProtocol, CLIPluginProtocol):
             config: configure and start SAQ.
         """
 
+    # noinspection PyTypeChecker
     def on_cli_init(self, cli: Group) -> None:
-        from src.cli.commands import user_management_app
+        from cli.users import user_management_app
+        from cli.init_project import init_project_app
         from config import settings
 
         self.redis = settings.redis.get_client()
         self.app_slug = settings.app.slug
         cli.add_command(user_management_app)
+        cli.add_command(init_project_app)
 
     def on_app_init(self, app_config: AppConfig) -> AppConfig:
         """Configure application for use with SQLAlchemy.

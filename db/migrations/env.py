@@ -1,6 +1,6 @@
 """"""
 import asyncio
-from typing import TYPE_CHECKING, cast
+from typing import cast
 
 from sqlalchemy import Column, pool
 from sqlalchemy.ext.asyncio import async_engine_from_config
@@ -9,20 +9,17 @@ from advanced_alchemy.base import orm_registry
 from alembic import context
 from alembic.autogenerate import rewriter
 from alembic.operations import ops
-from src.db.models import *  # noqa: F401, F403
-
-if TYPE_CHECKING:
-    from sqlalchemy.engine import Connection
-
-    from advanced_alchemy.alembic.commands import AlembicCommandConfig
-    from alembic.runtime.environment import EnvironmentContext
+from sqlalchemy.engine import Connection
+from advanced_alchemy.alembic.commands import AlembicCommandConfig
+from alembic.runtime.environment import EnvironmentContext
+from db.models import *  # noqa: F401, F403
 
 __all__ = ["do_run_migrations", "run_migrations_offline", "run_migrations_online"]
 
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
-config: AlembicCommandConfig = context.config  # type: ignore  # noqa: PGH003
+config: AlembicCommandConfig = context.config
 
 
 # add your model's MetaData object here

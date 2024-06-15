@@ -9,12 +9,11 @@ from advanced_alchemy.utils.text import slugify
 from litestar.data_extractors import RequestExtractorField, ResponseExtractorField
 from litestar.serialization import decode_json, encode_json
 from redis.asyncio import Redis
-from sqlalchemy import event, URL
+from sqlalchemy import event
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 from sqlalchemy.pool import NullPool
 from pydantic import (
     Field,
-    PostgresDsn,
 )
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -24,7 +23,9 @@ class LiteStarSettings(BaseSettings):
     """Abstract settings."""
 
     # prepare model config
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(
+        env_file=".env", env_file_encoding="utf-8", extra="ignore"
+    )
 
     # prepare base directory
     BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -44,13 +45,13 @@ class DatabaseSettings(LiteStarSettings):
     def URL(self) -> str:
         """Database URL."""
         if all([self.POSTGRES_USER, self.POSTGRES_PASSWORD, self.POSTGRES_DB]):
-            url: PostgresDsn = URL.create(
-                drivername="postgresql+asyncpg",
-                username=self.POSTGRES_USER,
-                password=self.POSTGRES_PASSWORD,
-                host=self.POSTGRES_HOST,
-                port=self.POSTGRES_PORT,
-                database=self.POSTGRES_DB,
+            url = (
+                f"postgresql+asyncpg://"
+                f"{self.POSTGRES_USER}:"
+                f"{self.POSTGRES_PASSWORD}@"
+                f"{self.POSTGRES_HOST}:"
+                f"{self.POSTGRES_PORT}/"
+                f"{self.POSTGRES_DB}"
             )
         else:
             url = "sqlite+aiosqlite:///db.sqlite3"
@@ -76,12 +77,12 @@ class DatabaseSettings(LiteStarSettings):
     @property
     def MIGRATION_CONFIG(self) -> str:
         """The path to the `alembic.ini` configuration file."""
-        return f"{self.BASE_DIR}/src/db/migrations/alembic.ini"
+        return f"{self.BASE_DIR}/db/migrations/alembic.ini"
 
     @property
     def MIGRATION_PATH(self) -> str:
         """The path to the `alembic` database migrations."""
-        return f"{self.BASE_DIR}/src/db/migrations"
+        return f"{self.BASE_DIR}/db/migrations"
 
     @property
     def MIGRATION_DDL_VERSION_TABLE(self) -> str:

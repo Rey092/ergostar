@@ -5,7 +5,7 @@
           <a href=".." class="link-logo">
             <img src="{{ url_for_static_asset('img', 'logo.svg') }}" alt="" class="logo mb-4">
           </a>
-          <p>settings.footer_description</p>
+          <p>{{ landing_settings.footer_description }}</p>
         </div>
         <div class="col-md-2">
           <h6 class="py-2 fw-bold text-uppercase">Company</h6>
@@ -35,7 +35,7 @@
       <hr class="mt-5">
       <div class="row small align-items-center">
         <div class="col-md-4">
-          <p class="mt-2 mb-md-0 text-secondary text-center text-md-start">settings.footer_rights</p>
+          <p class="mt-2 mb-md-0 text-secondary text-center text-md-start">{{ landing_settings.footer_rights }}</p>
         </div>
         <div class="col-md-8">
           <nav class="nav social-icons justify-content-center justify-content-md-end">

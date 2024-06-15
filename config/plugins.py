@@ -12,9 +12,12 @@ from advanced_alchemy.extensions.litestar import (
 from litestar.config.compression import CompressionConfig
 from litestar.config.cors import CORSConfig
 from litestar.config.csrf import CSRFConfig
+from litestar.config.response_cache import ResponseCacheConfig
 from litestar.logging.config import LoggingConfig, StructLoggingConfig
 from litestar.middleware.logging import LoggingMiddlewareConfig
 from litestar.plugins.structlog import StructlogConfig
+from litestar.stores.redis import RedisStore
+
 from config import settings
 
 compression = CompressionConfig(backend="gzip")
@@ -130,3 +133,5 @@ log = StructlogConfig(
         response_log_fields=["status_code"],
     ),
 )
+redis_store = RedisStore.with_client(url=settings.redis.URL)
+cache_config = ResponseCacheConfig(store="redis_backed_store")

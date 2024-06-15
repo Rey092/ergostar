@@ -3,8 +3,11 @@
 from typing import Sequence
 
 from litestar import Litestar
+from litestar.config.response_cache import ResponseCacheConfig
 from litestar.openapi import OpenAPIConfig
 from litestar.static_files import StaticFilesConfig
+from litestar.stores.base import Store
+from litestar.stores.registry import StoreRegistry
 from litestar.types import ControllerRouterHandler
 from litestar.template import TemplateConfig
 
@@ -33,6 +36,16 @@ class LitestarBuilder:
     @staticmethod
     def get_openapi_config() -> OpenAPIConfig | None:
         """Get OpenAPI config."""
+        return None
+
+    @staticmethod
+    def get_stores() -> StoreRegistry | dict[str, Store] | None:
+        """Get stores."""
+        return None
+
+    @staticmethod
+    def response_cache_config() -> ResponseCacheConfig | None:
+        """Get response cache config."""
         return None
 
     def build(self) -> Litestar:
@@ -71,4 +84,6 @@ class LitestarBuilder:
             static_files_config=self.get_static_files_config(),
             # on_app_init=[auth.on_app_init],
             # listeners=[account_signals.user_created_event_handler, team_signals.team_created_event_handler],
+            stores=self.get_stores(),
+            response_cache_config=self.response_cache_config(),
         )

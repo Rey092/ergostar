@@ -4,17 +4,31 @@ from pathlib import Path
 from typing import Sequence
 
 from litestar import Litestar
+from litestar.config.response_cache import ResponseCacheConfig
 from litestar.contrib.jinja import JinjaTemplateEngine
 from litestar.static_files import StaticFilesConfig
+from litestar.stores.base import Store
+from litestar.stores.registry import StoreRegistry
 from litestar.template import TemplateConfig
 from litestar.types import ControllerRouterHandler
 
 from app.builder import LitestarBuilder
+from config.plugins import redis_store, cache_config
 from src.landing.controller import LandingController
 
 
 class LandingLitestarBuilder(LitestarBuilder):
     """Litestar application builder."""
+
+    @staticmethod
+    def get_stores() -> StoreRegistry | dict[str, Store] | None:
+        """Get stores."""
+        return {"redis_backed_store": redis_store}
+
+    @staticmethod
+    def response_cache_config() -> ResponseCacheConfig | None:
+        """Get response cache config."""
+        return cache_config
 
     @staticmethod
     def get_route_handlers() -> Sequence[ControllerRouterHandler] | None:
