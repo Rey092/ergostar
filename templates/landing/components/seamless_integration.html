@@ -1,0 +1,73 @@
+{% load static %}
+<section class="section bg-body-secondary">
+      <div class="container bring-to-front">
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="rounded bg-primary gradient-primary shadow">
+              <div class="d-flex flex-column align-items-center py-3">
+                <img src="{% static 'lanimg/bg/asset-1.svg' %}" class="img-responsive w-50" alt="">
+              </div>
+            </div>
+            <div class="card shadow-box mt-4">
+              <div class="card-body d-flex align-items-center">
+                <i data-feather="bar-chart" class="stroke-primary me-3" width="36" height="36"></i>
+                <div class="flex-fill ps-3 b-l">
+                  <p class="fw-bold text-primary my-0">Easy-peace Customization</p>
+                  <p class="my-0 text-muted">Customize it easily by using pre-made block-codes</p>
+                </div>
+              </div>
+            </div>
+            <div class="card shadow-box mt-4">
+              <div class="card-body d-flex align-items-center">
+                <i data-feather="smartphone" width="36" height="36" class="stroke-primary me-3"></i>
+                <div class="flex-fill ps-3 b-l">
+                  <p class="fw-bold text-primary my-0">No-Code Approach</p>
+                  <p class="my-0 text-muted">By editing a simple json file you'll be ready in minutes</p>
+                  <hr class="my-3">
+                  <nav id="sw-nav-1" class="nav nav-icon nav-underline">
+                    <a href="javascript:;" class="nav-item nav-link d-flex flex-column align-items-center active" data-step="0">
+                      <i data-feather="mail"></i>
+                      <span class="d-none small">Inbox</span>
+                    </a>
+                    <a href="javascript:;" class="nav-item nav-link d-flex flex-column align-items-center" data-step="1">
+                      <i data-feather="calendar"></i>
+                      <span class="d-none small">Calendar</span>
+                    </a>
+                    <a href="javascript:;" class="nav-item nav-link d-flex flex-column align-items-center" data-step="2">
+                      <i data-feather="file"></i>
+                      <span class="d-none small">Invoice</span>
+                    </a>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 ms-md-auto text-center text-md-start">
+            <div class="section-heading mb-5">
+              <p class="text-primary fw-bold mb-2"> Simple and transparent </p>
+              <h2 class="section-title fw-bold"> Seamlessly Integration </h2>
+              <p class="lead mb-0"> DashCore will integrates seamlessly with any Admin Dashboard developed by us. You can start developing right away your web application. </p>
+            </div>
+            <div class="swiper" data-sw-navigation="#sw-nav-1" data-sw-navigation-active="active">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <figure class="shadow-box">
+                    <img src="{% static 'lanimg/screens/dash/inbox.png' %}" alt="" class="img-responsive rounded">
+                  </figure>
+                </div>
+                <div class="swiper-slide">
+                  <figure class="shadow-box">
+                    <img src="{% static 'lanimg/screens/dash/calendar.png' %}" alt="" class="img-responsive rounded">
+                  </figure>
+                </div>
+                <div class="swiper-slide">
+                  <figure class="shadow-box">
+                    <img src="{% static 'lanimg/screens/dash/invoice.png' %}" alt="" class="img-responsive rounded">
+                  </figure>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>

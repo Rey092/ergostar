@@ -1,0 +1,131 @@
+<section class="section border-bottom bg-body-secondary">
+      <div class="container">
+        <div class="section-heading text-center mb-5">
+          <div class="bg-primary-subtle text-primary p-3 rounded-2 d-inline-block undefined">
+            <i data-feather="code" width="36" height="36" class="stroke-primary"></i>
+          </div>
+          <h2 class="section-title fw-bold"> Developer tools </h2>
+          <p class="lead text-muted"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, assumenda autem consequatur cum dignissimos dolores doloribus eius eum iusto laborum quasi quidem sapiente sit. </p>
+        </div>
+        <div class="row">
+          <div class="col-md-4 col-lg-3 ms-lg-auto order-md-2">
+            <nav id="sw-nav-developers" class="nav nav-pills nav-fill">
+              <a class="nav-item nav-link fw-bold text-md-start active" href="#" data-step="0">
+                <i class="me-md-3 fas fa-code"></i>
+                <span class="d-none d-md-inline">HTML Structure</span>
+              </a>
+              <a class="nav-item nav-link fw-bold text-md-start" href="#" data-step="1">
+                <i class="me-md-3 fab fa-sass"></i>
+                <span class="d-none d-md-inline">SASS compiler</span>
+              </a>
+              <a class="nav-item nav-link fw-bold text-md-start" href="#" data-step="2">
+                <i class="me-md-3 fas fa-retweet fa-rotate-90"></i>
+                <span class="d-none d-md-inline">Ajax enabled</span>
+              </a>
+              <a class="nav-item nav-link fw-bold text-md-start" href="#" data-step="3">
+                <i class="me-md-3 fas fa-exclamation-triangle"></i>
+                <span class="d-none d-md-inline">Form validation</span>
+              </a>
+            </nav>
+            <hr class="mt-5">
+            <a href="javascript:;" class="nav-link text-primary">All Resources <i class="icon fas fa-long-arrow-right"></i>
+            </a>
+          </div>
+          <div class="col-md-8">
+            <div class="swiper mt-4 mt-md-0" data-sw-navigation="#sw-nav-developers">
+              <div class="swiper-wrapper line-numbers">
+                <div class="swiper-slide">
+                  <pre class="language-html">
+              <code>
+&lt;header class="main-header"&gt;
+  ...
+&lt;/header&gt;
+
+&lt;div class="main-body"&gt;
+  &lt;nav class="side-nav"&gt;
+      ...
+  &lt;/div&gt;
+
+  &lt;main&gt;
+      ...
+  &lt;/main&gt;
+
+  &lt;aside class="quick-view"&gt;
+      ...
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;footer class="main-footer"&gt;
+  ...
+&lt;/footer&gt;</code>
+            </pre>
+                </div>
+                <div class="swiper-slide">
+                  <pre class="language-javascript">
+              <code>
+var gulp = require('gulp');
+var sass = require('gulp-sass');
+var autoprefixer = require('gulp-autoprefixer');
+
+gulp.task('sass', function () {
+    return gulp
+        .src('../sass/*.scss')
+        .pipe(sass({
+            includePaths: ['./bower_components']
+        }))
+        .pipe(autoprefixer({
+            browsers: ['last 2 version', '> 5%']
+        }))
+        .pipe(gulp.dest('./css'));
+});
+
+gulp.task('default', ['scss']);
+              </code>
+            </pre>
+                </div>
+                <div class="swiper-slide">
+                  <pre class="language-javascript">
+              <code>
+var apiUrl = 'https://api.5studios.net/';
+
+this.getLoggedUser = function() {
+    return $.ajax({
+        url: apiUrl + 'user/login?inc=name,location,email,picture',
+        dataType: 'json'
+    });
+};
+
+this.getPendingTasks = function () {
+    return $.getJSON(apiUrl + 'data/tasks/pending', function() {
+        console.log("Tasks loaded");
+    });
+};</code>
+            </pre>
+                </div>
+                <div class="swiper-slide">
+                  <pre class="language-javascript">
+              <code>
+$("#register-form").validate({
+  rules: {
+    username: {
+      required: true,
+      minLength: 2,
+      remote: "register.php"
+    }
+  },
+  messages: {
+    username: {
+      required: "Enter your username",
+      minLength: "At least 2 characters are necessary",
+      remote: String.format("The name {0} is already in use")
+    }
+  }
+});</code>
+            </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>

@@ -1,0 +1,311 @@
+{% extends "landing/elements/base.html" %}
+
+{% block content %}
+
+    <!-- ./Page header -->
+    <header class="header section bg-primary gradient-primary">
+      <div class="container pb-8">
+        <h1 class="fw-bold display-md-4 text-light">Pick your perfect package</h1>
+        <p class="h3 text-light mb-5">All packages include a 10-day free trial with all our Power features</p>
+      </div>
+    </header>
+
+    <!-- ./Curve Divider -->
+    <div class="position-relative ">
+      <div class="shape-divider shape-divider-bottom shape-divider-curve shape-divider-fluid-x text-body-emphasis">
+        <svg viewBox="0 0 2880 48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 48h2880V0h-720C1442.5 52 720 0 720 0H0v48z" />
+        </svg>
+      </div>
+    </div>
+    <section class="section mt-n8">
+      <div class="container bring-to-front pt-0">
+        <div class="card shadow-lg">
+          <div class="card-body pricing-element">
+            <div class="section-heading text-center">
+              <div class="btn-group btn-group-toggle mt-5 mb-3 pricing-table-basis" data-toggle="buttons">
+                <input type="radio" class="btn-check" name="pricing-basis" id="pricing-table-value-monthly" value="monthly" checked>
+                <label class="btn btn-outline-primary" for="pricing-table-value-monthly">Monthly</label>
+                <input type="radio" class="btn-check" name="pricing-basis" id="pricing-table-value-yearly" value="yearly">
+                <label class="btn btn-outline-primary" for="pricing-table-value-yearly">Yearly</label>
+              </div>
+              <p class="text-muted">Pay annually and get 2 months free</p>
+            </div>
+            <div class="pricing-table">
+              <div class="d-md-none">
+                <div class="btn-group btn-group-toggle pricing-table-tabs mb-3" data-toggle="buttons">
+                  <input type="radio" class="btn-check" name="pricing-plan" id="rg-1" value="1">
+                  <label class="btn btn-primary" for="rg-1"> Free </label>
+                  <input type="radio" class="btn-check" name="pricing-plan" id="rg-2" value="2" checked>
+                  <label class="btn btn-primary" for="rg-2"> Starter </label>
+                  <input type="radio" class="btn-check" name="pricing-plan" id="rg-3" value="3">
+                  <label class="btn btn-primary" for="rg-3"> Power </label>
+                </div>
+              </div>
+              <div class="table-wrapper">
+                <table class="table">
+                  <thead class="expand-mobile">
+                    <tr>
+                      <th class="title text-start">
+                        <span class="hidden fw-bold">Choose Your Plan</span>
+                      </th>
+                      <th id="ph-1">
+                        <p class="h3 pricing-title fw-bold my-0">Free</p>
+                        <p class="my-0">For individuals</p>
+                      </th>
+                      <th id="ph-2" class="visible-cell overflow-hidden position-relative">
+                        <p class="h3 pricing-title fw-bold my-0">Starter</p>
+                        <p class="my-0">For small business</p>
+                      </th>
+                      <th id="ph-3">
+                        <p class="h3 pricing-title fw-bold my-0">Power</p>
+                        <p class="my-0">For large companies</p>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="pricing-details">
+                    <tr>
+                      <th>
+                        <span>Monthly price</span>
+                      </th>
+                      <td headers="ph-1">
+                        <div class="pricing">
+                          <span class="pricing-value">
+                            <span class="odometer price" data-monthly="0" data-yearly="0">0</span>
+                          </span>
+                        </div>
+                      </td>
+                      <td headers="ph-2" class="visible-cell">
+                        <div class="pricing">
+                          <span class="pricing-value">
+                            <span class="odometer price" data-monthly="24" data-yearly="19">24</span>
+                          </span>
+                        </div>
+                      </td>
+                      <td headers="ph-3">
+                        <div class="pricing">
+                          <span class="pricing-value">
+                            <span class="odometer price" data-monthly="99" data-yearly="79">99</span>
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody class="pricing-details">
+                    <tr>
+                      <th id="pc-1">Always-on recording</th>
+                      <td headers="ph-1 pc-1">
+                        <i class="fas fa-times text-danger"></i>
+                      </td>
+                      <td headers="ph-2 pc-1" class="visible-cell">
+                        <i class="fas fa-check text-success"></i>
+                      </td>
+                      <td headers="ph-3 pc-1">
+                        <i class="fas fa-check text-success"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th id="pc-2">Events</th>
+                      <td headers="ph-1 pc-2"> 2 </td>
+                      <td headers="ph-2 pc-2" class="visible-cell"> 2 </td>
+                      <td headers="ph-3 pc-2"> Unlimited </td>
+                    </tr>
+                    <tr>
+                      <th id="pc-3">Funnels</th>
+                      <td headers="ph-1 pc-3"> 1 </td>
+                      <td headers="ph-2 pc-3" class="visible-cell"> 1 </td>
+                      <td headers="ph-3 pc-3"> Unlimited </td>
+                    </tr>
+                    <tr>
+                      <th id="pc-4">Heatmaps</th>
+                      <td headers="ph-1 pc-4"> 3 </td>
+                      <td headers="ph-2 pc-4" class="visible-cell"> Unlimited </td>
+                      <td headers="ph-3 pc-4"> Unlimited </td>
+                    </tr>
+                    <tr>
+                      <th id="pc-5">Sessions/month</th>
+                      <td headers="ph-1 pc-5"> 1,500 </td>
+                      <td headers="ph-2 pc-5" class="visible-cell">
+                        <select name="sessions_starter" id="sessions_starter" class="form-select" data-toggle="price">
+                          <option value="5000">5000</option>
+                          <option value="25000">25,000</option>
+                          <option value="50000">50,000</option>
+                        </select>
+                      </td>
+                      <td headers="ph-3 pc-5">
+                        <select name="sessions_power" id="sessions_power" class="form-select" data-toggle="price">
+                          <option value="25000">25,000</option>
+                          <option value="50000">50,000</option>
+                          <option value="100000">100,000</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th id="pc-6">Data history</th>
+                      <td headers="ph-1 pc-6"> 1 month </td>
+                      <td headers="ph-2 pc-6" class="visible-cell">
+                        <select name="data_starter" id="data_starter" class="form-select" data-toggle="price">
+                          <option value="1">1 month</option>
+                          <option value="3">3 months</option>
+                        </select>
+                      </td>
+                      <td headers="ph-3 pc-6">
+                        <select name="data_power" id="data_power" class="form-select" data-toggle="price">
+                          <option value="1">1 month</option>
+                          <option value="3">3 months</option>
+                          <option value="6">6 months</option>
+                          <option value="12">12 months</option>
+                        </select>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody class="expand-mobile">
+                    <tr>
+                      <td class="text-start">Prices don't include tax.</td>
+                      <td headers="ph-1 ">
+                        <a href="javascript:;" class="btn btn-primary">Get Free Plan</a>
+                      </td>
+                      <td headers="ph-2 " class="visible-cell">
+                        <a href="javascript:;" class="btn btn-primary">Get Starter Plan</a>
+                      </td>
+                      <td headers="ph-3 ">
+                        <a href="javascript:;" class="btn btn-primary">Get Power Plan</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="4">
+                        <p class="pricing-disclaimer my-3">
+                          <span class="fw-bold">15-day money-back guarantee.</span>
+                          <span>If you're not 100% satisfied, we'll give your money back.</span>
+                        </p>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ./Plans features -->
+    <section class="section ">
+      <div class="container ">
+        <div class="section-heading text-center">
+          <h2 class="fw-bold">All our plans include</h2>
+          <p class="lead text-muted">Get access to a ton of features out of the box</p>
+        </div>
+        <div class="row g-4 text-center">
+          <div class="col-md-4">
+            <div class="bg-info-subtle text-info p-3 rounded-2 d-inline-block">
+              <i data-feather="headphones" width="36" height="36" class="stroke-info"></i>
+            </div>
+            <h5 class="fw-bold my-3">First class support</h5>
+            <p class="my-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci atque beatae dicta dolores hic porro quam voluptatibus.</p>
+          </div>
+          <div class="col-md-4">
+            <div class="bg-info-subtle text-info p-3 rounded-2 d-inline-block">
+              <i data-feather="box" width="36" height="36" class="stroke-info"></i>
+            </div>
+            <h5 class="fw-bold my-3">Code snippets</h5>
+            <p class="my-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci atque beatae dicta dolores hic porro quam voluptatibus.</p>
+          </div>
+          <div class="col-md-4">
+            <div class="bg-info-subtle text-info p-3 rounded-2 d-inline-block">
+              <i data-feather="headphones" width="36" height="36" class="stroke-info"></i>
+            </div>
+            <h5 class="fw-bold my-3">Full documentation</h5>
+            <p class="my-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci atque beatae dicta dolores hic porro quam voluptatibus.</p>
+          </div>
+          <div class="col-md-4">
+            <div class="bg-info-subtle text-info p-3 rounded-2 d-inline-block">
+              <i data-feather="lock" width="36" height="36" class="stroke-info"></i>
+            </div>
+            <h5 class="fw-bold my-3">Total control of your code</h5>
+            <p class="my-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci atque beatae dicta dolores hic porro quam voluptatibus.</p>
+          </div>
+          <div class="col-md-4">
+            <div class="bg-info-subtle text-info p-3 rounded-2 d-inline-block">
+              <i data-feather="airplay" width="36" height="36" class="stroke-info"></i>
+            </div>
+            <h5 class="fw-bold my-3">Responsive design</h5>
+            <p class="my-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci atque beatae dicta dolores hic porro quam voluptatibus.</p>
+          </div>
+          <div class="col-md-4">
+            <div class="bg-info-subtle text-info p-3 rounded-2 d-inline-block">
+              <i data-feather="monitor" width="36" height="36" class="stroke-info"></i>
+            </div>
+            <h5 class="fw-bold my-3">Browser support</h5>
+            <p class="my-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci atque beatae dicta dolores hic porro quam voluptatibus.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ./FAQs Section -->
+    <section class="section">
+      <div class="container bring-to-front">
+        <div class="row g-4">
+          <div class="col-md-4">
+            <h2>Do you have <span class="fw-bold">questions?</span>
+            </h2>
+            <p class="lead">Not sure how this template can help you? Wonder why you need to buy our theme?</p>
+            <p class="text-muted">Here are the answers to some of the most common questions we hear from our appreciated customers</p>
+          </div>
+          <div class="col-md-8">
+            <div class="accordion" id="accordion-faqs">
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#fq1"> What does the package include? </a>
+                </div>
+                <div id="fq1" class="accordion-collapse collapse" data-bs-parent="#accordion-faqs">
+                  <div class="accordion-body">When you buy DashCore, you get all you see in the demo but the images. We include SASS files for styling, complete JS files with comments, all HTML variations. Besides we include all mobile PSD mockups.</div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#fq2"> What is the typical response time for a support question? </a>
+                </div>
+                <div id="fq2" class="accordion-collapse collapse" data-bs-parent="#accordion-faqs">
+                  <div class="accordion-body">Since you report us a support question we try to make our best to find out what is going on, depending on the case it could take more or les time, however a standard time could be minutes or hours.</div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#fq3"> What do I need to know to customize this template? </a>
+                </div>
+                <div id="fq3" class="accordion-collapse collapse" data-bs-parent="#accordion-faqs">
+                  <div class="accordion-body">Our documentation give you all you need to customize your copy. However you will need some basic web design knowledge (HTML, Javascript and CSS)</div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#fq4"> Can I suggest a new feature? </a>
+                </div>
+                <div id="fq4" class="accordion-collapse collapse" data-bs-parent="#accordion-faqs">
+                  <div class="accordion-body">Definitely <span class="bold">Yes</span>, you can contact us to let us know your needs. If your suggestion represents any value to both we can include it as a part of the theme or you can request a custom build by an extra cost. Please note it could take some time in order for the feature to be implemented.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ./CTA - Buy it now Section -->
+    <section class="section bg-body-secondary edge top-left">
+      <div class="container pt-5">
+        <div class="d-flex align-items-center flex-column flex-md-row">
+          <div class="text-center text-md-start">
+            <p class="text-gradient text-gradient-primary mb-0 lead fw-bold">Ready to get started?</p>
+            <h2 class="mt-0 fw-bold">Create an account now</h2>
+          </div>
+          <a href="srv/register" class="btn btn-primary shadow-primary mt-3 mt-md-0 ms-md-auto"> Create DashCore account </a>
+        </div>
+      </div>
+    </section>
+
+{% endblock content %}

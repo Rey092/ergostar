@@ -21,6 +21,24 @@ typing-extensions = ">=4.0.0"
 uuid = ["uuid-utils (>=0.6.1)"]
 
 [[package]]
+name = "aiosqlite"
+version = "0.20.0"
+description = "asyncio bridge to the standard sqlite3 module"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "aiosqlite-0.20.0-py3-none-any.whl", hash = "sha256:36a1deaca0cac40ebe32aac9977a6e2bbc7f5189f23f4a54d5908986729e5bd6"},
+    {file = "aiosqlite-0.20.0.tar.gz", hash = "sha256:6d35c8c256637f4672f843c31021464090805bf925385ac39473fb16eaaca3d7"},
+]
+
+[package.dependencies]
+typing_extensions = ">=4.0"
+
+[package.extras]
+dev = ["attribution (==1.7.0)", "black (==24.2.0)", "coverage[toml] (==7.4.1)", "flake8 (==7.0.0)", "flake8-bugbear (==24.2.6)", "flit (==3.9.0)", "mypy (==1.8.0)", "ufmt (==2.3.0)", "usort (==1.0.8.post1)"]
+docs = ["sphinx (==7.2.6)", "sphinx-mdinclude (==0.5.3)"]
+
+[[package]]
 name = "alembic"
 version = "1.13.1"
 description = "A database migration tool for SQLAlchemy."
@@ -554,14 +572,12 @@ files = [
 ]
 
 [package.dependencies]
+advanced-alchemy = {version = ">=0.2.2", optional = true, markers = "extra == \"sqlalchemy\""}
 anyio = ">=3"
 click = "*"
 fast-query-parsers = {version = ">=1.0.2", optional = true, markers = "extra == \"standard\""}
 httpx = ">=0.22"
-jinja2 = [
-    {version = "*", optional = true, markers = "extra == \"standard\""},
-    {version = ">=3.1.2", optional = true, markers = "extra == \"jinja\""},
-]
+jinja2 = {version = ">=3.1.2", optional = true, markers = "extra == \"jinja\""}
 jsbeautifier = {version = "*", optional = true, markers = "extra == \"standard\""}
 msgspec = ">=0.18.2"
 multidict = ">=6.0.2"
@@ -569,6 +585,7 @@ polyfactory = ">=2.6.3"
 pyyaml = "*"
 rich = ">=13.0.0"
 rich-click = "*"
+structlog = {version = "*", optional = true, markers = "extra == \"structlog\""}
 typing-extensions = "*"
 uvicorn = {version = "*", extras = ["standard"], optional = true, markers = "extra == \"standard\""}
 uvloop = {version = ">=0.18.0", optional = true, markers = "sys_platform != \"win32\" and extra == \"standard\""}
@@ -1351,6 +1368,23 @@ pymysql = ["pymysql"]
 sqlcipher = ["sqlcipher3_binary"]
 
 [[package]]
+name = "structlog"
+version = "24.2.0"
+description = "Structured Logging for Python"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "structlog-24.2.0-py3-none-any.whl", hash = "sha256:983bd49f70725c5e1e3867096c0c09665918936b3db27341b41d294283d7a48a"},
+    {file = "structlog-24.2.0.tar.gz", hash = "sha256:0e3fe74924a6d8857d3f612739efb94c72a7417d7c7c008d12276bca3b5bf13b"},
+]
+
+[package.extras]
+dev = ["freezegun (>=0.2.8)", "mypy (>=1.4)", "pretend", "pytest (>=6.0)", "pytest-asyncio (>=0.17)", "rich", "simplejson", "twisted"]
+docs = ["furo", "myst-parser", "sphinx", "sphinx-notfound-page", "sphinxcontrib-mermaid", "sphinxext-opengraph", "twisted"]
+tests = ["freezegun (>=0.2.8)", "pretend", "pytest (>=6.0)", "pytest-asyncio (>=0.17)", "simplejson"]
+typing = ["mypy (>=1.4)", "rich", "twisted"]
+
+[[package]]
 name = "typing-extensions"
 version = "4.12.2"
 description = "Backported and Experimental Type Hints for Python 3.8+"
@@ -1621,4 +1655,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "d682305ac8e7bad9a021e1974aef5495eddedcacdaeec7e15cae28f54265f74a"
+content-hash = "96ebc212d5ca2a464c6e61446888b55c4254b23ab44c5e71e0627872643a0ed3"
