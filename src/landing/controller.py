@@ -1,7 +1,7 @@
 from litestar import Controller, get
+from litestar.datastructures import CacheControlHeader
 from litestar.di import Provide
 from litestar.response import Template
-from litestar.status_codes import HTTP_200_OK
 from config import constants
 from db.models import LandingSettings, LandingHomePage
 from src.landing.dependencies import (
@@ -24,10 +24,11 @@ class LandingController(Controller):
     @get(
         path=[constants.SITE_INDEX, f"{constants.SITE_INDEX}/{{path:str}}"],
         name="landing:home",
-        status_code=HTTP_200_OK,
         dependencies={
             "landing_home_page_service": Provide(provide_landing_home_page_service)
         },
+        cache=4 * 60 * 60,  # 4 hours
+        cache_control=CacheControlHeader(max_age=4 * 60 * 60),  # 4 hours
     )
     async def get_home(
         self,
@@ -48,6 +49,8 @@ class LandingController(Controller):
     @get(
         path="/faq",
         name="landing:faq",
+        cache=4 * 60 * 60,  # 4 hours
+        cache_control=CacheControlHeader(max_age=4 * 60 * 60),  # 4 hours
     )
     async def faq(
         self,
@@ -65,6 +68,8 @@ class LandingController(Controller):
     @get(
         path="/pricing",
         name="landing:pricing",
+        cache=4 * 60 * 60,  # 4 hours
+        cache_control=CacheControlHeader(max_age=4 * 60 * 60),  # 4 hours
     )
     async def pricing(
         self,
