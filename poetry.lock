@@ -1747,17 +1747,6 @@ tests = ["freezegun (>=0.2.8)", "pretend", "pytest (>=6.0)", "pytest-asyncio (>=
 typing = ["mypy (>=1.4)", "rich", "twisted"]
 
 [[package]]
-name = "types-aiofiles"
-version = "23.2.0.20240403"
-description = "Typing stubs for aiofiles"
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "types-aiofiles-23.2.0.20240403.tar.gz", hash = "sha256:1ffcf8f5f72b81f71139f754ea2610ab0017f27ba4fd771e187b07840ee49c0f"},
-    {file = "types_aiofiles-23.2.0.20240403-py3-none-any.whl", hash = "sha256:adeeb4b999f19fda2dfe91c07857ff54701b6ee9b227b523a5a7be92125a2c5f"},
-]
-
-[[package]]
 name = "typing-extensions"
 version = "4.12.2"
 description = "Backported and Experimental Type Hints for Python 3.8+"
@@ -2062,4 +2051,4 @@ email = ["email-validator"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "713085cb3290da125cd3453285797f8b5a990d56d8c5e7cfa88df48a28728310"
+content-hash = "aa2f641e18c029f19021e7022ec9171595dd18086da9a982c9c0b3f2673927ce"

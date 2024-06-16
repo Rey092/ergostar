@@ -6,6 +6,7 @@ from typing import Any
 from advanced_alchemy.service import SQLAlchemyAsyncRepositoryService
 from sqlalchemy import func
 from sqlalchemy import select
+from sqlalchemy import true
 
 from db.models import LandingSolution
 from src.landing.repositories.landing_solution import LandingSolutionRepository
@@ -27,7 +28,7 @@ class LandingSolutionService(SQLAlchemyAsyncRepositoryService[LandingSolution]):
         """Get carousel string."""
         landing_solutions_carousel: Sequence[LandingSolution] = await self.list(
             statement=select(LandingSolution)
-            .where(LandingSolution.is_carousel_active == True)
+            .where(LandingSolution.is_carousel_active == true())
             .order_by(func.random())
         )
         carousel_string: str = ", ".join(
@@ -39,7 +40,7 @@ class LandingSolutionService(SQLAlchemyAsyncRepositoryService[LandingSolution]):
         """List top banners."""
         return await self.list(
             statement=select(LandingSolution)
-            .where(LandingSolution.is_top_active == True)
+            .where(LandingSolution.is_top_active == true())
             .order_by(func.random())
             .limit(3)
         )

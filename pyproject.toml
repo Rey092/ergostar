@@ -21,7 +21,6 @@ sqlalchemy-file = "^0.6.0"
 fasteners = "^0.19"
 filedepot = "^0.11.0"
 aiofiles = "^23.2.1"
-types-aiofiles = "^23.2.0.20240403"
 
 
 [tool.poetry.group.dev.dependencies]
