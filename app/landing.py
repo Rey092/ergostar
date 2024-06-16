@@ -1,12 +1,14 @@
 """Prepare ASGI application for landing."""
 
-import os
-from _typeshed import SupportsKeysAndGetItem
+from collections.abc import Callable
+from collections.abc import Sequence
 from pathlib import Path
-from typing import Sequence, Callable, Any
+from typing import Any
 
 from depot.manager import DepotManager
-from litestar import Litestar, Request, Response
+from litestar import Litestar
+from litestar import Request
+from litestar import Response
 from litestar.config.cors import CORSConfig
 from litestar.config.response_cache import ResponseCacheConfig
 from litestar.contrib.jinja import JinjaTemplateEngine
@@ -16,12 +18,11 @@ from litestar.template import TemplateConfig
 from litestar.types import ControllerRouterHandler
 
 from app.builder import LitestarBuilder
-from app.exception_handlers.landing import (
-    not_found_exception_handler,
-    internal_server_exception_handler,
-)
+from app.exception_handlers.landing import internal_server_exception_handler
+from app.exception_handlers.landing import not_found_exception_handler
 from config import settings
-from config.plugins import cache_config, cors
+from config.plugins import cache_config
+from config.plugins import cors
 from src.landing.controller import LandingController
 
 
@@ -58,8 +59,8 @@ class LandingLitestarBuilder(LitestarBuilder):
 
     @staticmethod
     def get_exception_handlers() -> (
-        SupportsKeysAndGetItem[
-            int | type[Exception],
+        dict[
+            type[Exception],
             Callable[[Request[Any, Any, Any], Any], Response[Any]],
         ]
     ):
@@ -76,6 +77,6 @@ DepotManager.configure(
     "landing",
     {
         "depot.backend": "depot.io.local.LocalFileStorage",
-        "depot.storage_path": os.path.join(settings.app.BASE_DIR, "./media/landing"),
+        "depot.storage_path": Path(settings.app.BASE_DIR) / "media/landing",
     },
 )

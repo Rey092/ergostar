@@ -1,7 +1,11 @@
-from typing import Any, Sequence
+"""Landing solution Service."""
+
+from collections.abc import Sequence
+from typing import Any
 
 from advanced_alchemy.service import SQLAlchemyAsyncRepositoryService
-from sqlalchemy import select, func
+from sqlalchemy import func
+from sqlalchemy import select
 
 from db.models import LandingSolution
 from src.landing.repositories.landing_solution import LandingSolutionRepository
@@ -21,12 +25,12 @@ class LandingSolutionService(SQLAlchemyAsyncRepositoryService[LandingSolution]):
 
     async def get_carousel_string(self) -> str:
         """Get carousel string."""
-        landing_solutions_carousel = await self.list(
+        landing_solutions_carousel: Sequence[LandingSolution] = await self.list(
             statement=select(LandingSolution)
-            .where(LandingSolution.is_carousel_active == True)  # noqa: E712
+            .where(LandingSolution.is_carousel_active == True)
             .order_by(func.random())
         )
-        carousel_string = ", ".join(
+        carousel_string: str = ", ".join(
             [f'"{service.title_carousel}"' for service in landing_solutions_carousel]
         )
         return carousel_string
@@ -35,7 +39,7 @@ class LandingSolutionService(SQLAlchemyAsyncRepositoryService[LandingSolution]):
         """List top banners."""
         return await self.list(
             statement=select(LandingSolution)
-            .where(LandingSolution.is_top_active == True)  # noqa: E712
+            .where(LandingSolution.is_top_active == True)
             .order_by(func.random())
             .limit(3)
         )

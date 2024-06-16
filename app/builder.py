@@ -1,17 +1,20 @@
 """Litestar application builder."""
 
-from _typeshed import SupportsKeysAndGetItem
-from typing import Sequence, Callable, Any
+from collections.abc import Callable
+from collections.abc import Sequence
+from typing import Any
 
 from advanced_alchemy.exceptions import RepositoryError
-from litestar import Litestar, Request, Response
+from litestar import Litestar
+from litestar import Request
+from litestar import Response
 from litestar.config.cors import CORSConfig
 from litestar.config.response_cache import ResponseCacheConfig
 from litestar.openapi import OpenAPIConfig
 from litestar.stores.base import Store
 from litestar.stores.registry import StoreRegistry
-from litestar.types import ControllerRouterHandler
 from litestar.template import TemplateConfig
+from litestar.types import ControllerRouterHandler
 
 from app.exception_handlers.base import exception_to_http_response
 from config import settings
@@ -63,8 +66,8 @@ class LitestarBuilder:
 
     @staticmethod
     def get_exception_handlers() -> (
-        SupportsKeysAndGetItem[
-            int | type[Exception],
+        dict[
+            type[Exception],
             Callable[[Request[Any, Any, Any], Any], Response[Any]],
         ]
     ):
@@ -73,7 +76,6 @@ class LitestarBuilder:
 
     def build(self) -> Litestar:
         """Create ASGI application."""
-
         from litestar import Litestar
 
         # from app.config import app as config
@@ -88,6 +90,12 @@ class LitestarBuilder:
 
         # dependencies = {constants.USER_DEPENDENCY_KEY: Provide(provide_user)}
         # dependencies.update(create_collection_dependencies())
+
+        # prepare exception handlers
+        exception_handlers: dict = {
+            RepositoryError: exception_to_http_response,
+        }
+        exception_handlers.update(self.get_exception_handlers())
 
         return Litestar(
             # cors_config=config.cors,
@@ -106,12 +114,10 @@ class LitestarBuilder:
             ],
             template_config=self.get_template_config(),
             # on_app_init=[auth.on_app_init],
-            # listeners=[account_signals.user_created_event_handler, team_signals.team_created_event_handler],
+            # listeners=[account_signals.user_created_event_handler,
+            # team_signals.team_created_event_handler],
             stores=self.get_stores(),
             response_cache_config=self.response_cache_config(),
-            exception_handlers={
-                RepositoryError: exception_to_http_response,
-                **self.get_exception_handlers(),
-            },
+            exception_handlers=exception_handlers,
             cors_config=self.get_cors_config(),
         )

@@ -1,14 +1,14 @@
 """Landing models."""
 
 from advanced_alchemy.base import BigIntAuditBase
+from aiofiles.threadpool.binary import AsyncBufferedReader
 from depot.fields.sqlalchemy import UploadedFileField
 from depot.fields.upload import UploadedFile
-from sqlalchemy import (
-    String,
-    Text,
-    Boolean,
-)
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import Boolean
+from sqlalchemy import String
+from sqlalchemy import Text
+from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import mapped_column
 
 
 class LandingSettings(BigIntAuditBase):
@@ -22,8 +22,10 @@ class LandingSettings(BigIntAuditBase):
     footer_description: Mapped[str | None] = mapped_column(
         Text,
         index=False,
-        default="Ergostar API provides a wide range of services to enhance your applications. From email and phone "
-        "validation to VAT number validation, IP geolocation, WHOIS data, and advanced AI functionalities.",
+        default="Ergostar API provides a wide range of services to "
+        "enhance your applications. From email and phone "
+        "validation to VAT number validation, IP geolocation,"
+        " WHOIS data, and advanced AI functionalities.",
     )
     footer_rights: Mapped[str] = mapped_column(
         Text, index=False, default="© 2024 Ergostar. All rights reserved."
@@ -73,6 +75,6 @@ class LandingSolution(BigIntAuditBase):
     docs_url: Mapped[str] = mapped_column(
         String(length=255), index=False, default="https://google.com"
     )
-    img: Mapped[UploadedFile] = mapped_column(
+    img: Mapped[UploadedFile | AsyncBufferedReader] = mapped_column(
         UploadedFileField(upload_storage="landing")
     )

@@ -65,3 +65,4 @@ repos:
           - types-passlib
           - types-click
           - types-PyYAML
+          - types-aiofiles
