@@ -13,7 +13,7 @@
 .header {
   /*background: radial-gradient(94% 58.3% at 50.3% 82.6%, #28772c 0, #34b172 100%) !important;*/
   /*background: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/6f9b913b-c48a-43ab-a9aa-26d4355d1d80/dgea7bn-1b20a922-858a-4d01-82fe-4aa965202a35.png/v1/fill/w_1280,h_549,q_80,strp/space_art_93___4k_ultrawide_wallpaper_background_by_ixul_dgea7bn-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NTQ5IiwicGF0aCI6IlwvZlwvNmY5YjkxM2ItYzQ4YS00M2FiLWE5YWEtMjZkNDM1NWQxZDgwXC9kZ2VhN2JuLTFiMjBhOTIyLTg1OGEtNGQwMS04MmZlLTRhYTk2NTIwMmEzNS5wbmciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.UAEzaCtKz0EN5zQh0VPXs8ZliiNpkIHaWlox2xsdkw4') !important;*/
-  background: url("/static/landing/img/bg/bg.png") !important;
+  background: url("/static/img/bg/bg.png") !important;
   background-size: cover !important;
   background-position: center !important;
   background-repeat: no-repeat !important;

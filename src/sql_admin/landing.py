@@ -1,7 +1,7 @@
 """Landing admin."""
 
 from sqladmin import ModelView
-from db.models import LandingSettings, LandingHomePage
+from db.models import LandingSettings, LandingHomePage, LandingSolution
 
 
 class LandingSettingsAdmin(ModelView, model=LandingSettings):  # type: ignore
@@ -28,3 +28,18 @@ class LandingHomePageAdmin(ModelView, model=LandingHomePage):  # type: ignore
 
     category = "Landing"
     icon = "fa-solid fa-home"
+
+
+class LandingServiceAdmin(ModelView, model=LandingSolution):  # type: ignore
+    """Admin for landing services."""
+
+    column_list = [
+        LandingSolution.id,
+        LandingSolution.title,
+        LandingSolution.is_top_active,
+        LandingSolution.is_carousel_active,
+    ]
+    form_excluded_columns = [LandingSolution.created_at]
+
+    category = "Landing"
+    icon = "fa-solid fa-cogs"

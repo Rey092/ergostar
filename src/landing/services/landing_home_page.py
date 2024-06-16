@@ -3,7 +3,7 @@ from typing import Any
 from advanced_alchemy.service import SQLAlchemyAsyncRepositoryService
 
 from db.models import LandingHomePage
-from src.landing.repositories.home_page import LandingHomePageRepository
+from src.landing.repositories.landing_home_page import LandingHomePageRepository
 
 
 class LandingHomePageService(SQLAlchemyAsyncRepositoryService[LandingHomePage]):

@@ -1,16 +1,19 @@
 """Litestar application builder."""
 
-from typing import Sequence
+from _typeshed import SupportsKeysAndGetItem
+from typing import Sequence, Callable, Any
 
-from litestar import Litestar
+from advanced_alchemy.exceptions import RepositoryError
+from litestar import Litestar, Request, Response
+from litestar.config.cors import CORSConfig
 from litestar.config.response_cache import ResponseCacheConfig
 from litestar.openapi import OpenAPIConfig
-from litestar.static_files import StaticFilesConfig
 from litestar.stores.base import Store
 from litestar.stores.registry import StoreRegistry
 from litestar.types import ControllerRouterHandler
 from litestar.template import TemplateConfig
 
+from app.exception_handlers.base import exception_to_http_response
 from config import settings
 from server import plugins
 
@@ -26,11 +29,6 @@ class LitestarBuilder:
     @staticmethod
     def get_template_config() -> TemplateConfig | None:
         """Get template config."""
-        return None
-
-    @staticmethod
-    def get_static_files_config() -> Sequence[StaticFilesConfig] | None:
-        """Get a static files config."""
         return None
 
     @staticmethod
@@ -57,6 +55,21 @@ class LitestarBuilder:
             extra_plugins.append(plugins.admin)
 
         return extra_plugins
+
+    @staticmethod
+    def get_cors_config() -> CORSConfig | None:
+        """Get CORS config."""
+        return None
+
+    @staticmethod
+    def get_exception_handlers() -> (
+        SupportsKeysAndGetItem[
+            int | type[Exception],
+            Callable[[Request[Any, Any, Any], Any], Response[Any]],
+        ]
+    ):
+        """Get exception handlers."""
+        return {}
 
     def build(self) -> Litestar:
         """Create ASGI application."""
@@ -89,12 +102,16 @@ class LitestarBuilder:
                 #     plugins.vite,
                 #     plugins.saq,
                 #     plugins.granian,
-                *self.get_extra_plugins(),
+                # *self.get_extra_plugins(),
             ],
             template_config=self.get_template_config(),
-            static_files_config=self.get_static_files_config(),
             # on_app_init=[auth.on_app_init],
             # listeners=[account_signals.user_created_event_handler, team_signals.team_created_event_handler],
             stores=self.get_stores(),
             response_cache_config=self.response_cache_config(),
+            exception_handlers={
+                RepositoryError: exception_to_http_response,
+                **self.get_exception_handlers(),
+            },
+            cors_config=self.get_cors_config(),
         )

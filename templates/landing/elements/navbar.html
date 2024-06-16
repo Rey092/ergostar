@@ -4,7 +4,7 @@
     <ul class="st-nav-menu nav navbar-nav">
       <li class="st-nav-section nav-item">
         <a href="{{ url_for("landing:home") }}" class="link-logo navbar-brand nav-link">
-            <img src="{{ url_for_static_asset('img', 'logo.svg') }}" alt="" class="logo mb-4">
+            <img src="{{ url_for('static', file_path='img/logo.svg') }}" alt="" class="logo mb-4">
         </a>
       </li>
 

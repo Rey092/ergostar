@@ -2,16 +2,22 @@
 
 from __future__ import annotations
 
+import json
 import logging
+from pathlib import Path
 from typing import Any
 import click
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.models import LandingSettings, LandingHomePage
-from src.landing.dependencies import provide_landing_home_page_service
-from src.landing.services.home_page import LandingHomePageService
+from config import settings
+from db.models import LandingSettings, LandingHomePage, LandingSolution
+from src.landing.dependencies import (
+    provide_landing_home_page_service,
+    provide_landing_solution_service,
+)
+from src.landing.services.landing_home_page import LandingHomePageService
 from src.landing.services.landing_settings import LandingSettingsService
-
+from src.landing.services.landing_solution import LandingSolutionService
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +43,9 @@ async def load_landing_data(db_session: AsyncSession) -> None:
     landing_home_page_service: LandingHomePageService = await anext(
         provide_landing_home_page_service(db_session)
     )
+    landing_solution_service: LandingSolutionService = await anext(
+        provide_landing_solution_service(db_session)
+    )
 
     # check if no landing setting service exists, create a new lending setting
     if not await landing_settings_service.exists():
@@ -53,6 +62,23 @@ async def load_landing_data(db_session: AsyncSession) -> None:
         logger.info("Default home page created")
     else:
         logger.info("Default home page already exists")
+
+    # check if no landing setting service exists, create a new lending solutions
+    if not await landing_solution_service.exists():
+        logger.info("Creating default landing solutions from a fixture")
+        fixtures_path = Path(settings.db.FIXTURE_PATH, "landing_solutions.json")
+        test_image_path = Path(settings.app.BASE_DIR, "seed", "img", "test.png")
+        fixtures_data = json.loads(fixtures_path.read_text())
+        landing_solutions = [
+            LandingSolution(
+                **landing_solution,
+                docs_url="https://docs.example.com",
+                img=open(test_image_path, "rb"),
+            )
+            for landing_solution in fixtures_data
+        ]
+        await landing_solution_service.create_many(landing_solutions)
+        logger.info("Default landing solutions created")
 
 
 @init_project_app.command(

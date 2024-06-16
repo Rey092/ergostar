@@ -1,13 +1,13 @@
 <section class="section mt-n6">
   <div class="container pt-0">
     <div class="row g-4 text-center">
-      {% for service in services_top %}
+      {% for solution in landing_solutions_top_banners %}
         <div class="col-md-4">
           <div class="card h-100 shadow-box hover-shadow hover-lift">
             <div class="card-body p-5">
-              <h4 class="fw-bold mb-3"> {{ service.title }} </h4>
-              <p class="text-muted mb-4"> {{ service.description }} </p>
-              <a class="text-success-hover" href="{{ service.docs_url }}" target="_blank"> Learn more <i class="fas fa-long-arrow-right ms-3"></i>
+              <h4 class="fw-bold mb-3"> {{ solution.title }} </h4>
+              <p class="text-muted mb-4"> {{ solution.description }} </p>
+              <a class="text-success-hover" href="{{ solution.docs_url }}" target="_blank"> Learn more <i class="fas fa-long-arrow-right ms-3"></i>
               </a>
             </div>
           </div>

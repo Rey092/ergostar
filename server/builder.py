@@ -53,13 +53,7 @@ class ApplicationConfigurator(InitPluginProtocol, CLIPluginProtocol):
         Args:
             app_config: The :class:`AppConfig <.config.app.AppConfig>` instance.
         """
-
-        # from advanced_alchemy.exceptions import RepositoryError
-        # from litestar.security.jwt import Token
-
         from config import constants, settings
-        # from src.db.models import User as UserModel
-        # from src.lib.exceptions import ApplicationError, exception_to_http_response
 
         self.redis = settings.redis.get_client()
         self.app_slug = settings.app.slug
@@ -69,17 +63,6 @@ class ApplicationConfigurator(InitPluginProtocol, CLIPluginProtocol):
         )
         app_config.stores = StoreRegistry(default_factory=self.redis_store_factory)
         app_config.on_shutdown.append(self.redis.aclose)  # type: ignore[attr-defined]
-        # app_config.signature_namespace.update(
-        #     {
-        #         "Token": Token,
-        #         "OAuth2Login": OAuth2Login,
-        #         "UserModel": UserModel,
-        #     },
-        # )
-        app_config.exception_handlers = {
-            # ApplicationError: exception_to_http_response,
-            # RepositoryError: exception_to_http_response,
-        }
         return app_config
 
     def redis_store_factory(self, name: str) -> RedisStore:

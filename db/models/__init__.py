@@ -1,6 +1,3 @@
-from .landing import LandingHomePage, LandingSettings
+from .landing import LandingHomePage, LandingSettings, LandingSolution
 
-__all__ = [
-    "LandingHomePage",
-    "LandingSettings",
-]
+__all__ = ["LandingHomePage", "LandingSettings", "LandingSolution"]

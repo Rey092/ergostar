@@ -16,7 +16,6 @@ from litestar.config.response_cache import ResponseCacheConfig
 from litestar.logging.config import LoggingConfig, StructLoggingConfig
 from litestar.middleware.logging import LoggingMiddlewareConfig
 from litestar.plugins.structlog import StructlogConfig
-from litestar.stores.redis import RedisStore
 
 from config import settings
 
@@ -37,17 +36,6 @@ alchemy = SQLAlchemyAsyncConfig(
         script_location=settings.db.MIGRATION_PATH,
     ),
 )
-# vite = ViteConfig(
-#     bundle_dir=settings.vite.BUNDLE_DIR,
-#     resource_dir=settings.vite.RESOURCE_DIR,
-#     template_dir=settings.vite.TEMPLATE_DIR,
-#     use_server_lifespan=settings.vite.USE_SERVER_LIFESPAN,
-#     dev_mode=settings.vite.DEV_MODE,
-#     hot_reload=settings.vite.HOT_RELOAD,
-#     is_react=settings.vite.ENABLE_REACT_HELPERS,
-#     port=settings.vite.PORT,
-#     host=settings.vite.HOST,
-# )
 # saq = SAQConfig(
 #     redis=settings.redis.client,
 #     web_enabled=settings.saq.WEB_ENABLED,
@@ -133,5 +121,4 @@ log = StructlogConfig(
         response_log_fields=["status_code"],
     ),
 )
-redis_store = RedisStore.with_client(url=settings.redis.URL)
-cache_config = ResponseCacheConfig(store="redis_backed_store")
+cache_config = ResponseCacheConfig()

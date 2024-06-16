@@ -1,9 +1,12 @@
 """Landing models."""
 
 from advanced_alchemy.base import BigIntAuditBase
+from depot.fields.sqlalchemy import UploadedFileField
+from depot.fields.upload import UploadedFile
 from sqlalchemy import (
     String,
     Text,
+    Boolean,
 )
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -54,4 +57,22 @@ class LandingHomePage(BigIntAuditBase):
         default="Enhance your applications with Ergolon API's wide range of services, "
         "from email and phone validation to advanced AI functionalities. Seamlessly "
         "integrate our APIs to boost your app's performance and capabilities.",
+    )
+
+
+class LandingSolution(BigIntAuditBase):
+    """Landing service model."""
+
+    __tablename__ = "landing__solution"
+
+    title: Mapped[str] = mapped_column(String(length=255), index=False)
+    title_carousel: Mapped[str] = mapped_column(String(length=255), index=False)
+    description: Mapped[str] = mapped_column(Text, index=False)
+    is_top_active: Mapped[bool] = mapped_column(Boolean, index=True, default=True)
+    is_carousel_active: Mapped[bool] = mapped_column(Boolean, index=True, default=True)
+    docs_url: Mapped[str] = mapped_column(
+        String(length=255), index=False, default="https://google.com"
+    )
+    img: Mapped[UploadedFile] = mapped_column(
+        UploadedFileField(upload_storage="landing")
     )

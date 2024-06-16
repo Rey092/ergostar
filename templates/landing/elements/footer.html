@@ -3,7 +3,7 @@
       <div class="row g-4 text-center text-md-start">
         <div class="col-md-4 me-auto">
           <a href=".." class="link-logo">
-            <img src="{{ url_for_static_asset('img', 'logo.svg') }}" alt="" class="logo mb-4">
+            <img src="{{ url_for('static', file_path='img/logo.svg') }}" alt="" class="logo mb-4">
           </a>
           <p>{{ landing_settings.footer_description }}</p>
         </div>
