@@ -48,6 +48,16 @@ class LitestarBuilder:
         """Get response cache config."""
         return None
 
+    @staticmethod
+    def get_extra_plugins() -> Sequence:
+        """Get extra plugins."""
+        extra_plugins: list = []
+
+        if settings.app.DEBUG:
+            extra_plugins.append(plugins.admin)
+
+        return extra_plugins
+
     def build(self) -> Litestar:
         """Create ASGI application."""
 
@@ -74,11 +84,12 @@ class LitestarBuilder:
             route_handlers=self.get_route_handlers(),
             plugins=[
                 plugins.app_config,
-                plugins.structlog,
+                # plugins.structlog,
                 plugins.alchemy,
                 #     plugins.vite,
                 #     plugins.saq,
                 #     plugins.granian,
+                *self.get_extra_plugins(),
             ],
             template_config=self.get_template_config(),
             static_files_config=self.get_static_files_config(),

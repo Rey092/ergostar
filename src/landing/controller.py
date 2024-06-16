@@ -2,7 +2,6 @@ from litestar import Controller, get
 from litestar.datastructures import CacheControlHeader
 from litestar.di import Provide
 from litestar.response import Template
-from config import constants
 from db.models import LandingSettings, LandingHomePage
 from src.landing.dependencies import (
     provide_landing_settings_service,
@@ -22,7 +21,7 @@ class LandingController(Controller):
     }
 
     @get(
-        path=[constants.SITE_INDEX, f"{constants.SITE_INDEX}/{{path:str}}"],
+        path="/",
         name="landing:home",
         dependencies={
             "landing_home_page_service": Provide(provide_landing_home_page_service)

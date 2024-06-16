@@ -16,8 +16,6 @@ CACHE_EXPIRATION: int = 60
 DEFAULT_USER_ROLE = "Application Access"
 # The endpoint to use for the service health check.#
 HEALTH_ENDPOINT = "/health"
-# The site index URL.#
-SITE_INDEX = "/"
 # The URL path to use for the OpenAPI documentation.#
 OPENAPI_SCHEMA = "/schema"
 # The name of the superuser role.#

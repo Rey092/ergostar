@@ -39,7 +39,7 @@ class ApplicationConfigurator(InitPluginProtocol, CLIPluginProtocol):
     # noinspection PyTypeChecker
     def on_cli_init(self, cli: Group) -> None:
         from cli.users import user_management_app
-        from cli.init_project import init_project_app
+        from cli.init import init_project_app
         from config import settings
 
         self.redis = settings.redis.get_client()
