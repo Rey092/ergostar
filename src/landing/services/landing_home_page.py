@@ -1,3 +1,5 @@
+"""Landing Home Page Service."""
+
 from typing import Any
 
 from advanced_alchemy.service import SQLAlchemyAsyncRepositoryService
@@ -10,7 +12,6 @@ class LandingHomePageService(SQLAlchemyAsyncRepositoryService[LandingHomePage]):
     """HomePage Service."""
 
     repository_type = LandingHomePageRepository
-    match_fields = ["name"]
 
     def __init__(self, **repo_kwargs: Any) -> None:
         """Initialize the service."""

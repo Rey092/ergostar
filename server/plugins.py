@@ -1,9 +1,11 @@
 """Server plugins."""
 
 from advanced_alchemy.extensions.litestar import SQLAlchemyPlugin
-from sqladmin_litestar_plugin import SQLAdminPlugin
-from config import plugins as config, settings
 from litestar.plugins.structlog import StructlogPlugin
+from sqladmin_litestar_plugin import SQLAdminPlugin
+
+from config import plugins as config
+from config import settings
 
 # from litestar_granian import GranianPlugin
 # from litestar_saq import SAQPlugin
@@ -15,4 +17,6 @@ structlog = StructlogPlugin(config=config.log)
 alchemy = SQLAlchemyPlugin(config=config.alchemy)
 # granian = GranianPlugin()
 app_config = ApplicationConfigurator()
-admin = SQLAdminPlugin(views=sql_admin_views, engine=settings.db.engine)
+admin = SQLAdminPlugin(
+    views=sql_admin_views, engine=settings.db.engine, base_url="/admin/"
+)

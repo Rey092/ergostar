@@ -1,3 +1,5 @@
+"""Landing settings service."""
+
 from typing import Any
 
 from advanced_alchemy.service import SQLAlchemyAsyncRepositoryService
@@ -10,7 +12,6 @@ class LandingSettingsService(SQLAlchemyAsyncRepositoryService[LandingSettings]):
     """LandingSettings Service."""
 
     repository_type = LandingSettingsRepository
-    match_fields = ["name"]
 
     def __init__(self, **repo_kwargs: Any) -> None:
         """Initialize the service."""

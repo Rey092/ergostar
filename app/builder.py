@@ -98,14 +98,14 @@ class LitestarBuilder:
         exception_handlers.update(self.get_exception_handlers())
 
         return Litestar(
-            # cors_config=config.cors,
+            cors_config=self.get_cors_config(),
             # dependencies=dependencies,
             debug=settings.app.DEBUG,
             openapi_config=self.get_openapi_config(),
             route_handlers=self.get_route_handlers(),
             plugins=[
                 plugins.app_config,
-                # plugins.structlog,
+                plugins.structlog,
                 plugins.alchemy,
                 #     plugins.vite,
                 #     plugins.saq,
@@ -119,5 +119,4 @@ class LitestarBuilder:
             stores=self.get_stores(),
             response_cache_config=self.response_cache_config(),
             exception_handlers=exception_handlers,
-            cors_config=self.get_cors_config(),
         )

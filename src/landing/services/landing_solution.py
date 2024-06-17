@@ -16,7 +16,6 @@ class LandingSolutionService(SQLAlchemyAsyncRepositoryService[LandingSolution]):
     """LandingSolution Service."""
 
     repository_type = LandingSolutionRepository
-    match_fields = ["name"]
 
     def __init__(self, **repo_kwargs: Any) -> None:
         """Initialize the service."""
