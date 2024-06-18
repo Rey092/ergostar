@@ -1,10 +1,12 @@
 """Landing models."""
 
 from advanced_alchemy.base import BigIntAuditBase
-from aiofiles.threadpool.binary import AsyncBufferedReader
-from depot.fields.sqlalchemy import UploadedFileField
-from depot.fields.upload import UploadedFile
+from fastapi_storages import FileSystemStorage
+from fastapi_storages import StorageFile
+from fastapi_storages.integrations.sqlalchemy import FileType
+from litestar.datastructures import UploadFile
 from sqlalchemy import Boolean
+from sqlalchemy import Column
 from sqlalchemy import String
 from sqlalchemy import Text
 from sqlalchemy.orm import Mapped
@@ -75,6 +77,6 @@ class LandingSolution(BigIntAuditBase):
     docs_url: Mapped[str] = mapped_column(
         String(length=255), index=False, default="https://google.com"
     )
-    img: Mapped[UploadedFile | AsyncBufferedReader] = mapped_column(
-        UploadedFileField(upload_storage="landing")
+    file: Mapped[StorageFile | UploadFile] = Column(  # type: ignore
+        FileType(storage=FileSystemStorage(path="./media")), default=""
     )

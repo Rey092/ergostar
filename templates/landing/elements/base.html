@@ -100,7 +100,6 @@
 
   <!-- Css styles. -->
   <link rel="stylesheet" href="{{ url_for('static', file_path='css/dashcore.41588051c3b03e83ed26.css') }}">
-  {#  <link rel="stylesheet" href="'lancss/dashcore.41588051c3b03e83ed26.css'">#}
   <link rel="stylesheet" href="{{ url_for('static', file_path='css/custom.css') }}">
   <title></title>
 </head>
@@ -123,9 +122,7 @@
 
 <!-- Main content, everything should be placed inside this main tag but the nav and footer -->
 <main class="position-relative overflow-hidden">
-
   {% block content %}{% endblock content %}
-
 </main>
 
 <!-- Page footer -->

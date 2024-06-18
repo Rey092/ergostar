@@ -5,6 +5,8 @@ from collections.abc import Sequence
 from typing import Any
 
 from advanced_alchemy.exceptions import RepositoryError
+from dishka import make_async_container
+from dishka.integrations import litestar as litestar_integration
 from litestar import Litestar
 from litestar import Request
 from litestar import Response
@@ -19,6 +21,7 @@ from litestar.types import ControllerRouterHandler
 from app.exception_handlers.base import exception_to_http_response
 from config import settings
 from server import plugins
+from server.injector import AppProvider
 
 
 class LitestarBuilder:
@@ -78,6 +81,8 @@ class LitestarBuilder:
         """Create ASGI application."""
         from litestar import Litestar
 
+        container = make_async_container(AppProvider())
+
         # from app.config import app as config
         # from app.config import constants
         # from app.config.base import get_settings
@@ -97,7 +102,7 @@ class LitestarBuilder:
         }
         exception_handlers.update(self.get_exception_handlers())
 
-        return Litestar(
+        app = Litestar(
             cors_config=self.get_cors_config(),
             # dependencies=dependencies,
             debug=settings.app.DEBUG,
@@ -105,7 +110,7 @@ class LitestarBuilder:
             route_handlers=self.get_route_handlers(),
             plugins=[
                 plugins.app_config,
-                plugins.structlog,
+                # plugins.structlog,
                 plugins.alchemy,
                 #     plugins.vite,
                 #     plugins.saq,
@@ -120,3 +125,8 @@ class LitestarBuilder:
             response_cache_config=self.response_cache_config(),
             exception_handlers=exception_handlers,
         )
+
+        # install dishka
+        litestar_integration.setup_dishka(container, app)
+
+        return app

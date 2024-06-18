@@ -5,7 +5,6 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
-from depot.manager import DepotManager
 from litestar import Litestar
 from litestar import Request
 from litestar import Response
@@ -20,7 +19,6 @@ from litestar.types import ControllerRouterHandler
 from app.builder import LitestarBuilder
 from app.exception_handlers.landing import internal_server_exception_handler
 from app.exception_handlers.landing import not_found_exception_handler
-from config import settings
 from config.plugins import cache_config
 from config.plugins import cors
 from src.landing.controller import LandingController
@@ -40,8 +38,11 @@ class LandingLitestarBuilder(LitestarBuilder):
         return [
             LandingController,
             create_static_files_router(
-                path="/static", directories=["static/landing"], name="static"
+                path="/static",
+                directories=["static/landing"],
+                name="static",
             ),
+            create_static_files_router(path="/media", directories=["."], name="media"),
         ]
 
     @staticmethod
@@ -73,10 +74,3 @@ class LandingLitestarBuilder(LitestarBuilder):
 
 builder: LandingLitestarBuilder = LandingLitestarBuilder()
 app: Litestar = builder.build()
-DepotManager.configure(
-    "landing",
-    {
-        "depot.backend": "depot.io.local.LocalFileStorage",
-        "depot.storage_path": Path(settings.app.BASE_DIR) / "media/landing",
-    },
-)

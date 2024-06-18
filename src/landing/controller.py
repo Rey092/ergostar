@@ -1,17 +1,24 @@
-from typing import Sequence
-from litestar import Controller, get
+"""Landing Controller."""
+
+from typing import TYPE_CHECKING
+
+from dishka import FromDishka
+from dishka.integrations.litestar import inject
+from litestar import Controller
+from litestar import get
 from litestar.datastructures import CacheControlHeader
-from litestar.di import Provide
 from litestar.response import Template
-from db.models import LandingSettings, LandingHomePage, LandingSolution
-from src.landing.dependencies import (
-    provide_landing_settings_service,
-    provide_landing_home_page_service,
-    provide_landing_solution_service,
-)
+
 from src.landing.services.landing_home_page import LandingHomePageService
 from src.landing.services.landing_settings import LandingSettingsService
 from src.landing.services.landing_solution import LandingSolutionService
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from db.models import LandingHomePage
+    from db.models import LandingSettings
+    from db.models import LandingSolution
 
 
 class LandingController(Controller):
@@ -19,25 +26,19 @@ class LandingController(Controller):
 
     include_in_schema = False
     opt = {"exclude_from_auth": True}
-    dependencies = {
-        "landing_settings_service": Provide(provide_landing_settings_service)
-    }
 
     @get(
         path="/",
         name="landing:home",
-        dependencies={
-            "landing_home_page_service": Provide(provide_landing_home_page_service),
-            "landing_solution_service": Provide(provide_landing_solution_service),
-        },
         # cache=4 * 60 * 60,  # 4 hours
         # cache_control=CacheControlHeader(max_age=4 * 60 * 60),  # 4 hours
     )
+    @inject
     async def get_home(
         self,
-        landing_settings_service: LandingSettingsService,
-        landing_home_page_service: LandingHomePageService,
-        landing_solution_service: LandingSolutionService,
+        landing_settings_service: FromDishka[LandingSettingsService],
+        landing_home_page_service: FromDishka[LandingHomePageService],
+        landing_solution_service: FromDishka[LandingSolutionService],
     ) -> Template:
         """Serve site root."""
         landing_settings: LandingSettings = await landing_settings_service.get_one()

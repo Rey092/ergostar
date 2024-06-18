@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import json
 import logging
+import uuid
 from pathlib import Path
 from typing import TYPE_CHECKING
 from typing import Any
 
 import aiofiles
 import click
+from litestar.datastructures import UploadFile
 
 from config import settings
 from db.models import LandingHomePage
@@ -19,7 +21,6 @@ from src.landing.dependencies import provide_landing_home_page_service
 from src.landing.dependencies import provide_landing_solution_service
 
 if TYPE_CHECKING:
-    from aiofiles.threadpool.binary import AsyncBufferedReader
     from sqlalchemy.ext.asyncio import AsyncSession
 
     from src.landing.services.landing_home_page import LandingHomePageService
@@ -70,22 +71,34 @@ async def load_landing_data(db_session: AsyncSession) -> None:
         logger.info("Default home page already exists")
 
     # check if no landing setting service exists, create a new lending solutions
+    await landing_solution_service.delete_where()
     if not await landing_solution_service.exists():
         logger.info("Creating default landing solutions from a fixture")
-        fixtures_path = Path(settings.db.FIXTURE_PATH, "landing_solutions.json")
-        test_image_path = Path(settings.app.BASE_DIR, "seed", "img", "test.png")
-        test_image_data: AsyncBufferedReader = await aiofiles.open(
-            test_image_path, "rb"
-        )
-        fixtures_data = json.loads(fixtures_path.read_text())
-        landing_solutions = [
+
+        # get fixtures data
+        fixtures_path: Path = Path(settings.db.FIXTURE_PATH, "landing_solutions.json")
+        fixtures_data: list[dict] = json.loads(fixtures_path.read_text())
+
+        # get image data
+        test_image_path: Path = Path(settings.app.BASE_DIR, "seed", "img", "test.png")
+        async with aiofiles.open(test_image_path, "rb") as f:
+            test_image_data: bytes = await f.read()
+
+        # prepare landing solutions
+        landing_solutions: list[LandingSolution] = [
             LandingSolution(
                 **landing_solution,
                 docs_url="https://docs.example.com",
-                img=test_image_data,
+                file=UploadFile(
+                    content_type="image/png",
+                    filename=f"file_{uuid.uuid4()}.png",
+                    file_data=test_image_data,
+                ),
             )
             for landing_solution in fixtures_data
         ]
+
+        # create landing solutions
         await landing_solution_service.create_many(landing_solutions)
         logger.info("Default landing solutions created")
 
@@ -111,4 +124,5 @@ def create_all_seed_data() -> None:
             await db_session.commit()
 
     console.rule("Creating seed data")
+    # noinspection PyTypeChecker
     anyio.run(_create_all_seed_data)
