@@ -30,8 +30,8 @@ class LandingController(Controller):
     @get(
         path="/",
         name="landing:home",
-        # cache=4 * 60 * 60,  # 4 hours
-        # cache_control=CacheControlHeader(max_age=4 * 60 * 60),  # 4 hours
+        cache=4 * 60 * 60,  # 4 hours
+        cache_control=CacheControlHeader(max_age=4 * 60 * 60),  # 4 hours
     )
     @inject
     async def get_home(
@@ -65,9 +65,10 @@ class LandingController(Controller):
         cache=4 * 60 * 60,  # 4 hours
         cache_control=CacheControlHeader(max_age=4 * 60 * 60),  # 4 hours
     )
+    @inject
     async def faq(
         self,
-        landing_settings_service: LandingSettingsService,
+        landing_settings_service: FromDishka[LandingSettingsService],
     ) -> Template:
         """Serve site root."""
         landing_settings: LandingSettings = await landing_settings_service.get_one()
@@ -84,9 +85,10 @@ class LandingController(Controller):
         cache=4 * 60 * 60,  # 4 hours
         cache_control=CacheControlHeader(max_age=4 * 60 * 60),  # 4 hours
     )
+    @inject
     async def pricing(
         self,
-        landing_settings_service: LandingSettingsService,
+        landing_settings_service: FromDishka[LandingSettingsService],
     ) -> Template:
         """Serve site root."""
         landing_settings: LandingSettings = await landing_settings_service.get_one()

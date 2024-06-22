@@ -9,7 +9,6 @@ from litestar import Litestar
 from litestar import Request
 from litestar import Response
 from litestar.config.cors import CORSConfig
-from litestar.config.response_cache import ResponseCacheConfig
 from litestar.contrib.jinja import JinjaTemplateEngine
 from litestar.exceptions import HTTPException
 from litestar.static_files import create_static_files_router
@@ -19,18 +18,12 @@ from litestar.types import ControllerRouterHandler
 from app.builder import LitestarBuilder
 from app.exception_handlers.landing import internal_server_exception_handler
 from app.exception_handlers.landing import not_found_exception_handler
-from config.plugins import cache_config
 from config.plugins import cors
 from src.landing.controller import LandingController
 
 
 class LandingLitestarBuilder(LitestarBuilder):
     """Litestar application builder."""
-
-    @staticmethod
-    def response_cache_config() -> ResponseCacheConfig | None:
-        """Get response cache config."""
-        return cache_config
 
     @staticmethod
     def get_route_handlers() -> Sequence[ControllerRouterHandler] | None:

@@ -2,7 +2,7 @@
 ENV_PREFIX=.venv/bin/
 
 landing:
-	litestar --app app.landing:app run -r
+	litestar --app app.landing:app run -r -I *.html -I *.css -I *.js
 
 
 # DATABASE

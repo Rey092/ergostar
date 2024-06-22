@@ -2,10 +2,10 @@
 
 {% block content %}
   <!-- ./Page header -->
-  <header class="header section bg-primary bg-gradient">
+  <header class="header section bg-success bg-gradient">
     <div class="container">
       <h1 class="fw-bold display-md-4 text-light">FAQs</h1>
-      <p class="h3 text-light">Here are the answers to some of the most common questions we hear from our appreciated
+      <p class="h3 text-light">111Here are the answers to some of the most common questions we hear from our appreciated
         customers.</p>
     </div>
   </header>
@@ -78,11 +78,11 @@
           </div>
         </div>
         <div class="col-lg-2">
-          <h5 class="fw-bold small text-uppercase mb-3 text-primary">search</h5>
+          <h5 class="fw-bold small text-uppercase mb-3 text-success">search</h5>
           <form class="form d-flex">
             <input type="text" name="q" class="form-control me-2" placeholder="Search for..." required>
           </form>
-          <h4 class="fw-bold small text-uppercase mt-4 mb-3 text-primary">categories</h4>
+          <h4 class="fw-bold small text-uppercase mt-4 mb-3 text-success">categories</h4>
           <nav class="nav flex-column">
             <a class="ps-0 nav-link py-2 fw-bold active" href="faqs">Common Questions</a>
             <a class="ps-0 nav-link py-2 fw-light" href="faqs">Getting Started</a>
@@ -102,9 +102,9 @@
         <div class="col-md-6">
           <div class="card rounded-4 hover-shadow">
             <div class="card-body">
-              <i data-feather="send" width="36" height="36" class="stroke-primary"></i>
+              <i data-feather="send" width="36" height="36" class="stroke-success"></i>
               <a href="javascript:;"
-                 class="mt-4 text-primary d-flex align-items-center justify-content-center justify-content-lg-start">
+                 class="mt-4 text-success d-flex align-items-center justify-content-center justify-content-lg-start">
                 <h4 class="me-3 mb-0">Documentation</h4>
                 <i class="fas fa-long-arrow-right"></i>
               </a>
@@ -116,9 +116,9 @@
         <div class="col-md-6">
           <div class="card rounded-4 hover-shadow">
             <div class="card-body">
-              <i data-feather="message-circle" width="36" height="36" class="text-info"></i>
+              <i data-feather="message-circle" width="36" height="36" class="text-success"></i>
               <a href="contact"
-                 class="mt-4 text-info d-flex align-items-center justify-content-center justify-content-lg-start">
+                 class="mt-4 text-success d-flex align-items-center justify-content-center justify-content-lg-start">
                 <h4 class="me-3 mb-0">Contact Us</h4>
                 <i class="fas fa-long-arrow-right"></i>
               </a>
@@ -136,10 +136,10 @@
     <div class="container pt-5">
       <div class="d-flex align-items-center flex-column flex-md-row">
         <div class="text-center text-md-start">
-          <p class="text-gradient text-gradient-primary mb-0 lead fw-bold">Ready to get started?</p>
+          <p class="text-gradient text-gradient-success mb-0 lead fw-bold">Ready to get started?</p>
           <h2 class="mt-0 fw-bold">Create an account now</h2>
         </div>
-        <a href="srv/register" class="btn btn-primary shadow-primary mt-3 mt-md-0 ms-md-auto"> Create DashCore
+        <a href="{{ landing_settings.url_register }}" class="btn btn-success shadow-success text-white-full mt-3 mt-md-0 ms-md-auto"> Create DashCore
           account </a>
       </div>
     </div>

@@ -6493,7 +6493,7 @@ fieldset:disabled .btn {
   --dc-btn-hover-bg: #98a9c3;
   --dc-btn-hover-border-color: #92a4bf;
   --dc-btn-focus-shadow-rgb: 114, 131, 156;
-  --dc-btn-active-color: #000;
+  --dc-btn-active-color: #23e1bb;
   --dc-btn-active-bg: #9eaec6;
   --dc-btn-active-border-color: #92a4bf;
   --dc-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
@@ -6509,7 +6509,7 @@ fieldset:disabled .btn {
   --dc-btn-hover-bg: #26be98;
   --dc-btn-hover-border-color: #1aba92;
   --dc-btn-focus-shadow-rgb: 0, 151, 114;
-  --dc-btn-active-color: #000;
+  --dc-btn-active-color: #198052;
   --dc-btn-active-bg: #33c19e;
   --dc-btn-active-border-color: #1aba92;
   --dc-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
@@ -6525,7 +6525,7 @@ fieldset:disabled .btn {
   --dc-btn-hover-bg: #31d2f2;
   --dc-btn-hover-border-color: #25cff2;
   --dc-btn-focus-shadow-rgb: 11, 172, 204;
-  --dc-btn-active-color: #000;
+  --dc-btn-active-color: #1e938f;
   --dc-btn-active-bg: #3dd5f3;
   --dc-btn-active-border-color: #25cff2;
   --dc-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);

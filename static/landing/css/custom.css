@@ -1,6 +1,29 @@
 :root {
   --main-color: #34b172;
   --main-color-2: #00b286;
+  --light-color: white;
+  --dark-color: #203720;
+}
+
+.btn-outline-success {
+  --dc-btn-active-color: #ffffff;
+}
+
+.btn-success {
+  --dc-btn-color: #ffffff;
+  --dc-btn-bg: #00b286;
+  --dc-btn-border-color: #00b286;
+  --dc-btn-hover-color: #000;
+  --dc-btn-hover-bg: #26be98;
+  --dc-btn-hover-border-color: #1aba92;
+  --dc-btn-focus-shadow-rgb: 0, 151, 114;
+  --dc-btn-active-color: #198052;
+  --dc-btn-active-bg: #33c19e;
+  --dc-btn-active-border-color: #1aba92;
+  --dc-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --dc-btn-disabled-color: #000;
+  --dc-btn-disabled-bg: #00b286;
+  --dc-btn-disabled-border-color: #00b286;
 }
 
 .dropdown-menu {
@@ -35,9 +58,9 @@
   /*background-image: linear-gradient(351deg, #e5f8cb 23%, #ffffff 87%, #ddf3d9 102%) !important;*/
   background-image: linear-gradient(
     351deg,
-    #0f270f 23%,
-    #284228 87%,
-    #15332a 102%
+    #164516 23%,
+    #305530 87%,
+    #184034 102%
   ) !important;
   font-size: 1.3em;
   font-weight: bold;
@@ -54,4 +77,20 @@
 
 a:hover {
   color: var(--main-color) !important;
+}
+
+/*faq page some labels fix*/
+.text-white-full {
+  color: #ffffff !important;
+}
+.text-white-full:hover {
+  color: #ffffff !important;
+}
+
+.btn-dark:hover {
+  color: #ffffff !important;
+}
+
+.typed-cursor {
+  color: var(--dark-color);
 }
