@@ -101,6 +101,7 @@
   <!-- Css styles. -->
   <link rel="stylesheet" href="{{ url_for('static', file_path='css/dashcore.41588051c3b03e83ed26.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', file_path='css/custom.css') }}">
+  {% block css %}{% endblock css %}
   <title></title>
 </head>
 
@@ -138,5 +139,6 @@
 
 <script src="{{ url_for('static', file_path='js/dashcore.95cbb7260081cb946756.js') }}"></script>
 <script src="{{ url_for('static', file_path='js/loading.b6bb5062cb3673f443b3.js') }}"></script>
+{% block js %}{% endblock js %}
 </body>
 </html>

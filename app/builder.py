@@ -18,7 +18,9 @@ from litestar.types import ControllerRouterHandler
 from app.exception_handlers.base import exception_to_http_response
 from config import settings
 from server import plugins
-from server.injector import AppProvider
+from server.provider import AppProvider
+from src.landing.provider import LandingProvider
+from src.subscriptions.probider import SubscriptionProvider
 
 
 class LitestarBuilder:
@@ -68,7 +70,11 @@ class LitestarBuilder:
         """Create ASGI application."""
         from litestar import Litestar
 
-        container = make_async_container(AppProvider())
+        container = make_async_container(
+            AppProvider(),
+            LandingProvider(),
+            SubscriptionProvider(),
+        )
 
         # from app.config import app as config
         # from app.config import constants

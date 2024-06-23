@@ -9,6 +9,14 @@
   --dc-btn-active-color: #ffffff;
 }
 
+.nav {
+  --dc-nav-link-hover-color: var(--main-color-2);
+}
+
+.nav-tabs.tabs-clean .nav-link.active {
+  border-bottom-color: var(--main-color);
+}
+
 .btn-success {
   --dc-btn-color: #ffffff;
   --dc-btn-bg: #00b286;
@@ -24,6 +32,13 @@
   --dc-btn-disabled-color: #000;
   --dc-btn-disabled-bg: #00b286;
   --dc-btn-disabled-border-color: #00b286;
+}
+
+.btn-success {
+  color: #ffffff !important;
+}
+.btn-success:hover {
+  color: #ffffff !important;
 }
 
 .dropdown-menu {
@@ -77,14 +92,6 @@
 
 a:hover {
   color: var(--main-color) !important;
-}
-
-/*faq page some labels fix*/
-.text-white-full {
-  color: #ffffff !important;
-}
-.text-white-full:hover {
-  color: #ffffff !important;
 }
 
 .btn-dark:hover {

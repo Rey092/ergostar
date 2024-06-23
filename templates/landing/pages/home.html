@@ -1,58 +1,60 @@
 {% extends "landing/elements/base.html" %}
 
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', file_path='vendor/highlight/styles/atom-one-dark.css') }}">
+{% endblock css %}
+
 {% block content %}
-  <!-- developers header -->
-  {#  {% include "landing/headers/developers.html" %}#}
 
   <!-- Business Heading -->
   {% include 'landing/headers/business.html' %}
 
+  <!-- ./Every thing you need -->
+  {% include 'landing/components/code_snippets.html' %}
+
+  <!-- ./What you will get with DashCore Section -->
+  {% include 'landing/components/what_you_will_get.html' %}
+
+  <!-- ./Every Thing you need to get started Section -->
+  {% include 'landing/components/every_thing_you_need.html' %}
+
   <!-- ./CTA - Buy it now Section -->
-  {#  {% include 'landing/components/get_started.html' %}#}
+  {% include 'landing/components/get_started.html' %}
 
   <!-- ./Get the very best of us by doing the best of you Section -->
-  {#  {% include "landing/components/best_of_us.html" %}#}
+{#  {% include "landing/components/best_of_us.html" %}#}
 
   <!-- ./We design to fit all your needs Section -->
-  {#  {% include "landing/components/all_your_needs.html" %}#}
+{#  {% include "landing/components/all_your_needs.html" %}#}
 
   <!-- ./Seamlessly Integration Section -->
   {#  {% include 'landing/components/seamless_integration.html' %}#}
 
-  <!-- ./Developer tools Section -->
-  {#  {% include 'landing/components/developer_tools.html' %}#}
-
   <!-- ./Easy integrations for your convenience Section -->
-  {#  {% include 'landing/components/easy_integration.html' %}#}
-
-  <!-- ./Logos Section -->
-  {#  {% include 'landing/components/logos.html' %}#}
-
-  <!-- ./Join as Developer/Designer Section -->
-  {#  {% include 'landing/components/join_as.html' %}#}
+{#  {% include 'landing/components/easy_integration.html' %}#}
 
   <!-- ./CTA - Buy it now Section -->
-  {#  {% include 'landing/components/buy_it_now.html' %}#}
+{#  {% include 'landing/components/buy_it_now.html' %}#}
 
   <!-- ./Tools for everyone Section -->
-  {#    {% include "landing/components/tools_for_everyone.html" %}#}
+{#  {% include "landing/components/tools_for_everyone.html" %}#}
 
   <!-- ./What DashCore template offers Section -->
-  {#    {% include 'landing/components/what_offers.html' %}#}
-
-  <!-- ./Designed to provide top-notch appearance Section -->
-  {#  {% include 'landing/components/designed_to_provide.html' %}#}
+{#  {% include 'landing/components/what_offers.html' %}#}
 
   <!-- ./Why we Section -->
-  {#  {% include 'landing/components/why_we.html' %}#}
+{#  {% include 'landing/components/why_we.html' %}#}
 
-  <!-- ./Every thing you need -->
-  {#  {% include 'landing/components/every_thing_you_need.html' %}#}
-
-  <!-- ./What you will get with DashCore Section -->
-  {#  {% include 'landing/components/what_you_will_get.html' %}#}
-
-  <!-- ./FAQs Section -->
-  {#    {% include 'landing/components/faqs.html' %}#}
+  {#  <!-- ./FAQs Section -->#}
+{#  {% include 'landing/components/faqs.html' %}#}
 
 {% endblock content %}
+
+
+{% block js %}
+  <script src="{{ url_for('static', file_path='vendor/highlight/highlight.js') }}"></script>
+  <script src="{{ url_for('static', file_path='vendor/highlight/languages/bash.js') }}"></script>
+  <script src="{{ url_for('static', file_path='vendor/highlight/languages/json.js') }}"></script>
+  <script src="{{ url_for('static', file_path='vendor/highlight/languages/python.js') }}"></script>
+  <script>hljs.highlightAll();</script>
+{% endblock js %}

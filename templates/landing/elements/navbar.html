@@ -13,7 +13,6 @@
         <a class="st-root-link item-products st-has-dropdown nav-link" href="{{ url_for("landing:home") }}"> Home </a>
         <a class="st-root-link item-products st-has-dropdown nav-link" href="{{ url_for("landing:faq") }}"> FAQ </a>
         <a class="st-root-link item-products st-has-dropdown nav-link" href="{{ url_for("landing:pricing") }}"> Pricing </a>
-        <a class="st-root-link item-products st-has-dropdown nav-link" data-dropdown="services"> Services </a>
         <a class="st-root-link item-products st-has-dropdown nav-link" href="/" target="_blank"> API Docs </a>
       </li>
 
@@ -52,7 +51,7 @@
         </div>
 
 
-        <a class="btn btn-dark shadow-dark ml-4" href="/settings.url_login" target="_blank">
+        <a class="btn btn-dark shadow-dark ml-4" href="{{ landing_settings.url_login }}" target="_blank">
           <i class="fas fa-sign-in-alt d-none d-md-inline me-md-0 me-lg-2"></i>
           <span class="d-md-none d-lg-inline">Login</span>
         </a>
@@ -120,34 +119,6 @@
     <div class="st-dropdown-container">
       <div class="st-dropdown-section" data-dropdown="services">
         <div class="st-dropdown-content">
-          <div class="st-dropdown-content-group">
-            <div class="mb-4">
-              <h4 class="text-nowrap mb-0 text-gradient text-gradient-success">
-                <span class="fw-bold">Useful services</span> you'll need
-              </h4>
-              <p class="text-muted mt-0">Get a complete design stack</p>
-            </div>
-            <div class="row flex-nowrap g-4">
-              <div class="col me-4">
-                <h6 class="text-uppercase fw-bold small ps-2">Error</h6>
-                <a class="dropdown-item" href="403.html">403 Error</a>
-                <a class="dropdown-item" href="404.html">404 Error</a>
-                <a class="dropdown-item" href="500.html">500 Error</a>
-              </div>
-              <div class="col me-4">
-                <h6 class="text-uppercase fw-bold small ps-2">User</h6>
-                <a class="dropdown-item" href="auth/login.html">Login</a>
-                <a class="dropdown-item" href="auth/register.html">Register</a>
-                <a class="dropdown-item" href="auth/forgot-password.html">Forgot</a>
-              </div>
-              <div class="col me-4">
-                <h6 class="text-uppercase fw-bold small ps-2">Extra</h6>
-                <a class="dropdown-item" href="pricing.html">Pricing</a>
-                <a class="dropdown-item" href="terms.html">Terms</a>
-                <a class="dropdown-item" href="faqs.html">FAQ</a>
-              </div>
-            </div>
-          </div>
           <div class="st-dropdown-content-group">
             <div class="row">
               <div class="col-md-6">

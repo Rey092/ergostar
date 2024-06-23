@@ -1,0 +1,82 @@
+[
+  {
+    "tab": "IP Lookup",
+    "title": "IP Lookup",
+    "subtitle": "Find out the location of any IP address",
+    "description": "Enter an IP address and we'll show you the location on a map.",
+    "is_active": true,
+    "code": "{\n      \"ip\": \"188.130.177.136\",\n      \"country_name\": \"Ukraine\",\n      \"state_prov\": \"Odessa\",\n      \"city\": \"Odessa\",\n      \"latitude\": 46.47021,\n      \"longitude\": 30.73064,\n      \"time_zone\": \"Europe/Kyiv\",\n      \"isp\": \"Southern Telecommunication Company Ltd.\",\n      \"currency\": \"Hryvnia\",\n      \"country_flag\": \"\uD83C\uDDFA\uD83C\uDDE6\",\n      ...\n    }",
+    "code_language": "json",
+    "feather_icon": "map-pin"
+  },
+  {
+    "tab": "IP Geolocation",
+    "title": "IP Geolocation",
+    "subtitle": "Get the location of any IP address",
+    "description": "Enter an IP address and we'll show you the location on a map.",
+    "is_active": true,
+    "code": "{\n      \"ip\": \"188.130.177.136\",\n      \"country_name\": \"Ukraine\",\n      \"state_prov\": \"Odessa\",\n      \"city\": \"Odessa\",\n      \"latitude\": 46.47021,\n      \"longitude\": 30.73064,\n      \"time_zone\": \"Europe/Kyiv\",\n      \"isp\": \"Southern Telecommunication Company Ltd.\",\n      \"currency\": \"Hryvnia\",\n      \"country_flag\": \"\uD83C\uDDFA\uD83C\uDDE6\",\n      ...\n    }",
+    "code_language": "json",
+    "feather_icon": "map-pin"
+  },
+  {
+    "tab": "WHOIS Lookup",
+    "title": "WHOIS Lookup",
+    "subtitle": "Get the WHOIS information of any domain",
+    "description": "Enter a domain name and we'll show you the WHOIS information.",
+    "is_active": true,
+    "code": "{\n      \"ip\": \"188.130.177.136\",\n      \"country_name\": \"Ukraine\",\n      \"state_prov\": \"Odessa\",\n      \"city\": \"Odessa\",\n      \"latitude\": 46.47021,\n      \"longitude\": 30.73064,\n      \"time_zone\": \"Europe/Kyiv\",\n      \"isp\": \"Southern Telecommunication Company Ltd.\",\n      \"currency\": \"Hryvnia\",\n      \"country_flag\": \"\uD83C\uDDFA\uD83C\uDDE6\",\n      ...\n    }",
+    "code_language": "json",
+    "feather_icon": "info"
+  },
+  {
+    "tab": "Email Validator",
+    "title": "Email Validator",
+    "subtitle": "Validate any email address",
+    "description": "Enter an email address and we'll show you if it's valid or not.",
+    "is_active": true,
+    "code": "{\n      \"ip\": \"188.130.177.136\",\n      \"country_name\": \"Ukraine\",\n      \"state_prov\": \"Odessa\",\n      \"city\": \"Odessa\",\n      \"latitude\": 46.47021,\n      \"longitude\": 30.73064,\n      \"time_zone\": \"Europe/Kyiv\",\n      \"isp\": \"Southern Telecommunication Company Ltd.\",\n      \"currency\": \"Hryvnia\",\n      \"country_flag\": \"\uD83C\uDDFA\uD83C\uDDE6\",\n      ...\n    }",
+    "code_language": "json",
+    "feather_icon": "mail"
+  },
+  {
+    "tab": "Phone Validator",
+    "title": "Phone Validator",
+    "subtitle": "Validate any phone number",
+    "description": "Enter a phone number and we'll show you if it's valid or not.",
+    "is_active": true,
+    "code": "{\n      \"ip\": \"188.130.177.136\",\n      \"country_name\": \"Ukraine\",\n      \"state_prov\": \"Odessa\",\n      \"city\": \"Odessa\",\n      \"latitude\": 46.47021,\n      \"longitude\": 30.73064,\n      \"time_zone\": \"Europe/Kyiv\",\n      \"isp\": \"Southern Telecommunication Company Ltd.\",\n      \"currency\": \"Hryvnia\",\n      \"country_flag\": \"\uD83C\uDDFA\uD83C\uDDE6\",\n      ...\n    }",
+    "code_language": "json",
+    "feather_icon": "phone"
+  },
+  {
+    "tab": "Domain Availability",
+    "title": "Domain Availability",
+    "subtitle": "Check if a domain is available",
+    "description": "Enter a domain name and we'll show you if it's available or not.",
+    "is_active": true,
+    "code": "{\n      \"ip\": \"188.130.177.136\",\n      \"country_name\": \"Ukraine\",\n      \"state_prov\": \"Odessa\",\n      \"city\": \"Odessa\",\n      \"latitude\": 46.47021,\n      \"longitude\": 30.73064,\n      \"time_zone\": \"Europe/Kyiv\",\n      \"isp\": \"Southern Telecommunication Company Ltd.\",\n      \"currency\": \"Hryvnia\",\n      \"country_flag\": \"\uD83C\uDDFA\uD83C\uDDE6\",\n      ...\n    }",
+    "code_language": "json",
+    "feather_icon": "check"
+  },
+  {
+    "tab": "IP Range",
+    "title": "IP Range",
+    "subtitle": "Get the range of an IP address",
+    "description": "Enter an IP address and we'll show you the range of IP addresses.",
+    "is_active": true,
+    "code": "{\n      \"ip\": \"188.130.177.136\",\n      \"country_name\": \"Ukraine\",\n      \"state_prov\": \"Odessa\",\n      \"city\": \"Odessa\",\n      \"latitude\": 46.47021,\n      \"longitude\": 30.73064,\n      \"time_zone\": \"Europe/Kyiv\",\n      \"isp\": \"Southern Telecommunication Company Ltd.\",\n      \"currency\": \"Hryvnia\",\n      \"country_flag\": \"\uD83C\uDDFA\uD83C\uDDE6\",\n      ...\n    }",
+    "code_language": "json",
+    "feather_icon": "map"
+  },
+  {
+    "tab": "IP Address",
+    "title": "IP Address",
+    "subtitle": "Get the IP address of a domain",
+    "description": "Enter a domain name and we'll show you the IP address.",
+    "is_active": true,
+    "code": "{\n      \"ip\": \"188.130.177.136\",\n      \"country_name\": \"Ukraine\",\n      \"state_prov\": \"Odessa\",\n      \"city\": \"Odessa\",\n      \"latitude\": 46.47021,\n      \"longitude\": 30.73064,\n      \"time_zone\": \"Europe/Kyiv\",\n      \"isp\": \"Southern Telecommunication Company Ltd.\",\n      \"currency\": \"Hryvnia\",\n      \"country_flag\": \"\uD83C\uDDFA\uD83C\uDDE6\",\n      ...\n    }",
+    "code_language": "json",
+    "feather_icon": "map"
+  }
+]

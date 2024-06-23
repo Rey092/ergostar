@@ -12,6 +12,8 @@ from sqlalchemy import Text
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 
+from src.landing.enums import LandingSnippetLanguage
+
 
 class LandingSettings(BigIntAuditBase):
     """Tag."""
@@ -80,3 +82,28 @@ class LandingSolution(BigIntAuditBase):
     file: Mapped[StorageFile | UploadFile] = Column(  # type: ignore
         FileType(storage=FileSystemStorage(path="./media")), default=""
     )
+
+
+class LandingSnippet(BigIntAuditBase):
+    """Landing snippet model."""
+
+    __tablename__ = "landing__snippet"
+
+    tab: Mapped[str] = mapped_column(String(length=255), index=False)
+    title: Mapped[str] = mapped_column(String(length=255), index=False)
+    subtitle: Mapped[str] = mapped_column(String(length=255), index=False)
+    description: Mapped[str] = mapped_column(Text, index=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, index=True, default=True)
+    code: Mapped[str] = mapped_column(Text, index=False)
+    code_language: Mapped[LandingSnippetLanguage] = mapped_column(
+        String(length=20),
+        index=False,
+    )
+    feather_icon: Mapped[str] = mapped_column(
+        String(length=40), index=False, default="test", nullable=True
+    )
+
+    # type_annotation_map = {
+    #     LandingSnippetLanguage: sqlalchemy.Enum
+    #     (LandingSnippetLanguage, length=20, native_enum=False)
+    # }
