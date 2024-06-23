@@ -115,7 +115,6 @@ const SPAN_CLOSE = "</span>";
  * @param {Node} node */
 const emitsWrappingTags = (node) => {
   // rarely we can have a sublanguage where language is undefined
-  // TODO: track down why
   return !!node.scope;
 };
 
@@ -637,7 +636,6 @@ const COMMENT = function (begin, end, modeOptions = {}) {
   );
   // looking like plain text, more likely to be a comment
   mode.contains.push({
-    // TODO: how to include ", (, ) without breaking grammars that use these for
     // comment delimiters?
     // begin: /[ ]+([()"]?([A-Za-z'-]{3,}|is|a|I|so|us|[tT][oO]|at|if|in|it|on)[.]?[()":]?([.][ ]|[ ]|\))){3}/
     // ---
@@ -777,7 +775,6 @@ var MODES = /*#__PURE__*/ Object.freeze({
 
 // ------
 
-// TODO: We need negative look-behind support to do this properly
 /**
  * Skip a match if it has a preceding dot
  *
@@ -2436,7 +2433,6 @@ const HLJS = function (hljs) {
     updateClassName(element, language, result.language);
     element.result = {
       language: result.language,
-      // TODO: remove with version 11.0
       re: result.relevance,
       relevance: result.relevance,
     };
@@ -2459,7 +2455,6 @@ const HLJS = function (hljs) {
     options = inherit(options, userOptions);
   }
 
-  // TODO: remove v12, deprecated
   const initHighlighting = () => {
     highlightAll();
     deprecated(
@@ -2468,7 +2463,6 @@ const HLJS = function (hljs) {
     );
   };
 
-  // TODO: remove v12, deprecated
   function initHighlightingOnLoad() {
     highlightAll();
     deprecated(
@@ -2601,7 +2595,6 @@ const HLJS = function (hljs) {
    * @param {HLJSPlugin} plugin
    */
   function upgradePluginAPI(plugin) {
-    // TODO: remove with v12
     if (plugin["before:highlightBlock"] && !plugin["before:highlightElement"]) {
       plugin["before:highlightElement"] = (data) => {
         plugin["before:highlightBlock"](
@@ -2665,7 +2658,6 @@ const HLJS = function (hljs) {
     highlightAuto,
     highlightAll,
     highlightElement,
-    // TODO: Remove with v12 API
     highlightBlock: deprecateHighlightBlock,
     configure,
     initHighlighting,

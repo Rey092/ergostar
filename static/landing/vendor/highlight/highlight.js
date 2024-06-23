@@ -121,7 +121,6 @@ var hljs = (function () {
    * @param {Node} node */
   const emitsWrappingTags = (node) => {
     // rarely we can have a sublanguage where language is undefined
-    // TODO: track down why
     return !!node.scope;
   };
 
@@ -645,7 +644,6 @@ var hljs = (function () {
     );
     // looking like plain text, more likely to be a comment
     mode.contains.push({
-      // TODO: how to include ", (, ) without breaking grammars that use these for
       // comment delimiters?
       // begin: /[ ]+([()"]?([A-Za-z'-]{3,}|is|a|I|so|us|[tT][oO]|at|if|in|it|on)[.]?[()":]?([.][ ]|[ ]|\))){3}/
       // ---
@@ -785,7 +783,6 @@ var hljs = (function () {
 
   // ------
 
-  // TODO: We need negative look-behind support to do this properly
   /**
    * Skip a match if it has a preceding dot
    *
@@ -2456,7 +2453,6 @@ var hljs = (function () {
       updateClassName(element, language, result.language);
       element.result = {
         language: result.language,
-        // TODO: remove with version 11.0
         re: result.relevance,
         relevance: result.relevance,
       };
@@ -2479,7 +2475,6 @@ var hljs = (function () {
       options = inherit(options, userOptions);
     }
 
-    // TODO: remove v12, deprecated
     const initHighlighting = () => {
       highlightAll();
       deprecated(
@@ -2488,7 +2483,6 @@ var hljs = (function () {
       );
     };
 
-    // TODO: remove v12, deprecated
     function initHighlightingOnLoad() {
       highlightAll();
       deprecated(
@@ -2621,7 +2615,6 @@ var hljs = (function () {
      * @param {HLJSPlugin} plugin
      */
     function upgradePluginAPI(plugin) {
-      // TODO: remove with v12
       if (
         plugin["before:highlightBlock"] &&
         !plugin["before:highlightElement"]
@@ -2690,7 +2683,6 @@ var hljs = (function () {
       highlightAuto,
       highlightAll,
       highlightElement,
-      // TODO: Remove with v12 API
       highlightBlock: deprecateHighlightBlock,
       configure,
       initHighlighting,
@@ -3343,7 +3335,6 @@ if (typeof exports === "object" && typeof module !== "undefined") {
       ];
 
       // https://docs.python.org/3/library/typing.html
-      // TODO: Could these be supplemented by a CamelCase matcher in certain
       // contexts, leaving these remaining only for relevance hinting?
       const TYPES = [
         "Any",

@@ -131,7 +131,6 @@ var hljsGrammar = (function () {
     ];
 
     // https://docs.python.org/3/library/typing.html
-    // TODO: Could these be supplemented by a CamelCase matcher in certain
     // contexts, leaving these remaining only for relevance hinting?
     const TYPES = [
       "Any",
