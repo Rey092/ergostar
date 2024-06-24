@@ -18,6 +18,7 @@ from litestar.types import ControllerRouterHandler
 from app.builder import LitestarBuilder
 from app.exception_handlers.landing import internal_server_exception_handler
 from app.exception_handlers.landing import not_found_exception_handler
+from config.plugins import compression
 from config.plugins import cors
 from src.landing.controller import LandingController
 
@@ -26,7 +27,7 @@ class LandingLitestarBuilder(LitestarBuilder):
     """Litestar application builder."""
 
     @staticmethod
-    def get_route_handlers() -> Sequence[ControllerRouterHandler] | None:
+    def get_route_handlers() -> Sequence[ControllerRouterHandler]:
         """Get route handlers."""
         return [
             LandingController,
@@ -63,6 +64,11 @@ class LandingLitestarBuilder(LitestarBuilder):
             HTTPException: not_found_exception_handler,
             Exception: internal_server_exception_handler,
         }
+
+    @staticmethod
+    def get_compression_config() -> Any | None:
+        """Get compression config."""
+        return compression
 
 
 builder: LandingLitestarBuilder = LandingLitestarBuilder()

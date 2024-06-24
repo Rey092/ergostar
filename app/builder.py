@@ -19,6 +19,7 @@ from app.exception_handlers.base import exception_to_http_response
 from config import settings
 from server import plugins
 from server.provider import AppProvider
+from src.core.controller import CoreController
 from src.landing.provider import LandingProvider
 from src.subscriptions.probider import SubscriptionProvider
 
@@ -27,9 +28,9 @@ class LitestarBuilder:
     """Litestar application builder."""
 
     @staticmethod
-    def get_route_handlers() -> Sequence[ControllerRouterHandler] | None:
+    def get_route_handlers() -> Sequence[ControllerRouterHandler]:
         """Get route handlers."""
-        return None
+        return []
 
     @staticmethod
     def get_template_config() -> TemplateConfig | None:
@@ -66,6 +67,11 @@ class LitestarBuilder:
         """Get exception handlers."""
         return {}
 
+    @staticmethod
+    def get_compression_config() -> Any | None:
+        """Get compression config."""
+        return None
+
     def build(self) -> Litestar:
         """Create ASGI application."""
         from litestar import Litestar
@@ -100,7 +106,7 @@ class LitestarBuilder:
             # dependencies=dependencies,
             debug=settings.app.DEBUG,
             openapi_config=self.get_openapi_config(),
-            route_handlers=self.get_route_handlers(),
+            route_handlers=[CoreController, *self.get_route_handlers()],
             plugins=[
                 plugins.app_config,
                 # plugins.structlog,
@@ -115,6 +121,7 @@ class LitestarBuilder:
             # listeners=[account_signals.user_created_event_handler,
             # team_signals.team_created_event_handler],
             exception_handlers=exception_handlers,
+            compression_config=self.get_compression_config(),
         )
 
         # install dishka

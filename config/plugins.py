@@ -3,23 +3,22 @@
 import logging
 from typing import cast
 
-from advanced_alchemy.extensions.litestar import (
-    AlembicAsyncConfig,
-    AsyncSessionConfig,
-    SQLAlchemyAsyncConfig,
-    async_autocommit_before_send_handler,
-)
+from advanced_alchemy.extensions.litestar import AlembicAsyncConfig
+from advanced_alchemy.extensions.litestar import AsyncSessionConfig
+from advanced_alchemy.extensions.litestar import SQLAlchemyAsyncConfig
+from advanced_alchemy.extensions.litestar import async_autocommit_before_send_handler
 from litestar.config.compression import CompressionConfig
 from litestar.config.cors import CORSConfig
 from litestar.config.csrf import CSRFConfig
 from litestar.config.response_cache import ResponseCacheConfig
-from litestar.logging.config import LoggingConfig, StructLoggingConfig
+from litestar.logging.config import LoggingConfig
+from litestar.logging.config import StructLoggingConfig
 from litestar.middleware.logging import LoggingMiddlewareConfig
 from litestar.plugins.structlog import StructlogConfig
 
 from config import settings
 
-compression = CompressionConfig(backend="gzip")
+compression = CompressionConfig(backend="gzip", gzip_compress_level=9)
 csrf = CSRFConfig(
     secret=settings.app.SECRET_KEY,
     cookie_secure=settings.app.CSRF_COOKIE_SECURE,
@@ -44,7 +43,8 @@ alchemy = SQLAlchemyAsyncConfig(
 #     queue_configs=[
 #         QueueConfig(
 #             name="system-tasks",
-#             tasks=["app.domain.system.tasks.system_task", "app.domain.system.tasks.system_upkeep"],
+#             tasks=["app.domain.system.tasks.system_task",
+#             "app.domain.system.tasks.system_upkeep"],
 #             scheduled_tasks=[
 #                 CronJob(
 #                     function="app.domain.system.tasks.system_upkeep",
