@@ -30,9 +30,9 @@ alchemy = SQLAlchemyAsyncConfig(
     before_send_handler=async_autocommit_before_send_handler,
     session_config=AsyncSessionConfig(expire_on_commit=False),
     alembic_config=AlembicAsyncConfig(
-        version_table_name=settings.db.MIGRATION_DDL_VERSION_TABLE,
-        script_config=settings.db.MIGRATION_CONFIG,
-        script_location=settings.db.MIGRATION_PATH,
+        version_table_name=settings.db.migration_ddl_version_table,
+        script_config=settings.db.migration_config,
+        script_location=settings.db.migration_path,
     ),
 )
 # saq = SAQConfig(

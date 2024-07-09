@@ -17,11 +17,11 @@ from litestar.types import ControllerRouterHandler
 
 from app.exception_handlers.base import exception_to_http_response
 from config import settings
-from server import plugins
-from server.provider import AppProvider
-from src.core.controller import CoreController
-from src.landing.provider import LandingProvider
-from src.subscriptions.probider import SubscriptionProvider
+from src.infrastructure.plugins import plugins
+from src.di.postgres import PostgresProvider
+from src.presentation.api.health import HealthController
+from src.di.landing import LandingProvider
+from src.di.subscriptions import SubscriptionProvider
 
 
 class LitestarBuilder:
@@ -47,8 +47,8 @@ class LitestarBuilder:
         """Get extra plugins."""
         extra_plugins: list = []
 
-        if settings.app.DEBUG:
-            extra_plugins.append(plugins.admin)
+        # if settings.app.DEBUG:
+        #     extra_plugins.append(plugins.admin)
 
         return extra_plugins
 
@@ -77,23 +77,10 @@ class LitestarBuilder:
         from litestar import Litestar
 
         container = make_async_container(
-            AppProvider(),
+            PostgresProvider(),
             LandingProvider(),
             SubscriptionProvider(),
         )
-
-        # from app.config import app as config
-        # from app.config import constants
-        # from app.config.base import get_settings
-        # from app.domain.accounts import signals as account_signals
-        # from app.domain.accounts.dependencies import provide_user
-        # from app.domain.accounts.guards import auth
-        # from app.domain.teams import signals as team_signals
-        # from app.lib.dependencies import create_collection_dependencies
-        # from app.server import openapi, plugins, routers
-
-        # dependencies = {constants.USER_DEPENDENCY_KEY: Provide(provide_user)}
-        # dependencies.update(create_collection_dependencies())
 
         # prepare exception handlers
         exception_handlers: dict = {
@@ -102,19 +89,17 @@ class LitestarBuilder:
         exception_handlers.update(self.get_exception_handlers())
 
         app = Litestar(
-            cors_config=self.get_cors_config(),
-            # dependencies=dependencies,
+            # cors_config=self.get_cors_config(),
+            # # dependencies=dependencies,
             debug=settings.app.DEBUG,
-            openapi_config=self.get_openapi_config(),
-            route_handlers=[CoreController, *self.get_route_handlers()],
+            # openapi_config=self.get_openapi_config(),
+            route_handlers=[HealthController, *self.get_route_handlers()],
             plugins=[
                 plugins.app_config,
-                # plugins.structlog,
+                plugins.structlog,
                 plugins.alchemy,
-                #     plugins.vite,
-                #     plugins.saq,
                 #     plugins.granian,
-                # *self.get_extra_plugins(),
+                *self.get_extra_plugins(),
             ],
             template_config=self.get_template_config(),
             # on_app_init=[auth.on_app_init],

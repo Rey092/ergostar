@@ -3,20 +3,22 @@
 import binascii
 import json
 import os
+from pathlib import Path
 from typing import Any
 
 from advanced_alchemy.utils.text import slugify
-from litestar.data_extractors import RequestExtractorField, ResponseExtractorField
-from litestar.serialization import decode_json, encode_json
+from litestar.data_extractors import RequestExtractorField
+from litestar.data_extractors import ResponseExtractorField
+from litestar.serialization import decode_json
+from litestar.serialization import encode_json
+from pydantic import Field
+from pydantic_settings import BaseSettings
+from pydantic_settings import SettingsConfigDict
 from redis.asyncio import Redis
 from sqlalchemy import event
-from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncEngine
+from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.pool import NullPool
-from pydantic import (
-    Field,
-)
-
-from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class LiteStarSettings(BaseSettings):
@@ -28,7 +30,32 @@ class LiteStarSettings(BaseSettings):
     )
 
     # prepare base directory
-    BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    BASE_DIR: str = str(Path(__file__).parent.parent)
+
+
+class UnfoldSettings(LiteStarSettings):
+    """Unfold Admin Panel settings."""
+
+    # prepare model config
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+        env_prefix="UNFOLD_"
+    )
+
+    # Debug mode.
+    DEBUG: bool = True
+
+    # Key to use for signing cookies.
+    SECRET_KEY: str = Field(
+        default_factory=lambda: binascii.hexlify(os.urandom(32)).decode(
+            encoding="utf-8"
+        )
+    )
+
+    # The allowed hosts for the Django admin panel.
+    ALLOWED_HOSTS: list[str] = ["*"]
 
 
 class DatabaseSettings(LiteStarSettings):
@@ -42,7 +69,7 @@ class DatabaseSettings(LiteStarSettings):
     POSTGRES_DB: str | None = None
 
     @property
-    def URL(self) -> str:
+    def url(self) -> str:
         """Database URL."""
         if all([self.POSTGRES_USER, self.POSTGRES_PASSWORD, self.POSTGRES_DB]):
             url = (
@@ -75,24 +102,24 @@ class DatabaseSettings(LiteStarSettings):
     POOL_PRE_PING: bool = False
 
     @property
-    def MIGRATION_CONFIG(self) -> str:
-        """The path to the `alembic.ini` configuration file."""
-        return f"{self.BASE_DIR}/db/migrations/alembic.ini"
-
-    @property
-    def MIGRATION_PATH(self) -> str:
-        """The path to the `alembic` database migrations."""
-        return f"{self.BASE_DIR}/db/migrations"
-
-    @property
-    def MIGRATION_DDL_VERSION_TABLE(self) -> str:
+    def migration_ddl_version_table(self) -> str:
         """The name to use for the `alembic` versions table name."""
         return "ddl_version"
 
     @property
-    def FIXTURE_PATH(self) -> str:
+    def migration_config(self) -> str:
+        """The path to the `alembic.ini` configuration file."""
+        return f"{self.BASE_DIR}/src/infrastructure/postgres/migrations/alembic.ini"
+
+    @property
+    def migration_path(self) -> str:
+        """The path to the `alembic` database migrations."""
+        return f"{self.BASE_DIR}/src/infrastructure/postgres/migrations"
+
+    @property
+    def fixture_path(self) -> str:
         """The path to JSON fixture files to load into tables."""
-        return f"{self.BASE_DIR}/db/fixtures"
+        return f"{self.BASE_DIR}/src/infrastructure/postgres/fixtures"
 
     """SQLAlchemy engine instance generated from settings."""
     _engine_instance: AsyncEngine | None = None
@@ -104,9 +131,9 @@ class DatabaseSettings(LiteStarSettings):
     def get_engine(self) -> AsyncEngine:
         if self._engine_instance is not None:
             return self._engine_instance
-        if self.URL.startswith("postgresql+asyncpg"):
+        if self.url.startswith("postgresql+asyncpg"):
             engine = create_async_engine(
-                url=self.URL,
+                url=self.url,
                 future=True,
                 json_serializer=encode_json,
                 json_deserializer=decode_json,
@@ -164,9 +191,9 @@ class DatabaseSettings(LiteStarSettings):
                         format="binary",
                     ),
                 )
-        elif self.URL.startswith("sqlite+aiosqlite"):
+        elif self.url.startswith("sqlite+aiosqlite"):
             engine = create_async_engine(
-                url=self.URL,
+                url=self.url,
                 future=True,
                 json_serializer=encode_json,
                 json_deserializer=decode_json,
@@ -184,8 +211,7 @@ class DatabaseSettings(LiteStarSettings):
             def _sqla_on_connect(
                 dbapi_connection: Any, _: Any
             ) -> Any:  # pragma: no cover
-                """
-                Override the default begin statement.
+                """Override the default begin statement.
 
                 The disables the built-in begin execution.
                 """
@@ -197,7 +223,7 @@ class DatabaseSettings(LiteStarSettings):
                 dbapi_connection.exec_driver_sql("BEGIN")
         else:
             engine = create_async_engine(
-                url=self.URL,
+                url=self.url,
                 future=True,
                 json_serializer=encode_json,
                 json_deserializer=decode_json,
@@ -340,8 +366,10 @@ class AppSettings(LiteStarSettings):
     def slug(self) -> str:
         """Return a slugified name.
 
-        Returns:
+        Returns
+        -------
             `self.NAME`, all lowercase and hyphens instead of spaces.
+
         """
         return slugify(self.NAME)
 
@@ -371,8 +399,8 @@ class Settings(LiteStarSettings):
 
     app: AppSettings = Field(default_factory=AppSettings)
     db: DatabaseSettings = Field(default_factory=DatabaseSettings)
-    # vite: ViteSettings = Field(default_factory=ViteSettings)
-    # server: ServerSettings = Field(default_factory=ServerSettings)
+    unfold: UnfoldSettings = Field(default_factory=UnfoldSettings)
     log: LogSettings = Field(default_factory=LogSettings)
     redis: RedisSettings = Field(default_factory=RedisSettings)
+    # server: ServerSettings = Field(default_factory=ServerSettings)
     # saq: SaqSettings = Field(default_factory=SaqSettings)

@@ -20,7 +20,9 @@ from app.exception_handlers.landing import internal_server_exception_handler
 from app.exception_handlers.landing import not_found_exception_handler
 from config.plugins import compression
 from config.plugins import cors
-from src.landing.controller import LandingController
+from src.presentation.api.health import HealthController
+from src.presentation.landing import landing_router
+from src.presentation.landing.main import LandingController
 
 
 class LandingLitestarBuilder(LitestarBuilder):
@@ -30,13 +32,17 @@ class LandingLitestarBuilder(LitestarBuilder):
     def get_route_handlers() -> Sequence[ControllerRouterHandler]:
         """Get route handlers."""
         return [
-            LandingController,
+            *landing_router,
             create_static_files_router(
                 path="/static",
                 directories=["static/landing"],
                 name="static",
             ),
-            create_static_files_router(path="/media", directories=["."], name="media"),
+            create_static_files_router(
+                path="/media",
+                directories=["."],
+                name="media"
+            ),
         ]
 
     @staticmethod
