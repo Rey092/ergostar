@@ -1,17 +1,16 @@
-# define variables
-ENV_PREFIX=.venv/bin/
-PARAMS=--pythonpath=. --settings=src.infra.unfold.app
-LITESTAR_LANDING_APP=src.infra.litestar.app_landing:app
-UNFOLD_MODELS=src/infra/unfold/models.py
+# unfold
+UNFOLD_MODELS=config/models.py
+UNFOLD_RUN_PARAMS=--pythonpath=. --settings=src.infra.unfold.app
 
-init:
-	export LITESTAR_APP=$(LITESTAR_LANDING_APP)
+# litestar
+LITESTAR_LANDING_APP=src.infra.litestar.app_landing:app
+LITESTAR_RUN_PARAMS=-r -I *.html -I *.css -I *.js -I *.svelte
 
 landing:
-	litestar --app $(LITESTAR_LANDING_APP) run -r -I *.html -I *.css -I *.js
+	litestar --app $(LITESTAR_LANDING_APP) run $(LITESTAR_RUN_PARAMS)
 
 unfold:
-	django-admin runserver $(PARAMS) 127.0.0.1:8001
+	django-admin runserver $(UNFOLD_RUN_PARAMS) 127.0.0.1:8001
 
 # UNFOLD
 # ------------------------------------------
@@ -20,7 +19,7 @@ unfold-migrate:
 	django-admin migrate $(PARAMS)
 
 unfold-docker:
-	gunicorn app.unfold:application
+	gunicorn app.unfold:app
 
 unfold-generate:
 	# generate a models from an existing database ('main') using django
@@ -33,8 +32,6 @@ unfold-generate:
 	sed -i "/CharField(/ {/max/! s/CharField(/CharField(max_length=255, /}" $(UNFOLD_MODELS)
 	# add 'Unfold' before each (models.Model)
 	sed -i 's/(models.Model)/Unfold(models.Model)/g' $(UNFOLD_MODELS)
-
-
 
 # DATABASE
 # ------------------------------------------
@@ -63,7 +60,6 @@ landing-docker:
 		--log-level 'info' \
 		--forwarded-allow-ips '*' \
 		--access-logformat '%({x-forwarded-for}i)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'
-
 
 
 # ETC.

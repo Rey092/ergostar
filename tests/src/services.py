@@ -2,7 +2,7 @@
 
 from collections.abc import Sequence
 
-from src.application.services.interfaces.services import LandingHomePageRepositoryServiceInterface, \
+from src.landing.services.interfaces.services import LandingHomePageRepositoryServiceInterface, \
     LandingSettingsRepositoryServiceInterface, LandingSnippetRepositoryServiceInterface, \
     LandingSolutionRepositoryServiceInterface
 from src.domain.entities.landing import LandingSnippet

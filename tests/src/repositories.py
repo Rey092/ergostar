@@ -12,16 +12,16 @@ from src.domain.entities.landing import LandingHomePage
 from src.domain.entities.landing import LandingSettings
 from src.domain.entities.landing import LandingSnippet
 from src.domain.entities.landing import LandingSolution
-from src.application.services.interfaces.repositories import (
+from src.landing import (
     LandingHomePageRepositoryInterface,
 )
-from src.application.services.interfaces.repositories import (
+from src.landing import (
     LandingSettingsRepositoryInterface,
 )
-from src.application.services.interfaces.repositories import (
+from src.landing import (
     LandingSnippetRepositoryInterface,
 )
-from src.application.services.interfaces.repositories import (
+from src.landing import (
     LandingSolutionRepositoryInterface,
 )
 
