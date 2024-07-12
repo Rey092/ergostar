@@ -6,7 +6,7 @@ from litestar import get
 from litestar.datastructures import CacheControlHeader
 from litestar.response import File
 
-from config import settings
+from src.infra import settings
 
 
 class FaviconController(Controller):

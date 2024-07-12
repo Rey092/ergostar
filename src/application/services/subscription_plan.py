@@ -3,7 +3,7 @@
 from advanced_alchemy.service import SQLAlchemyAsyncRepositoryService
 
 from src.domain.entities.subscriptions import SubscriptionPlan
-from src.infrastructure.repositories.subscriptions.plan import SubscriptionPlanRepository
+from src.infra.repositories.subscriptions.plan import SubscriptionPlanRepository
 
 
 class SubscriptionPlanService(SQLAlchemyAsyncRepositoryService[SubscriptionPlan]):

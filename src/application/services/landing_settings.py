@@ -1,6 +1,6 @@
 """Landing settings service."""
 
-from src.infrastructure.repositories.landing.settings import LandingSettingsRepository
+from src.infra.repositories.landing.settings import LandingSettingsRepository
 from src.application.services.interfaces.services import (
     LandingSettingsRepositoryServiceInterface,
 )

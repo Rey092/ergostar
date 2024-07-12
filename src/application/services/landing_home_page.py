@@ -1,6 +1,6 @@
 """Landing Home Page Service."""
 
-from src.infrastructure.repositories.landing.home_page import LandingHomePageRepository
+from src.infra.repositories.landing.home_page import LandingHomePageRepository
 from src.application.services.interfaces.services import (
     LandingHomePageRepositoryServiceInterface,
 )

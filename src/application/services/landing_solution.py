@@ -3,7 +3,7 @@
 from collections.abc import Sequence
 
 from src.domain.entities.landing import LandingSolution
-from src.infrastructure.repositories.landing.solution import LandingSolutionRepository
+from src.infra.repositories.landing.solution import LandingSolutionRepository
 from src.application.services.interfaces.services import (
     LandingSolutionRepositoryServiceInterface,
 )

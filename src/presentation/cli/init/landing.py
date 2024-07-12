@@ -13,7 +13,7 @@ from litestar import Litestar
 from litestar.datastructures import UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from config import settings
+from src.infra import settings
 from src.domain.entities.landing import LandingSnippet
 from src.domain.entities.landing import LandingSolution
 from src.domain.entities.subscriptions import SubscriptionPlan

@@ -1,7 +1,7 @@
 """Landing settings service."""
 
 from src.domain.entities.landing import LandingSnippet
-from src.infrastructure.repositories.landing.snippet import LandingSnippetRepository
+from src.infra.repositories.landing.snippet import LandingSnippetRepository
 from src.application.services.interfaces.services import (
     LandingSnippetRepositoryServiceInterface,
 )

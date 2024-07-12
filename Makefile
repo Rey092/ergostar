@@ -1,18 +1,20 @@
 # define variables
 ENV_PREFIX=.venv/bin/
-PARAMS=--pythonpath=. --settings=app.unfold
-UNFOLD_MODELS=src/infrastructure/unfold/models.py
+PARAMS=--pythonpath=. --settings=src.infra.unfold.app
+LITESTAR_LANDING_APP=src.infra.litestar.app_landing:app
+UNFOLD_MODELS=src/infra/unfold/models.py
 
-run:
-	litestar --app app.landing:app run -r -I *.html -I *.css -I *.js
+init:
+	export LITESTAR_APP=$(LITESTAR_LANDING_APP)
 
 landing:
-	make run
+	litestar --app $(LITESTAR_LANDING_APP) run -r -I *.html -I *.css -I *.js
+
+unfold:
+	django-admin runserver $(PARAMS) 127.0.0.1:8001
 
 # UNFOLD
 # ------------------------------------------
-unfold:
-	django-admin runserver $(PARAMS) 127.0.0.1:8001
 
 unfold-migrate:
 	django-admin migrate $(PARAMS)
@@ -29,6 +31,8 @@ unfold-generate:
 	sed -i '/class Meta:/a \ \ \ \     app_label = "__main__"' $(UNFOLD_MODELS)
 	# if CharField( without 'max' after '(' found, add "max_length=255, " after CharField(
 	sed -i "/CharField(/ {/max/! s/CharField(/CharField(max_length=255, /}" $(UNFOLD_MODELS)
+	# add 'Unfold' before each (models.Model)
+	sed -i 's/(models.Model)/Unfold(models.Model)/g' $(UNFOLD_MODELS)
 
 
 
@@ -46,10 +50,23 @@ migrate:          ## Generate database migrations
 	@echo "ATTENTION: Will apply all database migrations."
 	litestar --app app.landing:app database upgrade
 
-init:
-	litestar --app app.landing:app init landing
-
 # DEPLOY
 # ------------------------------------------
-gunilanding:
-	gunicorn -c gunicorn_landing.py
+landing-docker:
+	#gunicorn -c gunicorn_landing.py
+	gunicorn $(LITESTAR_LANDING_APP) \
+		--bind 0.0.0.0:8000 \
+		--worker-class 'uvicorn.workers.UvicornWorker' \
+		--workers 4 \
+		--access-logfile '-' \
+		--error-log '-' \
+		--log-level 'info' \
+		--forwarded-allow-ips '*' \
+		--access-logformat '%({x-forwarded-for}i)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'
+
+
+
+# ETC.
+# ------------------------------------------
+tree:
+	tree -I '*.css|__pycache__|*.js|*.svg|*.png|*.jpg|static|versions|*.html|__init__.py'
