@@ -1,4 +1,4 @@
-exclude: "^docs/|/migrations/|devcontainer.json"
+exclude: "^docs/|/migrations/|devcontainer.json|unfold/models.py"
 default_stages: [commit]
 
 default_language_version:
@@ -31,7 +31,7 @@ repos:
         args: [--markdown-linebreak-ext=md] # Preserve Markdown hard linebreaks
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.8
+    rev: v0.5.0
     hooks:
       # Linter
       - id: ruff
@@ -45,8 +45,15 @@ repos:
       - id: prettier
         exclude: templates|migrations|scripts|docs|dist|.venv|public
 
+  - repo: https://github.com/ariebovenberg/slotscheck
+    rev: v0.19.0
+    hooks:
+      - id: slotscheck
+        exclude: test_*|docs|migrations|scripts
+        entry: env PYTHONPATH=src slotscheck
+
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.10.0
+    rev: v1.10.1
     hooks:
       - id: mypy
         exclude: scripts/

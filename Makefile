@@ -1,16 +1,41 @@
-# unfold
+# UNFOLD VARIABLES
+# ------------------------------------------
 UNFOLD_MODELS=config/models.py
 UNFOLD_RUN_PARAMS=--pythonpath=. --settings=src.infra.unfold.app
 
-# litestar
-LITESTAR_LANDING_APP=src.infra.litestar.app_landing:app
+# LITESTAR VARIABLES
+# ------------------------------------------
 LITESTAR_RUN_PARAMS=-r -I *.html -I *.css -I *.js -I *.svelte
 
+# RUN COMMANDS
+# ------------------------------------------
 landing:
-	litestar --app $(LITESTAR_LANDING_APP) run $(LITESTAR_RUN_PARAMS)
+	litestar run $(LITESTAR_RUN_PARAMS)
 
 unfold:
 	django-admin runserver $(UNFOLD_RUN_PARAMS) 127.0.0.1:8001
+
+# DATABASE
+# ------------------------------------------
+drop:
+	@echo "ATTENTION: This operation will drop all tables in the database."
+	litestar seed drop
+	litestar database upgrade
+
+seed:
+	litestar seed data
+
+initdb:
+	litestar database init ./src/db/migrations
+
+migrate:          ## Generate database migrations
+	@echo "ATTENTION: Will apply all database migrations."
+	litestar database upgrade
+
+migrations:       ## Generate database migrations
+	@echo "ATTENTION: This operation will create a new database migration for any defined models changes."
+	@while [ -z "$$MIGRATION_MESSAGE" ]; do read -r -p "Migration message: " MIGRATION_MESSAGE; done ;
+	litestar database make-migrations --autogenerate -m "$${MIGRATION_MESSAGE}"
 
 # UNFOLD
 # ------------------------------------------
@@ -33,20 +58,6 @@ unfold-generate:
 	# add 'Unfold' before each (models.Model)
 	sed -i 's/(models.Model)/Unfold(models.Model)/g' $(UNFOLD_MODELS)
 
-# DATABASE
-# ------------------------------------------
-initdb:
-	litestar --app app.landing:app database init ./src/db/migrations
-
-migrations:       ## Generate database migrations
-	@echo "ATTENTION: This operation will create a new database migration for any defined models changes."
-	@while [ -z "$$MIGRATION_MESSAGE" ]; do read -r -p "Migration message: " MIGRATION_MESSAGE; done ;
-	litestar --app app.landing:app database make-migrations --autogenerate -m "$${MIGRATION_MESSAGE}"
-
-migrate:          ## Generate database migrations
-	@echo "ATTENTION: Will apply all database migrations."
-	litestar --app app.landing:app database upgrade
-
 # DEPLOY
 # ------------------------------------------
 landing-docker:
@@ -61,8 +72,10 @@ landing-docker:
 		--forwarded-allow-ips '*' \
 		--access-logformat '%({x-forwarded-for}i)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'
 
-
 # ETC.
 # ------------------------------------------
 tree:
 	tree -I '*.css|__pycache__|*.js|*.svg|*.png|*.jpg|static|versions|*.html|__init__.py'
+
+lint:
+	pre-commit run --all-files
