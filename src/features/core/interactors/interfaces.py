@@ -19,19 +19,15 @@ class ISeedCheckExists(Protocol):
         ...
 
 
-class ISeedOneEntry(ISeedCheckExists, Protocol[ModelT]):
-    """ISeedOneEntry."""
-
-    @abstractmethod
-    async def add(self, data: ModelT) -> ModelT:
-        """Add one entry."""
-        ...
-
-
 class ISeedManyEntries(ISeedCheckExists, Protocol[ModelT]):
     """ISeedManyEntries."""
 
     @abstractmethod
     async def add_many(self, data: list[ModelT]) -> Sequence[ModelT]:
         """Add many entries."""
+        ...
+
+    @abstractmethod
+    async def delete_all(self) -> None:
+        """Delete all entries."""
         ...
