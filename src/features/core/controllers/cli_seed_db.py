@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
     help="Create all seed data for the application.",
 )
 @click.pass_obj
-def data(app: Litestar) -> None:
+def seed_db(app: Litestar) -> None:
     """Create default seed data."""
     from rich import get_console
 

@@ -244,6 +244,25 @@ urllib3 = {version = ">=1.25.4,<2.2.0 || >2.2.0,<3", markers = "python_version >
 crt = ["awscrt (==0.20.11)"]
 
 [[package]]
+name = "cashews"
+version = "7.1.0"
+description = "cache tools with async power"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "cashews-7.1.0-py3-none-any.whl", hash = "sha256:b7c1ae4d49df6fdbff88e5025d3c1156515f58724c5b96fc9a9d081afada82a8"},
+    {file = "cashews-7.1.0.tar.gz", hash = "sha256:058df55a39cb15697d331e7e41c2882b58d0d323f5671316105cc78668af7705"},
+]
+
+[package.extras]
+dill = ["dill"]
+diskcache = ["diskcache (>=5.0.0)"]
+lint = ["mypy (>=1.5.0)", "types-redis"]
+redis = ["redis (>=4.3.1,!=5.0.1)"]
+speedup = ["bitarray (<3.0.0)", "hiredis", "xxhash (<4.0.0)"]
+tests = ["hypothesis (==6.100.2)", "pytest (==8.2.0)", "pytest-asyncio (==0.23.6)", "pytest-cov (==5.0.0)", "pytest-rerunfailures (==14.0)"]
+
+[[package]]
 name = "certifi"
 version = "2024.7.4"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -2386,4 +2405,4 @@ email = ["email-validator"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "a53a521918dfd66594ffe81e4bbe6a9e2bc590917cabc153980861a2918bc6e0"
+content-hash = "2fc6498dd620d46d297bfe6690f6f7e5acd83c15bc54e870dc694ba5580a5cd3"

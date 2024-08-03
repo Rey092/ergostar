@@ -10,14 +10,13 @@ from pydantic import Field
 from pydantic_settings import BaseSettings
 from pydantic_settings import SettingsConfigDict
 
-# prepare a base directory path
 BASE_DIR: str = str(Path(__file__).parent.parent.parent)
 
 
 class LiteStarSettings(BaseSettings):
     """Abstract settings."""
 
-    # prepare model config
+    """Model configuration."""
     model_config = SettingsConfigDict(
         env_file=".env",
         extra="ignore",
@@ -28,7 +27,7 @@ class LiteStarSettings(BaseSettings):
 class DatabaseSettings(LiteStarSettings):
     """Database settings."""
 
-    # prepare model config
+    """Model configuration."""
     model_config = SettingsConfigDict(
         env_file=".env",
         env_prefix="POSTGRES_",
@@ -99,7 +98,6 @@ class DatabaseSettings(LiteStarSettings):
 class LogSettings(LiteStarSettings):
     """Logger configuration."""
 
-    # https://stackoverflow.com/a/1845097/6560549
     """Regex to exclude paths from logging."""
     EXCLUDE_PATHS: str = r"\A(?!x)x"
     """Log event name for logs from Litestar handlers."""
@@ -166,14 +164,17 @@ class LogSettings(LiteStarSettings):
 class RedisSettings(LiteStarSettings):
     """Redis settings."""
 
-    # A Redis connection URL.
+    """A Redis connection URL."""
     URL: str = "redis://localhost:6379/0"
-    # Length of time to wait (in seconds) for a connection to become active
+    """Length of time to wait (in seconds) for a connection to become active."""
     SOCKET_CONNECT_TIMEOUT: int = 5
-    # Length of time to wait (in seconds) before testing connection health
+    """Length of time to wait (in seconds) before testing connection health."""
     HEALTH_CHECK_INTERVAL: int = 5
-    # Length of time to wait (in seconds) between keepalive commands
+    """Length of time to wait (in seconds) between keepalive commands."""
     SOCKET_KEEPALIVE: bool = True
+
+    """Redis cache status."""
+    CACHE_ENABLED: bool = True
 
 
 class AppSettings(LiteStarSettings):

@@ -6,7 +6,7 @@ from dishka import Scope
 from dishka import provide
 
 from src.features.core.services.fixture_loader import FixtureLoaderService
-from src.features.core.use_cases.drop_database import DropDatabaseTablesUseCase
+from src.features.core.use_cases.drop_database_tables import DropDatabaseTablesUseCase
 from src.features.core.use_cases.seed_database import ILoadFixturesToDatabase
 from src.features.core.use_cases.seed_database import SeedDatabaseUseCase
 

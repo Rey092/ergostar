@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 
 from advanced_alchemy.exceptions import RepositoryError
 from advanced_alchemy.extensions.litestar import SQLAlchemyPlugin
+from cashews import cache
 from dishka import make_async_container
 from dishka.integrations import litestar as litestar_integration
 from litestar import Litestar
@@ -21,12 +22,11 @@ from src.apps.exception_handlers.dashboard import InternalServerExceptionHandler
 from src.apps.exception_handlers.dashboard import not_found_exception_handler
 from src.config.alchemy import get_alchemy_config
 from src.config.alchemy import get_alchemy_engine
+from src.config.cli import CLIPlugin
 from src.config.ioc import BasicProvider
 from src.config.litestar import get_compression_config
 from src.config.litestar import get_cors_config
 from src.config.litestar import get_structlog_config
-from src.config.plugins import CachePlugin
-from src.config.plugins import CLIPlugin
 from src.config.redis import get_redis_engine
 from src.config.settings import Settings
 from src.features.core.ioc import CoreProvider
@@ -41,6 +41,9 @@ def create_app() -> Litestar:
     """Create application."""
     # create settings
     settings = Settings()
+
+    # initialize cache
+    cache.setup(disable=settings.redis.CACHE_ENABLED)
 
     # create sqlalchemy engine
     alchemy_engine: AsyncEngine = get_alchemy_engine(db_settings=settings.db)
@@ -87,7 +90,6 @@ def create_app() -> Litestar:
             StructlogPlugin(
                 config=get_structlog_config(log_settings=settings.log),
             ),
-            CachePlugin(redis=redis_engine, app_settings=settings.app),
             CLIPlugin(),
         ],
         template_config=TemplateConfig(

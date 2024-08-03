@@ -7,7 +7,7 @@ from dishka import AsyncContainer
 from dishka import Scope
 from litestar import Litestar
 
-from src.features.core.use_cases.drop_database import DropDatabaseTablesUseCase
+from src.features.core.use_cases.drop_database_tables import DropDatabaseTablesUseCase
 
 
 @click.command(
@@ -15,7 +15,7 @@ from src.features.core.use_cases.drop_database import DropDatabaseTablesUseCase
 )
 @click.confirmation_option(prompt="Are you sure you want to drop the db?")
 @click.pass_obj
-def drop(app: Litestar) -> None:
+def drop_db(app: Litestar) -> None:
     """Drop all data in the database."""
     from rich import get_console
 

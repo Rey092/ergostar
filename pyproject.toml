@@ -31,6 +31,7 @@ adaptix = "^3.0.0b7"
 django-environ = "^0.11.2"
 
 
+cashews = "^7.1.0"
 [tool.poetry.group.dev.dependencies]
 aiosqlite = "^0.20.0"
 pytest = "^8.2.2"
