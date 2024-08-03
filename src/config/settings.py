@@ -2,13 +2,16 @@
 
 import binascii
 import os
-from functools import lru_cache
 from pathlib import Path
+
 from litestar.data_extractors import RequestExtractorField
 from litestar.data_extractors import ResponseExtractorField
 from pydantic import Field
 from pydantic_settings import BaseSettings
 from pydantic_settings import SettingsConfigDict
+
+# prepare a base directory path
+BASE_DIR: str = str(Path(__file__).parent.parent.parent)
 
 
 class LiteStarSettings(BaseSettings):
@@ -20,9 +23,6 @@ class LiteStarSettings(BaseSettings):
         extra="ignore",
         env_file_encoding="utf-8",
     )
-
-    # prepare base directory
-    BASE_DIR: str = str(Path(__file__).parent.parent.parent)
 
 
 class DatabaseSettings(LiteStarSettings):
@@ -44,7 +44,7 @@ class DatabaseSettings(LiteStarSettings):
     DB: str | None = None
 
     @property
-    def url(self) -> str:
+    def URL(self) -> str:
         """Database URL."""
         if all([self.USER, self.PASSWORD, self.DB]):
             return str(
@@ -53,7 +53,7 @@ class DatabaseSettings(LiteStarSettings):
                 f"{self.PASSWORD}@"
                 f"{self.HOST}:"
                 f"{self.PORT}/"
-                f"{self.DB}"
+                f"{self.DB}",
             )
 
         raise ValueError("Database URL is not set")
@@ -83,21 +83,21 @@ class DatabaseSettings(LiteStarSettings):
     @property
     def migration_config(self) -> str:
         """The path to the `alembic.ini` configuration file."""
-        return f"{self.BASE_DIR}/src/config/migrations/alembic.ini"
+        return f"{BASE_DIR}/src/config/migrations/alembic.ini"
 
     @property
     def migration_path(self) -> str:
         """The path to the `alembic` database migrations."""
-        return f"{self.BASE_DIR}/src/config/migrations"
+        return f"{BASE_DIR}/src/config/migrations"
 
     @property
     def fixture_path(self) -> str:
         """The path to JSON fixture files to load into tables."""
-        return f"{self.BASE_DIR}/src/config/fixtures"
+        return f"{BASE_DIR}/src/config/fixtures"
 
 
 class LogSettings(LiteStarSettings):
-    """Logger configuration"""
+    """Logger configuration."""
 
     # https://stackoverflow.com/a/1845097/6560549
     """Regex to exclude paths from logging."""
@@ -177,7 +177,7 @@ class RedisSettings(LiteStarSettings):
 
 
 class AppSettings(LiteStarSettings):
-    """Application configuration"""
+    """Application configuration."""
 
     """The frontend base URL"""
     URL: str = "http://localhost:8000"
@@ -186,8 +186,8 @@ class AppSettings(LiteStarSettings):
     """Application secret key."""
     SECRET_KEY: str = Field(
         default_factory=lambda: binascii.hexlify(os.urandom(32)).decode(
-            encoding="utf-8"
-        )
+            encoding="utf-8",
+        ),
     )
     """Allowed CORS Origins"""
     ALLOWED_CORS_ORIGINS: list[str] | str = ["*"]
@@ -203,7 +203,7 @@ class AppSettings(LiteStarSettings):
     @property
     def FEATURES_PATH(self) -> str:
         """The path to JSON fixture files to load into tables."""
-        return f"{self.BASE_DIR}/src/features"
+        return f"{BASE_DIR}/src/features"
 
 
 class Settings(LiteStarSettings):

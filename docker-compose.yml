@@ -1,0 +1,12 @@
+services:
+  minio:
+    image: minio/minio
+    container_name: star_minio
+    ports:
+      - "9000:9000"
+    environment:
+      MINIO_ACCESS_KEY: minio_minio
+      MINIO_SECRET_KEY: minio_minio
+    volumes:
+      - ./media:/data
+    command: server /data

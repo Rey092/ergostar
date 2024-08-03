@@ -19,5 +19,7 @@ def seed_group(context: RichContext, app: Litestar) -> None:
     context.obj = app
 
 
-seed_group.add_command(data)  # type: ignore[no-untyped-call]
-seed_group.add_command(drop)  # type: ignore[no-untyped-call]
+# noinspection PyTypeChecker
+seed_group.add_command(data)
+# noinspection PyTypeChecker
+seed_group.add_command(drop)

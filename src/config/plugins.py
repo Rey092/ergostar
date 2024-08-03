@@ -17,6 +17,7 @@ if TYPE_CHECKING:
     from litestar import Request
     from litestar.config.app import AppConfig
     from redis.asyncio import Redis
+
     from src.config.settings import AppSettings
 
 
@@ -27,6 +28,7 @@ class CLIPlugin(CLIPluginProtocol):
     def on_cli_init(self, cli: Group) -> None:
         """Add commands to the CLI."""
         from src.features.core.cli import seed_group
+
         cli.add_command(seed_group)
 
 
@@ -41,18 +43,20 @@ class CachePlugin(InitPluginProtocol):
         self.app_settings = app_settings
 
     def on_app_init(self, app_config: AppConfig) -> AppConfig:
-        """
-        Configure application for use with SQLAlchemy.
+        """Configure application for use with SQLAlchemy.
 
         Args:
         ----
             app_config: The :class:`AppConfig <.config.app.AppConfig>` instance.
+
         """
         app_config.response_cache_config = ResponseCacheConfig(
             default_expiration=self.app_settings.DEFAULT_CACHE_EXPIRATION,
             key_builder=self._cache_key_builder,
         )
-        app_config.stores = StoreRegistry(default_factory=self.redis_store_factory)
+        app_config.stores = StoreRegistry(
+            default_factory=self.redis_store_factory,
+        )
         app_config.on_shutdown.append(self.redis.aclose)  # type: ignore[attr-defined]
         return app_config
 

@@ -9,11 +9,11 @@ package-mode = false
 [tool.poetry.dependencies]
 python = "^3.12"
 litestar-vite = "^0.1.22"
-litestar = {extras = ["jinja", "sqlalchemy", "standard", "structlog"], version = "^2.10.0"}
+litestar = { extras = ["jinja", "sqlalchemy", "standard", "structlog"], version = "^2.10.0" }
 pydantic = "^2.7.4"
 pydantic-settings = "^2.3.3"
-sqlalchemy = "^2.0.30"
-redis = {extras = ["hiredis"], version = "^5.0.6"}  # redis as cahce/broker + hiredis for performance
+sqlalchemy = { extras = ["mypy"], version = "^2.0.31" }
+redis = { extras = ["hiredis"], version = "^5.0.6" }  # redis as cahce/broker + hiredis for performance
 gunicorn = "^22.0.0"
 asyncpg = "^0.29.0"
 sqlalchemy-file = "^0.6.0"
@@ -28,6 +28,7 @@ psycopg2-binary = "^2.9.9"
 python-multipart = "^0.0.9"
 advanced-alchemy = "^0.17.3"
 adaptix = "^3.0.0b7"
+django-environ = "^0.11.2"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -35,6 +36,7 @@ aiosqlite = "^0.20.0"
 pytest = "^8.2.2"
 pytest-asyncio = "^0.23.7"
 pre-commit = "^3.7.1"
+git-cliff = "^2.4.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -87,83 +89,72 @@ exclude = [
     "*/migrations/*.py",
     "staticfiles/*"
 ]
+fix = true
 line-length = 88
 indent-width = 4
 target-version = "py312"
 
 [tool.ruff.lint]
 select = [
-  "F",
-  "E",
-  "W",
-  "C90",
-  "I",
-  "N",
-  "UP",
-  "YTT",
-  # "ANN", # flake8-annotations: we should support this in the future but 100+ errors atm
-  "ASYNC",
-  "D",
-  "S",
-  "BLE",
-  "FBT",
-  "B",
-  "A",
-  "COM",
-  "C4",
-  "DTZ",
-  "T10",
-  "DJ",
-  "EM",
-  "EXE",
-  "FA",
-  'ISC',
-  "ICN",
-  "G",
-  'INP',
-  'PIE',
-  "T20",
-  'PYI',
-  'PT',
-  "Q",
-  "RSE",
-  "RET",
-  "SLF",
-  "SLOT",
-  "SIM",
-  "TID",
-  "TCH",
-  "INT",
-  # "ARG", # Unused function argument
-  "PTH",
-  "ERA",
-  "PD",
-  "PGH",
-  "PL",
-  "TRY",
-  "FLY",
-  # "NPY",
-  # "AIR",
-  "PERF",
-  # "FURB",
-  # "LOG",
-  "RUF"
+    "F",
+    "E",
+    "W",
+    "C90",
+    "I",
+    "N",
+    "UP",
+    "YTT",
+    # "ANN", # flake8-annotations: we should support this in the future but 100+ errors atm
+    "ASYNC",
+    "D",
+    "S",
+    "BLE",
+    "FBT",
+    "B",
+    "A",
+    "COM",
+    "C4",
+    "DTZ",
+    "T10",
+    "DJ",
+    "EM",
+    "EXE",
+    "FA",
+    'ISC',
+    "ICN",
+    "G",
+    'INP',
+    'PIE',
+    "T20",
+    'PYI',
+    'PT',
+    "Q",
+    "RSE",
+    "RET",
+    "SLF",
+    "SLOT",
+    "SIM",
+    "TID",
+    "TCH",
+    "INT",
+    # "ARG", # Unused function argument
+    "PTH",
+    "ERA",
+    "PD",
+    "PGH",
+    "PL",
+    "TRY",
+    "FLY",
+    # "NPY",
+    # "AIR",
+    "PERF",
+    # "FURB",
+    # "LOG",
+    "RUF"
 ]
 ignore = [
-  "S101", # Use of assert detected https://docs.astral.sh/ruff/rules/assert/
-  "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
-  "SIM102", # sometimes it's better to nest
-  "UP038", # Checks for uses of isinstance/issubclass that take a tuple
-          # of types for comparison.
-          # Deactivated because it can make the code slow:
-          # https://github.com/astral-sh/ruff/issues/7871
-    "D203", #  `one-blank-line-before-class`
-    "D213", #  `multi-line-summary-second-line
-    "COM812",
-    "ISC001",
-    "ERA001",
-    "E712",
-    "PGH003",
+    "RUF012", # ruff - mutable class attributes should be annotated with `typing.ClassVar`
+    "PLR0913", # too many arguments
 ]
 # Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]
@@ -176,6 +167,38 @@ extend-unsafe-fixes = [
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 12
+
+[tool.ruff.lint.pep8-naming]
+classmethod-decorators = [
+    "classmethod",
+    "sqlalchemy.ext.declarative.declared_attr",
+    "sqlalchemy.orm.declared_attr.directive",
+    "sqlalchemy.orm.declared_attr",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"*/migrations/*.py" = ['D104', 'D103', 'D205', 'D212']
+"__init__.py" = ['F401', 'D104']
+"docs/**/*.*" = ["S", "B", "DTZ", "A", "TCH", "ERA", "D", "RET", "E731", "RUF012", "FA100", "ARG001"]
+"docs/conf.py" = ["FIX002", "ARG001", "INP001"]
+"scripts/**/*.*" = ["D", "ARG", "EM", "TRY", "G", "FBT", "INP001"]
+"scripts/*.py" = ["INP001", "ERA001"]
+"src/app/db/migrations/versions/*.py" = ["ANN201", "INP001"]
+"tests/*.py" = ['D103', 'S101', 'D104']
+"settings.py" = ["N802", "EM101", "TRY003"]
+
+[tool.slotscheck]
+strict-imports = false
+
+[tool.codespell]
+ignore-words-list = "alog"
+skip = 'pdm.lock, package-lock.json'
+
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
@@ -184,3 +207,71 @@ line-ending = "auto"
 
 [tool.ruff.lint.isort]
 force-single-line = true
+known-first-party = ['tests', 'src']
+
+[tool.pyright]
+exclude = ["scripts", "docs"]
+include = ["src/app", "tests"]
+
+[tool.git-cliff.changelog]
+body = """
+{% if version %}\
+    `Release [v{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }} <https://github.com/litestar-org/litestar-fullstack/releases/tag/v{{ version | trim_start_matches(pat="v") }}>`_
+    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    * `See All commits in v{{ version | trim_start_matches(pat="v") }} <https://github.com/litestar-org/litestar-fullstack/commits/v{{ version | trim_start_matches(pat="v") }}>`_
+{% else %}\
+    [unreleased]
+    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+{% endif %}\
+{% if previous %}\
+    {% if previous.commit_id %}
+        `{{ previous.commit_id | truncate(length=7, end="") }} <https://github.com/litestar-org/litestar-fullstack/commit/{{ previous.commit_id }}>`_ ... \
+            `{{ previous.commit_id | truncate(length=7, end="") }} <https://github.com/litestar-org/litestar-fullstack/commit/{{ commit_id }}>`_ \
+            | `See diff for {{ version }} <https://github.com/litestar-org/litestar-fullstack/compare/{{ previous.commit_id }}...{{ commit_id }}>`_
+    {% endif %}\
+{% endif %}\
+{% for group, commits in commits | group_by(attribute="group") %}
+    {{ group | upper_first }}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    {% for commit in commits %}
+        * (`{{ commit.id | truncate(length=7, end="") }} <https://github.com/litestar-org/litestar-fullstack/commit/{{ commit.id }}>`_) {% if commit.breaking %}[**breaking**] {% endif %} - {{ commit.message | upper_first }} ({{ commit.author.name }})\
+          {% for footer in commit.footers -%}
+            , {{ footer.token }}{{ footer.separator }}{{ footer.value }}\
+          {% endfor %}\
+    {% endfor %}
+{% endfor %}\n
+"""
+footer = """
+Litestar Fullstack Changelog
+"""
+header = """
+=========
+Changelog
+=========\n
+All commits to this project will be documented in this file.\n
+"""
+trim = true
+
+[tool.git-cliff.git]
+commit_parsers = [
+    { message = "^feat", group = "Features" },
+    { message = "^fix", group = "Bug Fixes" },
+    { message = "^doc", group = "Documentation" },
+    { message = "^perf", group = "Performance" },
+    { message = "^refactor", group = "Refactor" },
+    { message = "^style", group = "Styling" },
+    { message = "^test", group = "Testing" },
+    { message = "^chore\\(release\\): prepare for", skip = true },
+    { message = "^chore", group = "Miscellaneous Tasks" },
+    { body = ".*security", group = "Security" },
+]
+conventional_commits = true
+filter_commits = false
+filter_unconventional = true
+ignore_tags = ""
+protect_breaking_commits = false
+skip_tags = "v0.1.0-beta.1"
+sort_commits = "oldest"
+split_commits = false
+tag_pattern = "v[0-9]*"
+topo_order = false

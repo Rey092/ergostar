@@ -1,5 +1,7 @@
 """Redis engine configuration."""
+
 from redis.asyncio import Redis
+
 from src.config.settings import RedisSettings
 
 

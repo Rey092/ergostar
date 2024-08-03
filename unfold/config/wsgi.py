@@ -1,5 +1,4 @@
-"""
-WSGI config for unfold project.
+"""WSGI config for unfold project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

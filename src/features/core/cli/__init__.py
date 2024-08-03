@@ -1,4 +1,5 @@
 """Cli module."""
+
 from .seed import seed_group
 from .users import users_group
 

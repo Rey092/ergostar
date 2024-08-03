@@ -1,15 +1,18 @@
 """Basic provider (DI)."""
 
 from collections.abc import AsyncIterable
-from dishka import Scope, from_context
+
+from dishka import Scope
+from dishka import from_context
 from dishka import provide
 from dishka.provider import Provider
 from redis.asyncio import Redis
-from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
+from sqlalchemy.ext.asyncio import AsyncEngine
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from src.common.interfaces.db import IDatabaseSession
-from src.common.types import SETTINGS_DEBUG, SETTINGS_FEATURES_PATH
+from src.config.settings import AppSettings
 from src.config.settings import Settings
 
 
@@ -21,14 +24,9 @@ class BasicProvider(Provider):
     redis_engine = from_context(provides=Redis, scope=Scope.APP)
 
     @provide(scope=Scope.APP)
-    def get_debug(self, all_settings: Settings) -> SETTINGS_DEBUG:
+    def get_app_settings(self, all_settings: Settings) -> AppSettings:
         """Provide debug app status."""
-        return all_settings.app.DEBUG
-
-    @provide(scope=Scope.APP)
-    def get_features_path(self, all_settings: Settings) -> SETTINGS_FEATURES_PATH:
-        """Provide a features' path."""
-        return all_settings.app.FEATURES_PATH
+        return all_settings.app
 
     @provide(scope=Scope.APP)
     def get_session_maker(
@@ -45,9 +43,9 @@ class BasicProvider(Provider):
 
     @provide(scope=Scope.REQUEST)
     async def get_session(
-        self, session_maker: async_sessionmaker[AsyncSession]
+        self,
+        session_maker: async_sessionmaker[AsyncSession],
     ) -> AsyncIterable[IDatabaseSession]:
         """Provide async session."""
         async with session_maker() as session:
-            async with session.begin():
-                yield session
+            yield session

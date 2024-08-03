@@ -1,5 +1,4 @@
-"""
-ASGI config for unfold project.
+"""ASGI config for unfold project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

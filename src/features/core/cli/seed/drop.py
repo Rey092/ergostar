@@ -1,20 +1,22 @@
 """Drop all data."""
+
 import asyncio
 
 import click
-from dishka import AsyncContainer, Scope
+from dishka import AsyncContainer
+from dishka import Scope
 from litestar import Litestar
+
 from src.features.core.interactors.drop_database import DropDatabaseInteractor
 
 
 @click.command(
     help="Drop all data in the database.",
 )
-@click.confirmation_option(prompt='Are you sure you want to drop the db?')
+@click.confirmation_option(prompt="Are you sure you want to drop the db?")
 @click.pass_obj
 def drop(app: Litestar) -> None:
     """Drop all data in the database."""
-    import anyio
     from rich import get_console
 
     # get the console

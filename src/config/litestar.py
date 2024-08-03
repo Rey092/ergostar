@@ -12,7 +12,8 @@ from litestar.logging.config import StructLoggingConfig
 from litestar.middleware.logging import LoggingMiddlewareConfig
 from litestar.plugins.structlog import StructlogConfig
 
-from src.config.settings import AppSettings, LogSettings
+from src.config.settings import AppSettings
+from src.config.settings import LogSettings
 
 
 def get_cache_config() -> ResponseCacheConfig:
@@ -36,12 +37,15 @@ def get_csrf_config(app_settings: AppSettings) -> CSRFConfig:
 
 def get_cors_config(app_settings: AppSettings) -> CORSConfig:
     """Get CORS config."""
-    return CORSConfig(allow_origins=cast("list[str]", app_settings.ALLOWED_CORS_ORIGINS))
+    return CORSConfig(
+        allow_origins=cast("list[str]", app_settings.ALLOWED_CORS_ORIGINS),
+    )
 
 
 def get_structlog_config(
     log_settings: LogSettings,
 ) -> StructlogConfig:
+    """Get structlog configuration."""
     return StructlogConfig(
         structlog_logging_config=StructLoggingConfig(
             log_exceptions="always",

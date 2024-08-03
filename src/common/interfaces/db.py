@@ -1,9 +1,16 @@
 """Common interfaces."""
-from typing import Protocol, TypeVar, Any, Optional, Iterable
-from sqlalchemy import Result, TextClause, Executable
-from sqlalchemy.sql.selectable import TypedReturnsRows, ForUpdateParameter
+
+from collections.abc import Iterable
+from typing import Any
+from typing import Protocol
+from typing import TypeVar
+
+from sqlalchemy import Executable
+from sqlalchemy import Result
+
 # noinspection PyProtectedMember
-from sqlalchemy.engine.interfaces import _CoreAnyExecuteParams  # noqa: F401
+from sqlalchemy.engine.interfaces import _CoreAnyExecuteParams
+from sqlalchemy.sql.selectable import ForUpdateParameter
 
 _T = TypeVar("_T", bound=Any)
 
@@ -22,14 +29,15 @@ class IDatabaseSession(Protocol):
     async def execute(
         self,
         statement: Executable,
-        params: Optional[_CoreAnyExecuteParams] = None,
+        params: _CoreAnyExecuteParams | None = None,
     ) -> Result[_T]:
+        """Execute the given statement."""
         ...
 
     async def refresh(
         self,
         instance: object,
-        attribute_names: Optional[Iterable[str]] = None,
+        attribute_names: Iterable[str] | None = None,
         with_for_update: ForUpdateParameter = None,
     ) -> None:
         """Refresh the given instance with the most recent state from the database."""

@@ -1,17 +1,26 @@
-"""
-Django settings for unfold project.
-"""
+"""Django settings for unfold project."""
 
+import binascii
+import os
 from pathlib import Path
-from src.config import settings
+
+from environ import Env
+
+# Environment
+env = Env()
+if os.getenv("READ_ENV_FILE", "True") == "True":
+    env.read_env()
 
 # Routes
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Basics
-DEBUG = settings.unfold.DEBUG
-ALLOWED_HOSTS = settings.unfold.ALLOWED_HOSTS
-SECRET_KEY = settings.unfold.SECRET_KEY
+DEBUG = env.bool("UNFOLD_DEBUG", default=False)
+ALLOWED_HOSTS = env.list("UNFOLD_ALLOWED_HOSTS", default=["*"])
+SECRET_KEY = env.str(
+    "UNFOLD_SECRET_KEY",
+    default=binascii.hexlify(os.urandom(24)).decode(),
+)
 
 # Security
 CSRF_COOKIE_SECURE = not DEBUG
@@ -66,22 +75,22 @@ WSGI_APPLICATION = "unfold.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        "NAME": settings.db.DB,
-        "USER": settings.db.USER,
-        "PASSWORD": settings.db.PASSWORD,
-        "HOST": settings.db.HOST,
-        "PORT": settings.db.PORT
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": env.str("UNFOLD_POSTGRES_DB"),
+        "USER": env.str("UNFOLD_POSTGRES_USER"),
+        "PASSWORD": env.str("UNFOLD_POSTGRES_PASSWORD"),
+        "HOST": env.str("UNFOLD_POSTGRES_HOST", default="localhost"),
+        "PORT": env.str("UNFOLD_POSTGRES_PORT", default="5432"),
     },
     "main": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": settings.db.DB,
-        "USER": settings.db.USER,
-        "PASSWORD": settings.db.PASSWORD,
-        "HOST": settings.db.HOST,
-        "PORT": settings.db.PORT
-    }
+        "NAME": env.str("POSTGRES_DB"),
+        "USER": env.str("POSTGRES_USER"),
+        "PASSWORD": env.str("POSTGRES_PASSWORD"),
+        "HOST": env.str("POSTGRES_HOST"),
+        "PORT": env.str("POSTGRES_PORT"),
+    },
 }
 
 
@@ -89,7 +98,8 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation."
+        "UserAttributeSimilarityValidator",
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
