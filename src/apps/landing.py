@@ -31,8 +31,6 @@ from src.config.redis import get_redis_engine
 from src.config.settings import Settings
 from src.features.core.ioc import CoreProvider
 from src.features.core.routing import health_router
-from src.features.landing.ioc import LandingProvider
-from src.features.landing.routing import landing_router
 from src.features.subscriptions.ioc import SubscriptionsProvider
 
 if TYPE_CHECKING:
@@ -54,7 +52,6 @@ def create_app() -> Litestar:
     container: AsyncContainer = make_async_container(
         BasicProvider(),
         CoreProvider(),
-        LandingProvider(),
         SubscriptionsProvider(),
         context={
             Settings: settings,
@@ -69,7 +66,6 @@ def create_app() -> Litestar:
         debug=settings.app.DEBUG,
         route_handlers=[
             health_router,
-            landing_router,
             create_static_files_router(
                 path="/static",
                 directories=["static/landing"],

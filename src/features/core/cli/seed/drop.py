@@ -7,7 +7,7 @@ from dishka import AsyncContainer
 from dishka import Scope
 from litestar import Litestar
 
-from src.features.core.interactors.drop_database import DropDatabaseInteractor
+from src.features.core.use_cases.drop_database import DropDatabaseTablesUseCase
 
 
 @click.command(
@@ -26,8 +26,8 @@ def drop(app: Litestar) -> None:
         console.rule("Loading landing data")
         container: AsyncContainer = app.state.dishka_container
         async with container(scope=Scope.REQUEST) as container:
-            drop_database = await container.get(DropDatabaseInteractor)
-            await drop_database()
+            drop_database_tables = await container.get(DropDatabaseTablesUseCase)
+            await drop_database_tables()
 
     console.rule("Starting to drop the database")
     asyncio.run(_drop_database())

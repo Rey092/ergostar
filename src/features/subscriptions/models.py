@@ -1,33 +1,28 @@
 """Subscription models."""
 
-from advanced_alchemy.base import orm_registry
-from sqlalchemy import BigInteger
+from advanced_alchemy.base import BigIntAuditBase
 from sqlalchemy import Boolean
-from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import String
-from sqlalchemy import Table
+from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import mapped_column
 
-from src.features.subscriptions.entities import SubscriptionPlan
 
-subscription_plan_table = Table(
-    "subscriptions__plans",
-    orm_registry.metadata,
-    Column("id", BigInteger, primary_key=True),
-    Column("title", String(length=255), nullable=False, index=False),
-    Column("subtitle", String(length=255), nullable=False, index=False),
-    Column("monthly_price", Integer, index=False, nullable=True),
-    Column("annual_price", Integer, index=False, nullable=True),
-    Column("monthly_requests_limit", Integer, index=False, nullable=True),
-    Column("rate_limit", Integer, index=False, nullable=True),
-    Column("rate_period", String(length=255), index=False, nullable=True),
-    Column(
-        "is_public",
+class SubscriptionPlan(BigIntAuditBase):
+    """Subscription Plan."""
+
+    __tablename__ = "subscription_plans"
+
+    title: Mapped[str] = mapped_column(String(length=255), nullable=False)
+    subtitle: Mapped[str] = mapped_column(String(length=255), nullable=False)
+    monthly_price: Mapped[int] = mapped_column(Integer, nullable=True)
+    annual_price: Mapped[int] = mapped_column(Integer, nullable=True)
+    monthly_requests_limit: Mapped[int] = mapped_column(Integer, nullable=True)
+    rate_limit: Mapped[int] = mapped_column(Integer, nullable=True)
+    rate_period: Mapped[str] = mapped_column(String(length=255), nullable=True)
+    is_public: Mapped[bool] = mapped_column(
         Boolean,
-        index=True,
         nullable=False,
         server_default="true",
-    ),
-)
-
-orm_registry.map_imperatively(SubscriptionPlan, subscription_plan_table)
+        index=True,
+    )

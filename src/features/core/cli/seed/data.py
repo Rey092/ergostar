@@ -8,7 +8,8 @@ from dishka import AsyncContainer
 from dishka import Scope
 from litestar import Litestar
 
-from src.features.core.interactors.seed_database import SeedDatabaseInteractor
+from src.features.core.use_cases.seed_database import SeedDatabaseRequestModel
+from src.features.core.use_cases.seed_database import SeedDatabaseUseCase
 from unfold.core.enums import DatabaseSeedingGroups
 
 logger = logging.getLogger(__name__)
@@ -28,9 +29,11 @@ def data(app: Litestar) -> None:
     async def _create_all_seed_data() -> None:
         container: AsyncContainer = app.state.dishka_container
         async with container(scope=Scope.REQUEST) as container:
-            seed_database = await container.get(SeedDatabaseInteractor)
+            seed_database = await container.get(SeedDatabaseUseCase)
             await seed_database(
-                seeding_groups=[DatabaseSeedingGroups.landing],
+                request_model=SeedDatabaseRequestModel(
+                    groups=[DatabaseSeedingGroups.subscriptions],
+                ),
             )
 
     console.rule("Starting seed data creation")

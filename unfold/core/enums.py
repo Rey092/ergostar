@@ -6,4 +6,4 @@ from enum import Enum
 class DatabaseSeedingGroups(str, Enum):
     """Database seeding groups."""
 
-    landing = "landing"
+    subscriptions = "subscriptions"

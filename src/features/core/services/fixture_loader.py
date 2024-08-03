@@ -2,8 +2,11 @@
 
 import json
 import logging
+from abc import abstractmethod
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
+from typing import Protocol
 from typing import TypeVar
 
 import aiofiles
@@ -11,13 +14,36 @@ import aiofiles
 from src.common.base.entity import Entity
 from src.config.settings import AppSettings
 from src.features.core.enums import FixtureLoadingStrategy
-from src.features.core.interactors.interfaces import ISeedManyEntries
+from src.features.core.use_cases.seed_database import ILoadFixturesToDatabase
 
-T = TypeVar("T", bound=Entity)
 logger = logging.getLogger(__name__)
+ModelT = TypeVar("ModelT", bound=Entity)
 
 
-class FixtureLoaderService:
+class ISeedCheckExists(Protocol):
+    """ISeedCheckExists."""
+
+    @abstractmethod
+    async def exists(self) -> bool:
+        """Check if entry exists."""
+        ...
+
+
+class ISeedManyEntries(ISeedCheckExists, Protocol[ModelT]):
+    """ISeedManyEntries."""
+
+    @abstractmethod
+    async def add_many(self, data: list[ModelT]) -> Sequence[ModelT]:
+        """Add many entries."""
+        ...
+
+    @abstractmethod
+    async def delete_many(self) -> None:
+        """Delete all entries."""
+        ...
+
+
+class FixtureLoaderService(ILoadFixturesToDatabase):
     """Fixture loader service."""
 
     def __init__(
@@ -80,14 +106,14 @@ class FixtureLoaderService:
         fixture_name: str,
         entity_class: type[Entity],
         repository: ISeedManyEntries,
-        loading_exists_strategy: FixtureLoadingStrategy = FixtureLoadingStrategy.SKIP,
+        loading_strategy: FixtureLoadingStrategy,
     ) -> None:
         """Load many entities."""
         # check if loading is allowed
         if not await self._is_loading_allowed(
             fixture_name=fixture_name,
             repository=repository,
-            loading_exists_strategy=loading_exists_strategy,
+            loading_exists_strategy=loading_strategy,
         ):
             return
 
