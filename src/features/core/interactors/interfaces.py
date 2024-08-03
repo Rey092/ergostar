@@ -28,6 +28,6 @@ class ISeedManyEntries(ISeedCheckExists, Protocol[ModelT]):
         ...
 
     @abstractmethod
-    async def delete_all(self) -> None:
+    async def delete_many(self) -> None:
         """Delete all entries."""
         ...

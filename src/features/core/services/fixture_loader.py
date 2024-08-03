@@ -2,7 +2,6 @@
 
 import json
 import logging
-from enum import Enum
 from pathlib import Path
 from typing import Any
 from typing import TypeVar
@@ -11,23 +10,11 @@ import aiofiles
 
 from src.common.base.entity import Entity
 from src.config.settings import AppSettings
+from src.features.core.enums import FixtureLoadingStrategy
 from src.features.core.interactors.interfaces import ISeedManyEntries
 
 T = TypeVar("T", bound=Entity)
 logger = logging.getLogger(__name__)
-
-
-class FixtureLoadingStrategy(Enum):
-    """Loading exists mode.
-
-    SKIP: Skip loading if it already exists.
-    OVERRIDE: Override data if already
-    RAISE: Raise an error if already exists.
-    """
-
-    SKIP = "skip"
-    OVERRIDE = "override"
-    RAISE = "raise"
 
 
 class FixtureLoaderService:
@@ -41,6 +28,9 @@ class FixtureLoaderService:
         self.features_path: str = app_settings.FEATURES_PATH
         self._message_success = "{fixture_name} seeded successfully."
         self._message_allowed = "{fixture_name} is allowed to seed."
+        self._message_not_exists = (
+            "{fixture_name} is allowed to be seeded, because the table is empty."
+        )
         self._message_skip = "{fixture_name} already seeded. Skipping."
         self._message_override = "{fixture_name} already seeded. Overriding."
         self._exception_already_seeded = (
@@ -123,9 +113,14 @@ class FixtureLoaderService:
 
         Returns True if loading is allowed, otherwise False.
         """
+        # skip loading if strategy is ALLOW
+        if loading_exists_strategy == FixtureLoadingStrategy.ALLOW:
+            logger.info(self._message_allowed.format(fixture_name=fixture_name))
+            return True
+
         # if no data exists, allow loading
         if not await repository.exists():
-            logger.info(self._message_allowed.format(fixture_name=fixture_name))
+            logger.info(self._message_not_exists.format(fixture_name=fixture_name))
             return True
 
         # skip loading if data exists and strategy is SKIP
@@ -136,7 +131,7 @@ class FixtureLoaderService:
         # delete all data if data exists and strategy is OVERRIDE
         if loading_exists_strategy == FixtureLoadingStrategy.OVERRIDE:
             logger.info(self._message_override.format(fixture_name=fixture_name))
-            await repository.delete_all()
+            await repository.delete_many()
             return True
 
         # if strategy is RAISE
