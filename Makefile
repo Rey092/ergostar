@@ -43,14 +43,14 @@ migrations:       ## Generate database migrations
 # ------------------------------------------
 
 unfold-seed:
-	$(MANAGE) seed
+	django-admin seed $(UNFOLD_RUN_PARAMS)
 
 unfold-migrate:
-	$(MANAGE) migrate $(PARAMS)
+	django-admin migrate $(UNFOLD_RUN_PARAMS)
 
 unfold-generate:
 	# generate a models from an existing database ('main') using django
-	$(MANAGE) inspectdb --database=main $(PARAMS) > $(UNFOLD_MODELS)
+	django-admin inspectdb $(UNFOLD_RUN_PARAMS) --database=main $(PARAMS) > $(UNFOLD_MODELS)
 	# delete a first line
 	sed -i '1d' $(UNFOLD_MODELS)
 	# add 'Unfold' before each (models.Model)

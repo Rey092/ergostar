@@ -23,3 +23,9 @@ pre-commit install
 ```bash
 make seed
 ```
+
+## 5. Seed admin database
+
+```bash
+make unfold-seed
+```
