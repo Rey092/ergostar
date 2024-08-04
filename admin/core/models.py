@@ -43,3 +43,7 @@ class SubscriptionPlansUnfold(models.Model):
 
         managed = False
         db_table = "subscription_plans"
+
+    def __str__(self):
+        """Return string representation."""
+        return self.title

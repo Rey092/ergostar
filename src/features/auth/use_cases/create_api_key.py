@@ -15,10 +15,10 @@ logger = logging.getLogger(__name__)
 class CreateApiKeyRequestModel:
     """Create api key input data."""
 
-    used_id: int
+    user_id: int
 
 
-class CreateApiKeyUseCase(UseCase[CreateApiKeyRequestModel, None]):
+class CreateApiKeyUseCase(UseCase[CreateApiKeyRequestModel, str]):
     """Create api key use case."""
 
     def __init__(
@@ -39,11 +39,11 @@ class CreateApiKeyUseCase(UseCase[CreateApiKeyRequestModel, None]):
         # create one
         api_key: ApiKey = await self._create_api_key_repository.create_one(
             ApiKey(
-                user_id=request_model.used_id,
+                user_id=request_model.user_id,
             ),
         )
 
         # commit
         await self._session.commit()
 
-        return api_key.key
+        return str(api_key.key)

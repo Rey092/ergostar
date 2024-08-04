@@ -24,7 +24,7 @@ from src.config.ioc import BasicProvider
 from src.config.litestar import get_cors_config
 from src.config.litestar import get_structlog_config
 from src.config.redis import get_redis_engine
-from src.config.security.test import jwt_auth
+from src.config.security.api_key.auth import api_key_auth
 from src.config.settings import Settings
 from src.features.auth.ioc import AuthProvider
 from src.features.auth.routing import auth_router
@@ -100,7 +100,7 @@ def create_app() -> Litestar:
             RepositoryError: exception_to_http_response,
         },
         on_app_init=[
-            jwt_auth.on_app_init,
+            api_key_auth.on_app_init,
         ],
         openapi_config=OpenAPIConfig(
             title="Litestar API",

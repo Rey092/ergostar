@@ -1,5 +1,7 @@
 """Users module."""
 
-from .models import *  # noqa
+from .models import UserModel
 
-__all__ = []
+__all__ = [
+    "UserModel",
+]

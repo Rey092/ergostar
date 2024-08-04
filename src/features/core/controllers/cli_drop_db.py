@@ -3,7 +3,6 @@
 import asyncio
 
 import click
-from dishka import AsyncContainer
 from dishka import Scope
 from litestar import Litestar
 
@@ -22,13 +21,12 @@ def drop_db(app: Litestar) -> None:
     # get the console
     console = get_console()
 
-    async def _drop_database() -> None:
-        console.rule("Loading landing data")
-        container: AsyncContainer = app.state.dishka_container
-        async with container(scope=Scope.REQUEST) as container:
+    async def _drop_database_tables() -> None:
+        """Drop the database tables."""
+        async with app.state.dishka_container(scope=Scope.REQUEST) as container:
             drop_database_tables = await container.get(DropDatabaseTablesUseCase)
             await drop_database_tables()
 
     console.rule("Starting to drop the database")
-    asyncio.run(_drop_database())
+    asyncio.run(_drop_database_tables())
     console.rule("Database dropped")

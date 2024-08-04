@@ -1,16 +1,20 @@
 """Persistence models for the auth feature."""
 
+from typing import TYPE_CHECKING
+
 from advanced_alchemy.base import BigIntAuditBase
 from sqlalchemy import ForeignKey
-from sqlalchemy import Unicode
+from sqlalchemy import String
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import StringEncryptedType
-from sqlalchemy_utils.types.encrypted.encrypted_type import FernetEngine
+from sqlalchemy_utils.types.encrypted.encrypted_type import AesEngine
 
 from src.config import settings
-from src.features.users.models import UserModel
+
+if TYPE_CHECKING:
+    from src.features.users.models import UserModel
 
 
 class ApiKeyModel(BigIntAuditBase):
@@ -20,9 +24,10 @@ class ApiKeyModel(BigIntAuditBase):
 
     key: Mapped[str] = mapped_column(
         StringEncryptedType(
-            Unicode,
+            String,
             settings.app.SECRET_KEY,
-            FernetEngine,
+            AesEngine,
+            "pkcs5",
         ),
     )
     user_id: Mapped[int] = mapped_column(

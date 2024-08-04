@@ -1,45 +1,18 @@
-"""Gateway for Subscriptions feature."""
+"""Gateway for sbscriptions plan feature."""
 
 from collections.abc import Sequence
 
-from adaptix import P
-from adaptix.conversion import get_converter
-from adaptix.conversion import link_constant
-
 from src.common.base.gateway import AlchemyGateway
 from src.common.base.repository import GenericSQLAlchemyRepository
-from src.common.interfaces.db import IDatabaseSession
 from src.features.subscriptions import SubscriptionPlanModel
 from src.features.subscriptions.entities import SubscriptionPlan
 
 
-class SubscriptionPlanGateway(AlchemyGateway[SubscriptionPlanModel]):
+class SubscriptionPlanGateway(AlchemyGateway[SubscriptionPlan, SubscriptionPlanModel]):
     """Subscription Plan gateway."""
 
     model_type = SubscriptionPlanModel
     repository_type = GenericSQLAlchemyRepository[SubscriptionPlanModel]
-
-    def __init__(
-        self,
-        session: IDatabaseSession,
-    ) -> None:
-        """Initialize the gateway."""
-        super().__init__(session)
-        # TODO: Мне кажется собирать в __init__ конвертеры это плохая идея
-        #  Жду фикса types в 'advanced-alchemy', до тех пор в класс конвертера не могу добавить
-        #  И перенесу в аттрибуты класса или в декораторы
-        #  Скорее всего в аттрибуты класса т.к. не нашёл кеширования в '@impl_converter'
-        self.entity_to_model = get_converter(
-            SubscriptionPlan,
-            SubscriptionPlanModel,
-            recipe=[
-                link_constant(P[SubscriptionPlanModel].id, value=None),
-            ],
-        )
-        self.model_to_entity = get_converter(
-            SubscriptionPlanModel,
-            SubscriptionPlan,
-        )
 
     async def add_many(
         self,

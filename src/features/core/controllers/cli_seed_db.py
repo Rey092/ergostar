@@ -4,7 +4,6 @@ import asyncio
 import logging
 
 import click
-from dishka import AsyncContainer
 from dishka import Scope
 from litestar import Litestar
 
@@ -27,8 +26,8 @@ def seed_db(app: Litestar) -> None:
     console = get_console()
 
     async def _create_all_seed_data() -> None:
-        container: AsyncContainer = app.state.dishka_container
-        async with container(scope=Scope.REQUEST) as container:
+        """Create all seed data."""
+        async with app.state.dishka_container(scope=Scope.REQUEST) as container:
             seed_database = await container.get(SeedDatabaseUseCase)
             await seed_database(
                 request_model=SeedDatabaseRequestModel(

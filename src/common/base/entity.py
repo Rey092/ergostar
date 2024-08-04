@@ -1,6 +1,7 @@
 """Base entity classes."""
 
 import uuid
+from dataclasses import asdict
 from dataclasses import dataclass
 from dataclasses import field
 from datetime import UTC
@@ -17,6 +18,10 @@ class Entity:
     def from_dict(cls, data: dict) -> "Entity":
         """Create entity from dictionary."""
         return from_dict(data_class=cls, data=data)
+
+    def to_dict(self) -> dict:
+        """Convert entity to dictionary."""
+        return asdict(self)
 
 
 @dataclass(kw_only=True, eq=False)

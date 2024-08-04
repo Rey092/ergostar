@@ -1,3 +1,5 @@
+"""Interfaces for use cases in auth feature."""
+
 from abc import abstractmethod
 from typing import Protocol
 
