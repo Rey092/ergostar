@@ -39,7 +39,7 @@ migrations:       ## Generate database migrations
 	@while [ -z "$$MIGRATION_MESSAGE" ]; do read -r -p "Migration message: " MIGRATION_MESSAGE; done ;
 	litestar database make-migrations --autogenerate -m "$${MIGRATION_MESSAGE}"
 
-# UNFOLD
+# DATABASE UNFOLD
 # ------------------------------------------
 
 unfold-seed:
