@@ -2,45 +2,18 @@
 
 import json
 import logging
-from abc import abstractmethod
-from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
-from typing import Protocol
-from typing import TypeVar
 
 import aiofiles
 
 from src.common.base.entity import Entity
 from src.config.settings import AppSettings
 from src.features.core.enums import FixtureLoadingStrategy
-from src.features.core.use_cases.seed_database import ILoadFixturesToDatabase
+from src.features.core.services.interfaces import ISeedManyEntries
+from src.features.core.use_cases.interfaces import ILoadFixturesToDatabase
 
 logger = logging.getLogger(__name__)
-ModelT = TypeVar("ModelT", bound=Entity)
-
-
-class ISeedCheckExists(Protocol):
-    """ISeedCheckExists."""
-
-    @abstractmethod
-    async def exists(self) -> bool:
-        """Check if entry exists."""
-        ...
-
-
-class ISeedManyEntries(ISeedCheckExists, Protocol[ModelT]):
-    """ISeedManyEntries."""
-
-    @abstractmethod
-    async def add_many(self, data: list[ModelT]) -> Sequence[ModelT]:
-        """Add many entries."""
-        ...
-
-    @abstractmethod
-    async def delete_many(self) -> None:
-        """Delete all entries."""
-        ...
 
 
 class FixtureLoaderService(ILoadFixturesToDatabase):
@@ -105,14 +78,14 @@ class FixtureLoaderService(ILoadFixturesToDatabase):
         future_name: str,
         fixture_name: str,
         entity_class: type[Entity],
-        repository: ISeedManyEntries,
+        gateway: ISeedManyEntries,
         loading_strategy: FixtureLoadingStrategy,
     ) -> None:
         """Load many entities."""
         # check if loading is allowed
         if not await self._is_loading_allowed(
             fixture_name=fixture_name,
-            repository=repository,
+            repository=gateway,
             loading_exists_strategy=loading_strategy,
         ):
             return
@@ -125,7 +98,7 @@ class FixtureLoaderService(ILoadFixturesToDatabase):
         )
 
         # add entities
-        await repository.add_many(data=entities)
+        await gateway.add_many(data=entities)
 
         logger.info(self._message_success.format(fixture_name=fixture_name))
 
@@ -145,7 +118,7 @@ class FixtureLoaderService(ILoadFixturesToDatabase):
             return True
 
         # if no data exists, allow loading
-        if not await repository.exists():
+        if not await repository.exists_anything():
             logger.info(self._message_not_exists.format(fixture_name=fixture_name))
             return True
 
@@ -157,7 +130,7 @@ class FixtureLoaderService(ILoadFixturesToDatabase):
         # delete all data if data exists and strategy is OVERRIDE
         if loading_exists_strategy == FixtureLoadingStrategy.OVERRIDE:
             logger.info(self._message_override.format(fixture_name=fixture_name))
-            await repository.delete_many()
+            await repository.delete_everything()
             return True
 
         # if strategy is RAISE

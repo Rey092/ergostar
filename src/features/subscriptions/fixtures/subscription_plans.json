@@ -7,7 +7,7 @@
     "monthly_requests_limit": 500,
     "rate_limit": 15,
     "rate_period": "1m",
-    "is_available": true
+    "is_public": true
   },
   {
     "title": "Basic",
@@ -17,7 +17,7 @@
     "monthly_requests_limit": 10000,
     "rate_limit": 30,
     "rate_period": "1m",
-    "is_available": true
+    "is_public": true
   },
   {
     "title": "Pro",
@@ -27,7 +27,7 @@
     "monthly_requests_limit": 50000,
     "rate_limit": 60,
     "rate_period": "1m",
-    "is_available": true
+    "is_public": true
   },
   {
     "title": "Unlimited",
@@ -37,7 +37,7 @@
     "monthly_requests_limit": null,
     "rate_limit": 120,
     "rate_period": "1m",
-    "is_available": true
+    "is_public": true
   },
   {
     "title": "Admin",
@@ -46,7 +46,7 @@
     "annual_price": null,
     "monthly_requests_limit": null,
     "rate_limit": null,
-    "rate_period": null,
-    "is_available": false
+    "rate_period": "",
+    "is_public": false
   }
 ]

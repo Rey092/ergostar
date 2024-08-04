@@ -1,9 +1,12 @@
 """Subscription plan entity."""
 
-from src.common.base.entity import Entity
+from dataclasses import dataclass
+
+from src.common.base.entity import BigIntAuditEntity
 
 
-class SubscriptionPlan(Entity):
+@dataclass(eq=False)
+class SubscriptionPlan(BigIntAuditEntity):
     """Subscription plan model."""
 
     title: str
@@ -12,8 +15,8 @@ class SubscriptionPlan(Entity):
     annual_price: int | None
     monthly_requests_limit: int | None
     rate_limit: int | None
-    rate_period: str | None
     is_public: bool
+    rate_period: str = ""
 
     @property
     def rate_period_verbose(self) -> str:

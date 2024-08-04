@@ -76,5 +76,5 @@ dmypy.json
 .pyre/
 .pytype/
 cython_debug/
-unfold/models.py
+admin/models.py
 .idea/

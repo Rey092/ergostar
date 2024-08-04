@@ -17,7 +17,7 @@ health_router = Router(
 
 
 @click.group(
-    name="seed",
+    name="core",
     invoke_without_command=False,
     help="Core methods for the application. Database seeding, dropping, etc.",
 )

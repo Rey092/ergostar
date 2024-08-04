@@ -1,29 +1,31 @@
 # UNFOLD VARIABLES
 # ------------------------------------------
-UNFOLD_MODELS=config/models.py
-UNFOLD_RUN_PARAMS=--pythonpath=. --settings=src.infra.unfold.app
+MANAGE=python manage.py
+UNFOLD_MODELS=admin/models.py
+UNFOLD_RUN_PARAMS=--pythonpath=. --settings=admin.config.settings
 
 # LITESTAR VARIABLES
 # ------------------------------------------
 LITESTAR_RUN_PARAMS=-r -I *.html -I *.css -I *.js -I *.svelte
+LITESTAR_DASHBOARD_APP=src.apps.dashboard:app
 
 # RUN COMMANDS
 # ------------------------------------------
-landing:
+run:
 	litestar run $(LITESTAR_RUN_PARAMS)
 
-unfold:
-	django-admin runserver $(UNFOLD_RUN_PARAMS) 127.0.0.1:8001
+unfold-run:
+	django-admin runserver $(UNFOLD_RUN_PARAMS) 127.0.0.1:8000
 
 # DATABASE
 # ------------------------------------------
 drop:
 	@echo "ATTENTION: This operation will drop all tables in the database."
-	litestar seed drop
+	litestar core drop-db
 	litestar database upgrade
 
 seed:
-	litestar seed data
+	litestar core seed-db
 
 initdb:
 	litestar database init ./src/db/migrations
@@ -40,29 +42,24 @@ migrations:       ## Generate database migrations
 # UNFOLD
 # ------------------------------------------
 
-unfold-migrate:
-	django-admin migrate $(PARAMS)
+unfold-seed:
+	$(MANAGE) seed
 
-unfold-docker:
-	gunicorn app.unfold:app
+unfold-migrate:
+	$(MANAGE) migrate $(PARAMS)
 
 unfold-generate:
 	# generate a models from an existing database ('main') using django
-	django-admin inspectdb --database=main $(PARAMS) > $(UNFOLD_MODELS)
+	$(MANAGE) inspectdb --database=main $(PARAMS) > $(UNFOLD_MODELS)
 	# delete a first line
 	sed -i '1d' $(UNFOLD_MODELS)
-	# Add 'app_label = '__main__'' undear each 'class Meta:' in models.py
-	sed -i '/class Meta:/a \ \ \ \     app_label = "__main__"' $(UNFOLD_MODELS)
-	# if CharField( without 'max' after '(' found, add "max_length=255, " after CharField(
-	sed -i "/CharField(/ {/max/! s/CharField(/CharField(max_length=255, /}" $(UNFOLD_MODELS)
 	# add 'Unfold' before each (models.Model)
 	sed -i 's/(models.Model)/Unfold(models.Model)/g' $(UNFOLD_MODELS)
 
 # DEPLOY
 # ------------------------------------------
-landing-docker:
-	#gunicorn -c gunicorn_landing.py
-	gunicorn $(LITESTAR_LANDING_APP) \
+dashboard-docker:
+	gunicorn $(LITESTAR_DASHBOARD_APP) \
 		--bind 0.0.0.0:8000 \
 		--worker-class 'uvicorn.workers.UvicornWorker' \
 		--workers 4 \
@@ -71,6 +68,10 @@ landing-docker:
 		--log-level 'info' \
 		--forwarded-allow-ips '*' \
 		--access-logformat '%({x-forwarded-for}i)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'
+
+unfold-docker:
+	# TODO: update the command
+	gunicorn app.unfold:app
 
 # ETC.
 # ------------------------------------------

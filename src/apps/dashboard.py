@@ -10,7 +10,6 @@ from dishka import make_async_container
 from dishka.integrations import litestar as litestar_integration
 from litestar import Litestar
 from litestar.contrib.jinja import JinjaTemplateEngine
-from litestar.exceptions import HTTPException
 from litestar.plugins.structlog import StructlogPlugin
 from litestar.static_files import create_static_files_router
 from litestar.template import TemplateConfig
@@ -18,8 +17,7 @@ from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from src.apps.exception_handlers.base import exception_to_http_response
-from src.apps.exception_handlers.dashboard import InternalServerExceptionHandler
-from src.apps.exception_handlers.dashboard import not_found_exception_handler
+from src.apps.shared import monkey_patch_advanced_alchemy
 from src.config.alchemy import get_alchemy_config
 from src.config.alchemy import get_alchemy_engine
 from src.config.cli import CLIPlugin
@@ -39,17 +37,23 @@ if TYPE_CHECKING:
 
 def create_app() -> Litestar:
     """Create application."""
+    # add a missing type for adaptix converter compatibility
+    monkey_patch_advanced_alchemy()
+
     # create settings
     settings = Settings()
-
-    # initialize cache
-    cache.setup(disable=settings.redis.CACHE_ENABLED)
 
     # create sqlalchemy engine
     alchemy_engine: AsyncEngine = get_alchemy_engine(db_settings=settings.db)
 
     # create redis engine
     redis_engine: Redis = get_redis_engine(redis_settings=settings.redis)
+
+    # initialize cache
+    cache.setup(
+        settings_url=settings.redis.URL,
+        disable=settings.redis.CACHE_ENABLED,
+    )
 
     # create dependency container
     container: AsyncContainer = make_async_container(
@@ -98,10 +102,6 @@ def create_app() -> Litestar:
         ),
         exception_handlers={
             RepositoryError: exception_to_http_response,
-            HTTPException: not_found_exception_handler,
-            Exception: InternalServerExceptionHandler(
-                app_settings=settings.app,
-            ),
         },
         compression_config=get_compression_config(),
     )

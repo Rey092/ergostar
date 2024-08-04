@@ -1,4 +1,4 @@
-"""Gateway base class."""
+"""Gateway base."""
 
 from typing import Generic
 from typing import cast

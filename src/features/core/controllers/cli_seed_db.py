@@ -8,9 +8,9 @@ from dishka import AsyncContainer
 from dishka import Scope
 from litestar import Litestar
 
+from admin.core.enums import DatabaseSeedingGroups
 from src.features.core.use_cases.seed_database import SeedDatabaseRequestModel
 from src.features.core.use_cases.seed_database import SeedDatabaseUseCase
-from unfold.core.enums import DatabaseSeedingGroups
 
 logger = logging.getLogger(__name__)
 

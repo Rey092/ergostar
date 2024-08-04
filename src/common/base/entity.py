@@ -1,65 +1,68 @@
-"""Entity interface."""
+"""Base entity classes."""
 
-import datetime
-from dataclasses import asdict
+import uuid
 from dataclasses import dataclass
-from dataclasses import fields
-from typing import Any
-from typing import Self
+from dataclasses import field
+from datetime import UTC
+from datetime import datetime
+
+from dacite import from_dict
 
 
-@dataclass()
+@dataclass(kw_only=True)
 class Entity:
-    """Entity."""
-
-    __name__: str
-
-    def to_dict(self, exclude: set[str] | None = None) -> dict[str, Any]:
-        """Convert entity to dictionary.
-
-        Returns:
-        -------
-            dict[str, Any]: A dict representation of the entity
-        z
-
-        """
-        if exclude is None:
-            exclude = set()
-        return {k: v for k, v in asdict(self).items() if k not in exclude}
+    """Base entity class."""
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> Self:
-        """Update entity from dictionary.
+    def from_dict(cls, data: dict) -> "Entity":
+        """Create entity from dictionary."""
+        return from_dict(data_class=cls, data=data)
 
-        Args:
-        ----
-            data (dict[str, Any]): Dictionary to update entity from
 
-        """
-        field_types = {f.name: f.type for f in fields(cls)}
-        return cls(
-            **{k: cls._convert_type(field_types[k], v) for k, v in data.items()},
-        )
+@dataclass(kw_only=True, eq=False)
+class IdEntity:
+    """Entity class with an id field."""
 
-    @staticmethod
-    def _convert_type(field_type: Any, value: Any) -> Any:
-        """Convert value to the specified field type.
+    id: object | None = field(default=None)
 
-        Args:
-        ----
-            field_type (Any): The type to convert the value to
-            value (Any): The value to convert
+    def __hash__(self) -> int:
+        """Entity hash based on id."""
+        return hash(self.id)
 
-        Returns:
-        -------
-            Any: The converted value
+    def __eq__(self, other: object) -> bool:
+        """Compare entity id."""
+        if not isinstance(other, IdEntity):
+            return NotImplemented
+        return self.id == other.id
 
-        """
-        try:
-            if field_type is datetime.datetime:
-                return datetime.datetime.fromisoformat(value).replace(
-                    tzinfo=None,
-                )
-            return field_type(value)
-        except (TypeError, ValueError):
-            return value
+
+@dataclass(kw_only=True, eq=False)
+class AuditEntity:
+    """Entity class with audit fields."""
+
+    created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
+    updated_at: datetime = field(default_factory=lambda: datetime.now(UTC))
+
+
+@dataclass(kw_only=True, eq=False)
+class BigIntEntity(IdEntity, Entity):
+    """Big integer entity class."""
+
+    id: int | None = field(default=None)
+
+
+@dataclass(kw_only=True, eq=False)
+class UUIDEntity(IdEntity, Entity):
+    """UUID entity class."""
+
+    id: uuid.UUID | None = field(default=None)
+
+
+@dataclass(kw_only=True, eq=False)
+class BigIntAuditEntity(AuditEntity, BigIntEntity, Entity):
+    """Big integer audit entity class."""
+
+
+@dataclass(kw_only=True, eq=False)
+class UUIDAuditEntity(AuditEntity, UUIDEntity, Entity):
+    """UUID audit entity class."""

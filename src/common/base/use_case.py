@@ -1,4 +1,4 @@
-"""Base use case class."""
+"""UseCase base."""
 
 from abc import abstractmethod
 from typing import Any

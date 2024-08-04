@@ -9,7 +9,7 @@ poetry install
 ## 2. Export litestar app path
 
 ```bash
-export LITESTAR_APP=src.apps.landing:create_app
+export LITESTAR_APP=src.apps.api:create_app
 ```
 
 ## 3. Install pre-commit hooks
