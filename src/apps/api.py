@@ -24,10 +24,10 @@ from src.config.ioc import BasicProvider
 from src.config.litestar import get_cors_config
 from src.config.litestar import get_structlog_config
 from src.config.redis import get_redis_engine
-from src.config.security.api_key.auth import api_key_auth
 from src.config.settings import Settings
 from src.features.auth.ioc import AuthProvider
 from src.features.auth.routing import auth_router
+from src.features.auth.security.api_key.auth import api_key_auth
 from src.features.core.ioc import CoreProvider
 from src.features.core.routing import health_router
 from src.features.subscriptions.ioc import SubscriptionsProvider
