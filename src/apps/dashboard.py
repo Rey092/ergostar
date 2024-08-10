@@ -92,7 +92,10 @@ def create_app() -> Litestar:
                 ),
             ),
             StructlogPlugin(
-                config=get_structlog_config(log_settings=settings.log),
+                config=get_structlog_config(
+                    app_settings=settings.app,
+                    log_settings=settings.log,
+                ),
             ),
             CLIPlugin(),
         ],

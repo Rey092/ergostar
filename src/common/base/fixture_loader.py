@@ -2,24 +2,21 @@
 
 import json
 import logging
+from collections.abc import Sequence
 from pathlib import Path
-from typing import TYPE_CHECKING
 from typing import Any
+from typing import cast
 
 import aiofiles
 
 from src.common.base.service import Service
 from src.common.interfaces.fixture_loader import EntityT
-from src.common.interfaces.fixture_loader import FuturesT
 from src.common.interfaces.fixture_loader import IFixtureDatabaseLoader
 from src.common.interfaces.fixture_loader import IFixtureEntityLoader
 from src.common.interfaces.fixture_loader import IFixtureLoader
 from src.common.interfaces.fixture_loader_repository import ISeedManyEntries
 from src.config.settings import AppSettings
 from src.features.core.enums import FixtureLoadingStrategy
-
-if TYPE_CHECKING:
-    from src.common.base.entity import Entity
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +27,7 @@ class FixtureLoaderService(
 ):
     """Fixture loader service."""
 
-    future_name: FuturesT
+    future_name: str
 
     def __init__(
         self,
@@ -61,25 +58,27 @@ class FixtureLoaderService(
 
 
 class FixtureEntityLoaderService(
-    IFixtureEntityLoader[EntityT, FuturesT],
+    IFixtureEntityLoader[EntityT],
     FixtureLoaderService,
 ):
     """Fixture entity loader service."""
 
     entity_class: type[EntityT]
-    future_name: FuturesT
+    future_name: str
 
     async def load_fixture_to_entity(
         self,
         fixture_name: str,
-    ) -> list[EntityT]:
+    ) -> Sequence[EntityT]:
         """Load fixture data to dataclass."""
         # load fixture data
         fixture_data: list[dict[str, Any]] = await self.load_fixture(
             fixture_name=fixture_name,
         )
 
-        return [self.entity_class.from_dict(data) for data in fixture_data]
+        return [
+            cast(EntityT, self.entity_class.from_dict(data)) for data in fixture_data
+        ]
 
 
 class FixtureDatabaseLoaderService(
@@ -89,7 +88,7 @@ class FixtureDatabaseLoaderService(
     """Fixture database loader service."""
 
     entity_class: type[EntityT]
-    future_name: FuturesT
+    future_name: str
 
     def __init__(
         self,
@@ -125,8 +124,10 @@ class FixtureDatabaseLoaderService(
             return
 
         # load entities
-        entities: list[Entity] = await self.load_fixture_to_entity(
-            fixture_name=fixture_name,
+        entities: list[EntityT] = list(
+            await self.load_fixture_to_entity(
+                fixture_name=fixture_name,
+            ),
         )
 
         # add entities

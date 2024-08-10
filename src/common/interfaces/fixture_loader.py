@@ -1,8 +1,8 @@
 """Interfaces for core use cases."""
 
 from abc import abstractmethod
+from collections.abc import Sequence
 from typing import Any
-from typing import Literal
 from typing import Protocol
 from typing import TypeVar
 
@@ -10,13 +10,12 @@ from src.common.base.entity import Entity
 from src.features.core.enums import FixtureLoadingStrategy
 
 EntityT = TypeVar("EntityT", bound=Entity)
-FuturesT = Literal["auth", "core", "subscriptions", "users"]
 
 
-class IFixtureLoader(Protocol[FuturesT]):
+class IFixtureLoader(Protocol):
     """Load fixtures to the database."""
 
-    future_name: FuturesT
+    future_name: str
 
     @abstractmethod
     async def load_fixture(
@@ -27,29 +26,29 @@ class IFixtureLoader(Protocol[FuturesT]):
         ...
 
 
-class IFixtureEntityLoader(IFixtureLoader, Protocol[EntityT, FuturesT]):
+class IFixtureEntityLoader(IFixtureLoader, Protocol[EntityT]):
     """Load fixtures to the database."""
 
     entity_class: type[EntityT]
-    future_name: FuturesT
+    future_name: str
 
     @abstractmethod
     async def load_fixture_to_entity(
         self,
         fixture_name: str,
-    ) -> list[EntityT]:
+    ) -> Sequence[EntityT]:
         """Load fixture data to entity class."""
         ...
 
 
 class IFixtureDatabaseLoader(
-    IFixtureEntityLoader[EntityT, FuturesT],
-    Protocol[EntityT, FuturesT],
+    IFixtureEntityLoader[EntityT],
+    Protocol[EntityT],
 ):
     """Load fixtures to the database."""
 
     entity_class: type[EntityT]
-    future_name: FuturesT
+    future_name: str
 
     @abstractmethod
     async def load_to_database(
