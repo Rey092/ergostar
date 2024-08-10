@@ -13,7 +13,7 @@ EntityT = TypeVar("EntityT", bound=Entity)
 FuturesT = Literal["auth", "core", "subscriptions", "users"]
 
 
-class IFixtureLoader(Protocol):
+class IFixtureLoader(Protocol[FuturesT]):
     """Load fixtures to the database."""
 
     future_name: FuturesT
@@ -27,7 +27,7 @@ class IFixtureLoader(Protocol):
         ...
 
 
-class IFixtureEntityLoader(IFixtureLoader, Protocol[EntityT]):
+class IFixtureEntityLoader(IFixtureLoader, Protocol[EntityT, FuturesT]):
     """Load fixtures to the database."""
 
     entity_class: type[EntityT]
@@ -43,8 +43,8 @@ class IFixtureEntityLoader(IFixtureLoader, Protocol[EntityT]):
 
 
 class IFixtureDatabaseLoader(
-    IFixtureEntityLoader[EntityT],
-    Protocol[EntityT],
+    IFixtureEntityLoader[EntityT, FuturesT],
+    Protocol[EntityT, FuturesT],
 ):
     """Load fixtures to the database."""
 

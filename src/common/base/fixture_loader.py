@@ -61,7 +61,7 @@ class FixtureLoaderService(
 
 
 class FixtureEntityLoaderService(
-    IFixtureEntityLoader[EntityT],
+    IFixtureEntityLoader[EntityT, FuturesT],
     FixtureLoaderService,
 ):
     """Fixture entity loader service."""
