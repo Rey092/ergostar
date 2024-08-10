@@ -1,17 +1,17 @@
-"""Gateway for Subscriptions feature."""
+"""Repository for Subscriptions feature."""
 
 from collections.abc import Sequence
 
 from sqlalchemy import select
 
-from src.common.base.gateway import AlchemyGateway
-from src.common.base.repository import GenericSQLAlchemyRepository
+from src.common.base.repository import AlchemyRepository
+from src.common.base.repository_generic import GenericSQLAlchemyRepository
 from src.features.users.entities import User
 from src.features.users.models import UserModel
 
 
-class UserGateway(AlchemyGateway[User, UserModel]):
-    """Subscription Plan gateway."""
+class UserRepository(AlchemyRepository[User, UserModel]):
+    """Subscription Plan repository."""
 
     model_type = UserModel
     repository_type = GenericSQLAlchemyRepository[UserModel]

@@ -5,16 +5,20 @@ from dishka import Provider
 from dishka import Scope
 from dishka import provide
 
-from src.features.core.gateways.adapters.subscription_plan import (
-    SubscriptionPlanGatewayAdapter,
+from src.common.interfaces.fixture_loader import IFixtureDatabaseLoader
+from src.common.interfaces.fixture_loader_repository import ISeedManyEntries
+from src.features.core.interactors.drop_database_tables import DropDatabaseTablesUseCase
+from src.features.core.interactors.seed_database import SeedDatabaseUseCase
+from src.features.core.repositories.subscription_plan import (
+    SubscriptionPlanRepositoryAdapter,
 )
-from src.features.core.gateways.adapters.user import UserGatewayAdapter
-from src.features.core.services.fixture_loader import FixtureLoaderService
-from src.features.core.services.interfaces import ISeedManySubscriptionPlanEntries
-from src.features.core.services.interfaces import ISeedManyUserEntries
-from src.features.core.use_cases.drop_database_tables import DropDatabaseTablesUseCase
-from src.features.core.use_cases.interfaces import ILoadFixturesToDatabase
-from src.features.core.use_cases.seed_database import SeedDatabaseUseCase
+from src.features.core.repositories.user import UserRepositoryAdapter
+from src.features.core.services.fixture_loaders import (
+    SubscriptionPlanFixtureDatabaseLoaderService,
+)
+from src.features.core.services.fixture_loaders import UserFixtureDatabaseLoaderService
+from src.features.subscriptions.entities import SubscriptionPlan
+from src.features.users.entities import User
 
 
 class CoreProvider(Provider):
@@ -30,20 +34,26 @@ class CoreProvider(Provider):
         scope=Scope.REQUEST,
     )
 
-    fixture_loader_service = provide(
-        source=FixtureLoaderService,
+    subscription_plan_repository = provide(
+        source=SubscriptionPlanRepositoryAdapter,
         scope=Scope.REQUEST,
-        provides=AnyOf[ILoadFixturesToDatabase],
+        provides=AnyOf[ISeedManyEntries[SubscriptionPlan]],
     )
 
-    subscription_plan_gateway = provide(
-        source=SubscriptionPlanGatewayAdapter,
+    user_repository = provide(
+        source=UserRepositoryAdapter,
         scope=Scope.REQUEST,
-        provides=AnyOf[ISeedManySubscriptionPlanEntries],
+        provides=AnyOf[ISeedManyEntries[User]],
     )
 
-    users_gateway = provide(
-        source=UserGatewayAdapter,
+    subscription_plan_fixture_database_loader_service = provide(
+        source=SubscriptionPlanFixtureDatabaseLoaderService,
         scope=Scope.REQUEST,
-        provides=AnyOf[ISeedManyUserEntries],
+        provides=IFixtureDatabaseLoader[SubscriptionPlan],
+    )
+
+    user_fixture_database_loader_service = provide(
+        source=UserFixtureDatabaseLoaderService,
+        scope=Scope.REQUEST,
+        provides=IFixtureDatabaseLoader[User],
     )

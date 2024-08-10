@@ -110,24 +110,6 @@ class LogSettings(LiteStarSettings):
     OBFUSCATE_COOKIES: set[str] = {"session"}
     """Request header keys to obfuscate."""
     OBFUSCATE_HEADERS: set[str] = {"Authorization", "X-API-KEY"}
-    """
-    Attributes of the SAQ.
-
-    [`Job`](https://github.com/tobymao/saq/blob/master/saq/job.py) to be
-    logged.
-    """
-    JOB_FIELDS: list[str] = [
-        "function",
-        "kwargs",
-        "key",
-        "scheduled",
-        "attempts",
-        "completed",
-        "queued",
-        "started",
-        "result",
-        "error",
-    ]
     """Attributes of the [Request][litestar.connection.request.Request] to be logged."""
     REQUEST_FIELDS: list[RequestExtractorField] = [
         "path",
@@ -147,18 +129,12 @@ class LogSettings(LiteStarSettings):
     ]
     """Log event name for logs from SAQ worker."""
     WORKER_EVENT: str = "Worker"
-    """Level to log SAQ logs."""
-    SAQ_LEVEL: int = 20
     """Level to log SQLAlchemy logs."""
     SQLALCHEMY_LEVEL: int = 20
     """Level to log uvicorn access logs."""
     UVICORN_ACCESS_LEVEL: int = 20
     """Level to log uvicorn error logs."""
     UVICORN_ERROR_LEVEL: int = 20
-    """Level to log uvicorn access logs."""
-    GRANIAN_ACCESS_LEVEL: int = 30
-    """Level to log uvicorn error logs."""
-    GRANIAN_ERROR_LEVEL: int = 20
 
 
 class RedisSettings(LiteStarSettings):

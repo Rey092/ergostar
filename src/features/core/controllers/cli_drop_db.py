@@ -6,7 +6,7 @@ import click
 from dishka import Scope
 from litestar import Litestar
 
-from src.features.core.use_cases.drop_database_tables import DropDatabaseTablesUseCase
+from src.features.core.interactors.drop_database_tables import DropDatabaseTablesUseCase
 
 
 @click.command(

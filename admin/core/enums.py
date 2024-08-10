@@ -7,3 +7,4 @@ class DatabaseSeedingGroups(str, Enum):
     """Database seeding groups."""
 
     subscriptions = "subscriptions"
+    users = "users"

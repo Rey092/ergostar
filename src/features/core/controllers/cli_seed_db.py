@@ -8,8 +8,8 @@ from dishka import Scope
 from litestar import Litestar
 
 from admin.core.enums import DatabaseSeedingGroups
-from src.features.core.use_cases.seed_database import SeedDatabaseRequestModel
-from src.features.core.use_cases.seed_database import SeedDatabaseUseCase
+from src.features.core.interactors.seed_database import SeedDatabaseRequestModel
+from src.features.core.interactors.seed_database import SeedDatabaseUseCase
 
 logger = logging.getLogger(__name__)
 

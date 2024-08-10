@@ -3,21 +3,34 @@
 import json
 import logging
 from pathlib import Path
+from typing import TYPE_CHECKING
 from typing import Any
 
 import aiofiles
 
-from src.common.base.entity import Entity
+from src.common.base.service import Service
+from src.common.interfaces.fixture_loader import EntityT
+from src.common.interfaces.fixture_loader import FuturesT
+from src.common.interfaces.fixture_loader import IFixtureDatabaseLoader
+from src.common.interfaces.fixture_loader import IFixtureEntityLoader
+from src.common.interfaces.fixture_loader import IFixtureLoader
+from src.common.interfaces.fixture_loader_repository import ISeedManyEntries
 from src.config.settings import AppSettings
 from src.features.core.enums import FixtureLoadingStrategy
-from src.features.core.services.interfaces import ISeedManyEntries
-from src.features.core.use_cases.interfaces import ILoadFixturesToDatabase
+
+if TYPE_CHECKING:
+    from src.common.base.entity import Entity
 
 logger = logging.getLogger(__name__)
 
 
-class FixtureLoaderService(ILoadFixturesToDatabase):
+class FixtureLoaderService(
+    IFixtureLoader,
+    Service,
+):
     """Fixture loader service."""
+
+    future_name: FuturesT
 
     def __init__(
         self,
@@ -25,27 +38,15 @@ class FixtureLoaderService(ILoadFixturesToDatabase):
     ):
         """Initialize service."""
         self.features_path: str = app_settings.FEATURES_PATH
-        self._message_success = "{fixture_name} seeded successfully."
-        self._message_allowed = "{fixture_name} is allowed to seed."
-        self._message_not_exists = (
-            "{fixture_name} is allowed to be seeded, because the table is empty."
-        )
-        self._message_skip = "{fixture_name} already seeded. Skipping."
-        self._message_override = "{fixture_name} already seeded. Overriding."
-        self._exception_already_seeded = (
-            "{fixture_name} already seeded. Raising an error."
-        )
-        self._exception_invalid_strategy = "Invalid loading strategy."
 
     async def load_fixture(
         self,
-        future_name: str,
         fixture_name: str,
     ) -> list[dict[str, Any]]:
         """Load fixture data."""
         # prepare a fixture path
         fixture_path = (
-            f"{self.features_path}/{future_name}/fixtures/{fixture_name}.json"
+            f"{self.features_path}/{self.future_name}/fixtures/{fixture_name}.json"
         )
 
         # check if fixture exists
@@ -58,54 +59,84 @@ class FixtureLoaderService(ILoadFixturesToDatabase):
 
         return data if isinstance(data, list) else [data]
 
+
+class FixtureEntityLoaderService(
+    IFixtureEntityLoader[EntityT],
+    FixtureLoaderService,
+):
+    """Fixture entity loader service."""
+
+    entity_class: type[EntityT]
+    future_name: FuturesT
+
     async def load_fixture_to_entity(
         self,
-        future_name: str,
         fixture_name: str,
-        entity_class: type[Entity],
-    ) -> list[Entity]:
+    ) -> list[EntityT]:
         """Load fixture data to dataclass."""
         # load fixture data
         fixture_data: list[dict[str, Any]] = await self.load_fixture(
-            future_name=future_name,
             fixture_name=fixture_name,
         )
 
-        return [entity_class.from_dict(data) for data in fixture_data]
+        return [self.entity_class.from_dict(data) for data in fixture_data]
 
-    async def load_fixture_to_database(
+
+class FixtureDatabaseLoaderService(
+    IFixtureDatabaseLoader[EntityT],
+    FixtureEntityLoaderService[EntityT],
+):
+    """Fixture database loader service."""
+
+    entity_class: type[EntityT]
+    future_name: FuturesT
+
+    def __init__(
         self,
-        future_name: str,
+        app_settings: AppSettings,
+        repository: ISeedManyEntries[EntityT],
+    ):
+        """Initialize service."""
+        super().__init__(app_settings=app_settings)
+        self._repository = repository
+        self._message_success = "{fixture_name} seeded successfully."
+        self._message_allowed = "{fixture_name} is allowed to seed."
+        self._message_not_exists = (
+            "{fixture_name} is allowed to be seeded, because the table is empty."
+        )
+        self._message_skip = "{fixture_name} already seeded. Skipping."
+        self._message_override = "{fixture_name} already seeded. Overriding."
+        self._exception_already_seeded = (
+            "{fixture_name} already seeded. Raising an error."
+        )
+        self._exception_invalid_strategy = "Invalid loading strategy."
+
+    async def load_to_database(
+        self,
         fixture_name: str,
-        entity_class: type[Entity],
-        gateway: ISeedManyEntries,
         loading_strategy: FixtureLoadingStrategy,
     ) -> None:
         """Load many entities."""
         # check if loading is allowed
         if not await self._is_loading_allowed(
             fixture_name=fixture_name,
-            repository=gateway,
             loading_exists_strategy=loading_strategy,
         ):
             return
 
         # load entities
         entities: list[Entity] = await self.load_fixture_to_entity(
-            future_name=future_name,
             fixture_name=fixture_name,
-            entity_class=entity_class,
         )
 
         # add entities
-        await gateway.add_many(data=entities)
+        await self._repository.add_many(data=entities)
 
         logger.info(self._message_success.format(fixture_name=fixture_name))
 
     async def _is_loading_allowed(
         self,
         fixture_name: str,
-        repository: ISeedManyEntries,
         loading_exists_strategy: FixtureLoadingStrategy,
     ) -> bool:
         """Check if loading is allowed.
@@ -118,7 +149,7 @@ class FixtureLoaderService(ILoadFixturesToDatabase):
             return True
 
         # if no data exists, allow loading
-        if not await repository.exists_anything():
+        if not await self._repository.exists_anything():
             logger.info(self._message_not_exists.format(fixture_name=fixture_name))
             return True
 
@@ -130,7 +161,7 @@ class FixtureLoaderService(ILoadFixturesToDatabase):
         # delete all data if data exists and strategy is OVERRIDE
         if loading_exists_strategy == FixtureLoadingStrategy.OVERRIDE:
             logger.info(self._message_override.format(fixture_name=fixture_name))
-            await repository.delete_everything()
+            await self._repository.delete_everything()
             return True
 
         # if strategy is RAISE

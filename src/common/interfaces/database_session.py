@@ -16,15 +16,23 @@ _T = TypeVar("_T", bound=Any)
 
 
 class IDatabaseSession(Protocol):
-    """IAlchemySession protocol."""
+    """IDatabaseSession protocol."""
 
     async def commit(self) -> None:
         """Commit the transaction."""
         ...
 
-    async def flush(self) -> None:
-        """Flush the session."""
+    async def rollback(self) -> None:
+        """Rollback the transaction."""
         ...
+
+    async def close(self) -> None:
+        """Close the session."""
+        ...
+
+
+class IAlchemySession(IDatabaseSession, Protocol):
+    """IAlchemySession protocol."""
 
     async def execute(
         self,

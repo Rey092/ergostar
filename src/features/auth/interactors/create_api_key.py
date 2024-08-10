@@ -3,10 +3,10 @@
 import logging
 from dataclasses import dataclass
 
-from src.common.base.use_case import UseCase
-from src.common.interfaces.db import IDatabaseSession
+from src.common.base.interactor import UseCase
+from src.common.interfaces.database_session import IAlchemySession
 from src.features.auth.entities.api_key import ApiKey
-from src.features.auth.use_cases import interfaces
+from src.features.auth.interactors import interfaces
 
 logger = logging.getLogger(__name__)
 
@@ -18,13 +18,13 @@ class CreateApiKeyRequestModel:
     user_id: int
 
 
-class CreateApiKeyUseCase(UseCase[CreateApiKeyRequestModel, str]):
+class CreateApiKeyInteractor(UseCase[CreateApiKeyRequestModel, str]):
     """Create api key use case."""
 
     def __init__(
         self,
-        session: IDatabaseSession,
-        create_api_key_repository: interfaces.ICreateApiKeyGateway,
+        session: IAlchemySession,
+        create_api_key_repository: interfaces.ICreateApiKeyRepository,
     ):
         """Initialize interactor."""
         self._session = session

@@ -4,13 +4,15 @@ from dishka import Scope
 from dishka import provide
 from dishka.provider import Provider
 
-from src.features.subscriptions.gateways import SubscriptionPlanGateway
+from src.features.subscriptions.repositories.subscription_plan import (
+    SubscriptionPlanRepository,
+)
 
 
 class SubscriptionsProvider(Provider):
     """Subscription provider (DI)."""
 
-    get_subscription_plan_gateway = provide(
-        source=SubscriptionPlanGateway,
+    get_subscription_plan_repository = provide(
+        source=SubscriptionPlanRepository,
         scope=Scope.REQUEST,
     )

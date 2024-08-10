@@ -6,7 +6,7 @@ from typing import Protocol
 from src.features.auth.entities.api_key import ApiKey
 
 
-class ICreateApiKeyGateway(Protocol):
+class ICreateApiKeyRepository(Protocol):
     """Interface for creating an API key."""
 
     @abstractmethod

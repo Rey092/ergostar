@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
-from src.common.interfaces.db import IDatabaseSession
+from src.common.interfaces.database_session import IAlchemySession
 from src.config.settings import AppSettings
 from src.config.settings import Settings
 
@@ -45,7 +45,7 @@ class BasicProvider(Provider):
     async def get_session(
         self,
         session_maker: async_sessionmaker[AsyncSession],
-    ) -> AsyncIterable[IDatabaseSession]:
+    ) -> AsyncIterable[IAlchemySession]:
         """Provide async session."""
         async with session_maker() as session:
             yield session

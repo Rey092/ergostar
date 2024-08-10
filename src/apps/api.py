@@ -92,7 +92,10 @@ def create_app() -> Litestar:
                 ),
             ),
             StructlogPlugin(
-                config=get_structlog_config(log_settings=settings.log),
+                config=get_structlog_config(
+                    app_settings=settings.app,
+                    log_settings=settings.log,
+                ),
             ),
             CLIPlugin(),
         ],
@@ -106,6 +109,7 @@ def create_app() -> Litestar:
             title="Litestar API",
             version="0.1.0",
             description="Litestar API",
+            use_handler_docstrings=True,
             path="/docs",
             render_plugins=[
                 SwaggerRenderPlugin(),

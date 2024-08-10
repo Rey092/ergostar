@@ -2,8 +2,8 @@
 
 from sqlalchemy import text
 
-from src.common.base.use_case import UseCase
-from src.common.interfaces.db import IDatabaseSession
+from src.common.base.interactor import UseCase
+from src.common.interfaces.database_session import IAlchemySession
 from src.config.settings import AppSettings
 
 
@@ -12,7 +12,7 @@ class DropDatabaseTablesUseCase(UseCase[None, None]):
 
     def __init__(
         self,
-        session: IDatabaseSession,
+        session: IAlchemySession,
         app_settings: AppSettings,
     ):
         """Initialize interactor."""

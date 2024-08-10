@@ -43,6 +43,7 @@ def get_cors_config(app_settings: AppSettings) -> CORSConfig:
 
 
 def get_structlog_config(
+    app_settings: AppSettings,
     log_settings: LogSettings,
 ) -> StructlogConfig:
     """Get structlog configuration."""
@@ -66,31 +67,22 @@ def get_structlog_config(
                         "level": log_settings.UVICORN_ERROR_LEVEL,
                         "handlers": ["queue_listener"],
                     },
-                    "granian.access": {
-                        "propagate": False,
-                        "level": log_settings.GRANIAN_ACCESS_LEVEL,
-                        "handlers": ["queue_listener"],
-                    },
-                    "granian.error": {
-                        "propagate": False,
-                        "level": log_settings.GRANIAN_ERROR_LEVEL,
-                        "handlers": ["queue_listener"],
-                    },
-                    "saq": {
-                        "propagate": False,
-                        "level": log_settings.SAQ_LEVEL,
-                        "handlers": ["queue_listener"],
-                    },
-                    "sqlalchemy.engine": {
-                        "propagate": False,
-                        "level": log_settings.SQLALCHEMY_LEVEL,
-                        "handlers": ["queue_listener"],
-                    },
-                    "sqlalchemy.pool": {
-                        "propagate": False,
-                        "level": log_settings.SQLALCHEMY_LEVEL,
-                        "handlers": ["queue_listener"],
-                    },
+                    **(
+                        {
+                            "sqlalchemy.engine": {
+                                "propagate": False,
+                                "level": log_settings.SQLALCHEMY_LEVEL,
+                                "handlers": ["queue_listener"],
+                            },
+                            "sqlalchemy.pool": {
+                                "propagate": False,
+                                "level": log_settings.SQLALCHEMY_LEVEL,
+                                "handlers": ["queue_listener"],
+                            },
+                        }
+                        if app_settings.DEBUG
+                        else {}
+                    ),
                 },
             ),
         ),

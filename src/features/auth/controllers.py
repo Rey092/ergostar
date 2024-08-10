@@ -8,8 +8,8 @@ from litestar import Controller
 from litestar import Request
 from litestar import post
 
-from src.features.auth.use_cases.create_api_key import CreateApiKeyRequestModel
-from src.features.auth.use_cases.create_api_key import CreateApiKeyUseCase
+from src.features.auth.interactors.create_api_key import CreateApiKeyInteractor
+from src.features.auth.interactors.create_api_key import CreateApiKeyRequestModel
 from src.features.users.entities import User
 
 
@@ -20,10 +20,10 @@ class AuthController(Controller):
     @inject
     async def create_api_key(
         self,
-        create_api_key_use_case: FromDishka[CreateApiKeyUseCase],
+        interactor: FromDishka[CreateApiKeyInteractor],
     ) -> str:
         """Create an api key. Exclude from auth."""
-        return await create_api_key_use_case(
+        return await interactor(
             CreateApiKeyRequestModel(
                 user_id=1,
             ),

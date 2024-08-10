@@ -1,17 +1,17 @@
-"""Gateway for ApiKeys feature."""
+"""Repository for ApiKeys feature."""
 
-from src.common.base.gateway import AlchemyGateway
-from src.common.base.repository import GenericSQLAlchemyRepository
+from src.common.base.repository import AlchemyRepository
+from src.common.base.repository_generic import GenericSQLAlchemyRepository
 from src.features.auth.entities.api_key import ApiKey
+from src.features.auth.interactors.interfaces import ICreateApiKeyRepository
 from src.features.auth.models import ApiKeyModel
-from src.features.auth.use_cases.interfaces import ICreateApiKeyGateway
 
 
-class ApiKeyGateway(
-    AlchemyGateway[ApiKey, ApiKeyModel],
-    ICreateApiKeyGateway,
+class ApiKeyRepository(
+    AlchemyRepository[ApiKey, ApiKeyModel],
+    ICreateApiKeyRepository,
 ):
-    """ApiKey gateway."""
+    """ApiKey repository."""
 
     model_type = ApiKeyModel
     repository_type = GenericSQLAlchemyRepository[ApiKeyModel]
