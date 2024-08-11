@@ -66,6 +66,10 @@ class FixtureEntityLoaderService(
     entity_class: type[EntityT]
     future_name: str
 
+    def __init__(self, app_settings: AppSettings):
+        """Initialize service."""
+        super().__init__(app_settings=app_settings)
+
     async def load_fixture_to_entity(
         self,
         fixture_name: str,
@@ -76,6 +80,7 @@ class FixtureEntityLoaderService(
             fixture_name=fixture_name,
         )
 
+        # load data to entity
         return [
             cast(EntityT, self.entity_class.from_dict(data)) for data in fixture_data
         ]

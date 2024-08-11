@@ -7,6 +7,7 @@ from advanced_alchemy.extensions.litestar import SQLAlchemyPlugin
 from cashews import cache
 from dishka import make_async_container
 from dishka.integrations import litestar as litestar_integration
+from hvac.exceptions import VaultError
 from litestar import Litestar
 from litestar.openapi import OpenAPIConfig
 from litestar.openapi.plugins import SwaggerRenderPlugin
@@ -16,6 +17,7 @@ from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from src.apps.exception_handlers.base import exception_to_http_response
+from src.apps.exception_handlers.vault import vault_exception_handler
 from src.apps.shared import monkey_patch_advanced_alchemy
 from src.config.alchemy import get_alchemy_config
 from src.config.alchemy import get_alchemy_engine
@@ -59,8 +61,8 @@ def create_app() -> Litestar:
 
     # create dependency container
     container: AsyncContainer = make_async_container(
-        BasicProvider(),
         CoreProvider(),
+        BasicProvider(),
         SubscriptionsProvider(),
         UserProvider(),
         AuthProvider(),
@@ -101,6 +103,7 @@ def create_app() -> Litestar:
         ],
         exception_handlers={
             RepositoryError: exception_to_http_response,
+            VaultError: vault_exception_handler,
         },
         on_app_init=[
             api_key_auth.on_app_init,

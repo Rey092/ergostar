@@ -17,7 +17,7 @@ from litestar.openapi.spec import SecurityScheme
 from litestar.security.base import AbstractSecurityConfig
 
 from src.features.auth.security.api_key.middleware import ApiKeyMiddleware
-from src.features.users.entities import User
+from src.features.users.entities.user import User
 
 if TYPE_CHECKING:
     from collections.abc import Callable

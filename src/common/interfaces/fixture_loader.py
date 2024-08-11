@@ -1,4 +1,4 @@
-"""Interfaces for core use cases."""
+"""Fixture loader interfaces."""
 
 from abc import abstractmethod
 from collections.abc import Sequence

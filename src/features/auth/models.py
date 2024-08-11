@@ -1,36 +1,30 @@
 """Persistence models for the auth feature."""
 
 from typing import TYPE_CHECKING
+from uuid import UUID
 
-from advanced_alchemy.base import BigIntAuditBase
+from advanced_alchemy.base import UUIDv7AuditBase
 from sqlalchemy import ForeignKey
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
-from sqlalchemy_utils import StringEncryptedType
-from sqlalchemy_utils.types.encrypted.encrypted_type import AesEngine
-
-from src.config import settings
 
 if TYPE_CHECKING:
     from src.features.users.models import UserModel
 
 
-class ApiKeyModel(BigIntAuditBase):
+class ApiKeyModel(UUIDv7AuditBase):
     """API key entity."""
 
     __tablename__ = "api_keys"
 
-    key: Mapped[str] = mapped_column(
-        StringEncryptedType(
-            String,
-            settings.app.SECRET_KEY,
-            AesEngine,
-            "pkcs5",
-        ),
+    key_hashed: Mapped[UUID] = mapped_column(
+        String(128),
+        nullable=False,
+        unique=True,
     )
-    user_id: Mapped[int] = mapped_column(
+    user_id: Mapped[UUID] = mapped_column(
         ForeignKey("users.id"),
         nullable=False,
     )

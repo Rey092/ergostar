@@ -1,6 +1,6 @@
 """Subscription models."""
 
-from advanced_alchemy.base import BigIntAuditBase
+from advanced_alchemy.base import UUIDv7AuditBase
 from sqlalchemy import Boolean
 from sqlalchemy import Integer
 from sqlalchemy import String
@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 
 
-class SubscriptionPlanModel(BigIntAuditBase):
+class SubscriptionPlanModel(UUIDv7AuditBase):
     """Subscription Plan."""
 
     __tablename__ = "subscription_plans"

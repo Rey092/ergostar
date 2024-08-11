@@ -6,7 +6,9 @@ import click
 from dishka import Scope
 from litestar import Litestar
 
-from src.features.core.interactors.drop_database_tables import DropDatabaseTablesUseCase
+from src.features.core.interactors.drop_database_tables import (
+    DropDatabaseTablesInteractor,
+)
 
 
 @click.command(
@@ -24,7 +26,7 @@ def drop_db(app: Litestar) -> None:
     async def _drop_database_tables() -> None:
         """Drop the database tables."""
         async with app.state.dishka_container(scope=Scope.REQUEST) as container:
-            drop_database_tables = await container.get(DropDatabaseTablesUseCase)
+            drop_database_tables = await container.get(DropDatabaseTablesInteractor)
             await drop_database_tables()
 
     console.rule("Starting to drop the database")

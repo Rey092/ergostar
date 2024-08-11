@@ -2,6 +2,7 @@
 
 from collections.abc import AsyncIterable
 
+from dishka import AnyOf
 from dishka import Scope
 from dishka import from_context
 from dishka import provide
@@ -12,8 +13,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from src.common.interfaces.database_session import IAlchemySession
+from src.common.interfaces.database_session import IDatabaseSession
 from src.config.settings import AppSettings
 from src.config.settings import Settings
+from src.config.settings import VaultSettings
 
 
 class BasicProvider(Provider):
@@ -29,6 +32,11 @@ class BasicProvider(Provider):
         return all_settings.app
 
     @provide(scope=Scope.APP)
+    def get_vault_settings(self, all_settings: Settings) -> VaultSettings:
+        """Provide debug app status."""
+        return all_settings.vault
+
+    @provide(scope=Scope.APP)
     def get_session_maker(
         self,
         async_engine: AsyncEngine,
@@ -41,7 +49,7 @@ class BasicProvider(Provider):
             expire_on_commit=False,
         )
 
-    @provide(scope=Scope.REQUEST)
+    @provide(scope=Scope.REQUEST, provides=AnyOf[IAlchemySession, IDatabaseSession])
     async def get_session(
         self,
         session_maker: async_sessionmaker[AsyncSession],

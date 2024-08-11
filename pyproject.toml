@@ -8,41 +8,43 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
-litestar-vite = "^0.1.22"
 litestar = { extras = ["jinja", "sqlalchemy", "standard", "structlog"], version = "^2.10.0" }
-pydantic = "^2.7.4"
-pydantic-settings = "^2.3.3"
-sqlalchemy = { extras = ["mypy"], version = "^2.0.31" }
-redis = { extras = ["hiredis"], version = "^5.0.6" }  # redis as cahce/broker + hiredis for performance
-gunicorn = "^22.0.0"
-asyncpg = "^0.29.0"
-sqlalchemy-file = "^0.6.0"
-aiofiles = "^23.2.1"
+litestar-vite = "^0.1.22"
 fastapi-storages = "^0.3.0"
-dishka = "^1.2.0"
-wtforms = "^3.1.2"
+dishka = "^1.2.0"  # dependency injection
 factory-boy = "^3.3.0"
-django = "^5.0.6"
-uvicorn = "^0.30.1"
-psycopg2-binary = "^2.9.9"
-python-multipart = "^0.0.9"
+python-multipart = "^0.0.9"  # for file uploads
 advanced-alchemy = "^0.17.3"
-django-environ = "^0.11.2"
-
-
-cashews = "^7.1.0"
-dacite = "^1.8.1"
+cashews = "^7.1.0"  # cache
 uuid-utils = "^0.9.0"
-django-unfold = "^0.34.0"
 python-jose = "^3.3.0"
-sqlalchemy-utils = "^0.41.2"
-cryptography = "^43.0.0"
+cryptography = "^43.0.0" # crypto algorithms
+# structures
+pydantic = "^2.7.4" # data validation
+pydantic-settings = "^2.3.3"  # settings
+wtforms = "^3.1.2"
+# server
+uvicorn = "^0.30.1"
+gunicorn = "^22.0.0"
+# drivers
+asyncpg = "^0.29.0"  # for sqlalchemy
+psycopg2-binary = "^2.9.9"  # for django
+hvac = "^2.3.0"  # vault
+redis = { extras = ["hiredis"], version = "^5.0.6" }  # redis as cahce/broker + hiredis for performance
+aiofiles = "^23.2.1"  # for file uploads
+sqlalchemy = { extras = ["mypy"], version = "^2.0.31" }
+sqlalchemy-file = "^0.6.0"  # todo: do something with it
+# django
+django = "^5.0.6"  # django
+django-environ = "^0.11.2"  # env vars
+django-unfold = "^0.34.0"  # admin interface
+
+
 [tool.poetry.group.dev.dependencies]
 aiosqlite = "^0.20.0"
 pytest = "^8.2.2"
 pytest-asyncio = "^0.23.7"
 pre-commit = "^3.7.1"
-git-cliff = "^2.4.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -218,66 +220,3 @@ known-first-party = ['tests', 'src']
 [tool.pyright]
 exclude = ["scripts", "docs"]
 include = ["src/app", "tests"]
-
-[tool.git-cliff.changelog]
-body = """
-{% if version %}\
-    `Release [v{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }} <https://github.com/litestar-org/litestar-fullstack/releases/tag/v{{ version | trim_start_matches(pat="v") }}>`_
-    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    * `See All commits in v{{ version | trim_start_matches(pat="v") }} <https://github.com/litestar-org/litestar-fullstack/commits/v{{ version | trim_start_matches(pat="v") }}>`_
-{% else %}\
-    [unreleased]
-    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-{% endif %}\
-{% if previous %}\
-    {% if previous.commit_id %}
-        `{{ previous.commit_id | truncate(length=7, end="") }} <https://github.com/litestar-org/litestar-fullstack/commit/{{ previous.commit_id }}>`_ ... \
-            `{{ previous.commit_id | truncate(length=7, end="") }} <https://github.com/litestar-org/litestar-fullstack/commit/{{ commit_id }}>`_ \
-            | `See diff for {{ version }} <https://github.com/litestar-org/litestar-fullstack/compare/{{ previous.commit_id }}...{{ commit_id }}>`_
-    {% endif %}\
-{% endif %}\
-{% for group, commits in commits | group_by(attribute="group") %}
-    {{ group | upper_first }}
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    {% for commit in commits %}
-        * (`{{ commit.id | truncate(length=7, end="") }} <https://github.com/litestar-org/litestar-fullstack/commit/{{ commit.id }}>`_) {% if commit.breaking %}[**breaking**] {% endif %} - {{ commit.message | upper_first }} ({{ commit.author.name }})\
-          {% for footer in commit.footers -%}
-            , {{ footer.token }}{{ footer.separator }}{{ footer.value }}\
-          {% endfor %}\
-    {% endfor %}
-{% endfor %}\n
-"""
-footer = """
-Litestar Fullstack Changelog
-"""
-header = """
-=========
-Changelog
-=========\n
-All commits to this project will be documented in this file.\n
-"""
-trim = true
-
-[tool.git-cliff.git]
-commit_parsers = [
-    { message = "^feat", group = "Features" },
-    { message = "^fix", group = "Bug Fixes" },
-    { message = "^doc", group = "Documentation" },
-    { message = "^perf", group = "Performance" },
-    { message = "^refactor", group = "Refactor" },
-    { message = "^style", group = "Styling" },
-    { message = "^test", group = "Testing" },
-    { message = "^chore\\(release\\): prepare for", skip = true },
-    { message = "^chore", group = "Miscellaneous Tasks" },
-    { body = ".*security", group = "Security" },
-]
-conventional_commits = true
-filter_commits = false
-filter_unconventional = true
-ignore_tags = ""
-protect_breaking_commits = false
-skip_tags = "v0.1.0-beta.1"
-sort_commits = "oldest"
-split_commits = false
-tag_pattern = "v[0-9]*"
-topo_order = false

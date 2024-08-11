@@ -1,15 +1,15 @@
 """API key entity."""
 
+import uuid
 from dataclasses import dataclass
-from dataclasses import field
 
-from src.common.base.entity import BigIntAuditEntity
-from src.config.utils.uuid import generate_uuid7
+from src.common.base.entity import UUIDAuditEntity
 
 
 @dataclass(eq=False)
-class ApiKey(BigIntAuditEntity):
+class ApiKey(UUIDAuditEntity):
     """API key entity."""
 
-    user_id: int
-    key: str = field(default_factory=generate_uuid7)
+    user_id: uuid.UUID
+    key_hashed: str
+    key_original: uuid.UUID | None = None

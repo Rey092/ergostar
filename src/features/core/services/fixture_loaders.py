@@ -2,7 +2,7 @@
 
 from src.common.base.fixture_loader import FixtureDatabaseLoaderService
 from src.features.subscriptions.entities import SubscriptionPlan
-from src.features.users.entities import User
+from src.features.users.entities.user import User
 
 
 class SubscriptionPlanFixtureDatabaseLoaderService(

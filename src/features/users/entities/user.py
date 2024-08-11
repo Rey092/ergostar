@@ -2,11 +2,11 @@
 
 from dataclasses import dataclass
 
-from src.common.base.entity import BigIntEntity
+from src.common.base.entity import UUIDAuditEntity
 
 
 @dataclass(eq=False)
-class User(BigIntEntity):
+class User(UUIDAuditEntity):
     """User entity."""
 
     email: str

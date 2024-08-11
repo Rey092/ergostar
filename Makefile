@@ -36,8 +36,7 @@ migrate:          ## Generate database migrations
 
 migrations:       ## Generate database migrations
 	@echo "ATTENTION: This operation will create a new database migration for any defined models changes."
-	@while [ -z "$$MIGRATION_MESSAGE" ]; do read -r -p "Migration message: " MIGRATION_MESSAGE; done ;
-	litestar database make-migrations --autogenerate -m "$${MIGRATION_MESSAGE}"
+	litestar database make-migrations --autogenerate
 
 # DATABASE UNFOLD
 # ------------------------------------------

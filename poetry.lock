@@ -503,19 +503,6 @@ test = ["certifi", "cryptography-vectors (==43.0.0)", "pretend", "pytest (>=6.2.
 test-randomorder = ["pytest-randomly"]
 
 [[package]]
-name = "dacite"
-version = "1.8.1"
-description = "Simple creation of data classes from dictionaries."
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "dacite-1.8.1-py3-none-any.whl", hash = "sha256:cc31ad6fdea1f49962ea42db9421772afe01ac5442380d9a99fcf3d188c61afe"},
-]
-
-[package.extras]
-dev = ["black", "coveralls", "mypy", "pre-commit", "pylint", "pytest (>=5)", "pytest-benchmark", "pytest-cov"]
-
-[[package]]
 name = "dishka"
 version = "1.2.0"
 description = "Minimal DI framework"
@@ -704,25 +691,6 @@ files = [
 docs = ["furo (>=2023.9.10)", "sphinx (>=7.2.6)", "sphinx-autodoc-typehints (>=1.25.2)"]
 testing = ["covdefaults (>=2.3)", "coverage (>=7.3.2)", "diff-cover (>=8.0.1)", "pytest (>=7.4.3)", "pytest-asyncio (>=0.21)", "pytest-cov (>=4.1)", "pytest-mock (>=3.12)", "pytest-timeout (>=2.2)", "virtualenv (>=20.26.2)"]
 typing = ["typing-extensions (>=4.8)"]
-
-[[package]]
-name = "git-cliff"
-version = "2.4.0"
-description = "A highly customizable changelog generator ⛰️"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "git_cliff-2.4.0-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:c4e9a2a120f3d75e59117c4447e6d21975b833ed9859c927d46e730cf0a6e4c3"},
-    {file = "git_cliff-2.4.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:ef5c2ab6e81f5dd7196334c72c75f1073a9e9154ce83a7ffb14adfd3edf773f8"},
-    {file = "git_cliff-2.4.0-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:597b9755915000e94f4acbae3853250d5a46d218db87c2a488691207edb02de2"},
-    {file = "git_cliff-2.4.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b10fc8556082c77834b91a1a03e6c3232a1bad397d475e17bd968f8163d08f61"},
-    {file = "git_cliff-2.4.0-py3-none-manylinux_2_28_aarch64.whl", hash = "sha256:b3b1bb15417b52350cd7d7ab06a97f7b25f3d7fe5ceb5537162312f31ddca200"},
-    {file = "git_cliff-2.4.0-py3-none-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:9738871210a0bca2cc8b73395b9464c9d959383f9331a3b806d1e9ae0d8af613"},
-    {file = "git_cliff-2.4.0-py3-none-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:0544d383e1b94a07547963aba71c059a0bbf2e26690e115c7086b8ddbb1c5b72"},
-    {file = "git_cliff-2.4.0-py3-none-win32.whl", hash = "sha256:34bffad59a8ad37e354a1d1f2a2396f9118bf7ab7e0b5bcdae6d08c95484ab37"},
-    {file = "git_cliff-2.4.0-py3-none-win_amd64.whl", hash = "sha256:dceb82ba3e951e1a8c2b376c1300de5c278dba0f46d12e7c8b7ddfa977dd9e19"},
-    {file = "git_cliff-2.4.0.tar.gz", hash = "sha256:d2481de794ea1871471222a3500d06d4821878b522066b7e467eccfe6437d2f0"},
-]
 
 [[package]]
 name = "greenlet"
@@ -1022,6 +990,23 @@ brotli = ["brotli", "brotlicffi"]
 cli = ["click (==8.*)", "pygments (==2.*)", "rich (>=10,<14)"]
 http2 = ["h2 (>=3,<5)"]
 socks = ["socksio (==1.*)"]
+
+[[package]]
+name = "hvac"
+version = "2.3.0"
+description = "HashiCorp Vault API client"
+optional = false
+python-versions = "<4.0,>=3.8"
+files = [
+    {file = "hvac-2.3.0-py3-none-any.whl", hash = "sha256:a3afc5710760b6ee9b3571769df87a0333da45da05a5f9f963e1d3925a84be7d"},
+    {file = "hvac-2.3.0.tar.gz", hash = "sha256:1b85e3320e8642dd82f234db63253cda169a817589e823713dc5fca83119b1e2"},
+]
+
+[package.dependencies]
+requests = ">=2.27.1,<3.0.0"
+
+[package.extras]
+parser = ["pyhcl (>=0.4.4,<0.5.0)"]
 
 [[package]]
 name = "identify"
@@ -2254,34 +2239,6 @@ doc = ["mkdocs-material (>=9.0.0,<10.0.0)", "mkdocstrings[python] (>=0.19.0,<0.2
 test = ["black (==23.9.1)", "coverage (>=7.0.0,<7.4.0)", "fastapi (>=0.92,<0.104)", "fasteners (==0.19)", "flask (>=2.2,<2.3)", "flask-sqlalchemy (>=3.0,<3.2)", "mypy (==1.5.1)", "pillow (>=9.4.0,<10.1.0)", "psycopg2-binary (>=2.9.5,<3.0.0)", "pymysql[rsa] (>=1.0.2,<1.2.0)", "pytest (>=7.2.0,<7.5.0)", "python-multipart (==0.0.6)", "ruff (==0.0.292)"]
 
 [[package]]
-name = "sqlalchemy-utils"
-version = "0.41.2"
-description = "Various utility functions for SQLAlchemy."
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "SQLAlchemy-Utils-0.41.2.tar.gz", hash = "sha256:bc599c8c3b3319e53ce6c5c3c471120bd325d0071fb6f38a10e924e3d07b9990"},
-    {file = "SQLAlchemy_Utils-0.41.2-py3-none-any.whl", hash = "sha256:85cf3842da2bf060760f955f8467b87983fb2e30f1764fd0e24a48307dc8ec6e"},
-]
-
-[package.dependencies]
-SQLAlchemy = ">=1.3"
-
-[package.extras]
-arrow = ["arrow (>=0.3.4)"]
-babel = ["Babel (>=1.3)"]
-color = ["colour (>=0.0.4)"]
-encrypted = ["cryptography (>=0.6)"]
-intervals = ["intervals (>=0.7.1)"]
-password = ["passlib (>=1.6,<2.0)"]
-pendulum = ["pendulum (>=2.0.5)"]
-phone = ["phonenumbers (>=5.9.2)"]
-test = ["Jinja2 (>=2.3)", "Pygments (>=1.2)", "backports.zoneinfo", "docutils (>=0.10)", "flake8 (>=2.4.0)", "flexmock (>=0.9.7)", "isort (>=4.2.2)", "pg8000 (>=1.12.4)", "psycopg (>=3.1.8)", "psycopg2 (>=2.5.1)", "psycopg2cffi (>=2.8.1)", "pymysql", "pyodbc", "pytest (==7.4.4)", "python-dateutil (>=2.6)", "pytz (>=2014.2)"]
-test-all = ["Babel (>=1.3)", "Jinja2 (>=2.3)", "Pygments (>=1.2)", "arrow (>=0.3.4)", "backports.zoneinfo", "colour (>=0.0.4)", "cryptography (>=0.6)", "docutils (>=0.10)", "flake8 (>=2.4.0)", "flexmock (>=0.9.7)", "furl (>=0.4.1)", "intervals (>=0.7.1)", "isort (>=4.2.2)", "passlib (>=1.6,<2.0)", "pendulum (>=2.0.5)", "pg8000 (>=1.12.4)", "phonenumbers (>=5.9.2)", "psycopg (>=3.1.8)", "psycopg2 (>=2.5.1)", "psycopg2cffi (>=2.8.1)", "pymysql", "pyodbc", "pytest (==7.4.4)", "python-dateutil", "python-dateutil (>=2.6)", "pytz (>=2014.2)"]
-timezone = ["python-dateutil"]
-url = ["furl (>=0.4.1)"]
-
-[[package]]
 name = "sqlparse"
 version = "0.5.1"
 description = "A non-validating SQL parser."
@@ -2714,4 +2671,4 @@ email = ["email-validator"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "f00567c47a580521c54c2671bde7ae1341f637116f443a2b0c077f1e95ae842b"
+content-hash = "0d45d517ee26e77b1e4fcab229ec8fed62985b25d91b659f7886892ae43969be"

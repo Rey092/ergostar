@@ -166,6 +166,8 @@ class AppSettings(LiteStarSettings):
             encoding="utf-8",
         ),
     )
+    """API key hash digest size."""
+    API_KEY_DIGEST_SIZE: int = 16
     """Allowed CORS Origins"""
     ALLOWED_CORS_ORIGINS: list[str] | str = ["*"]
     """CSRF Cookie Name"""
@@ -183,10 +185,28 @@ class AppSettings(LiteStarSettings):
         return f"{BASE_DIR}/src/features"
 
 
+class VaultSettings(LiteStarSettings):
+    """Secret vault settings."""
+
+    """Model configuration."""
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_prefix="VAULT_",
+        extra="ignore",
+        env_file_encoding="utf-8",
+    )
+
+    """Vault URL."""
+    URL: str = "http://localhost:8200"
+    """Token to access vault."""
+    TOKEN: str
+
+
 class Settings(LiteStarSettings):
     """Settings for the project."""
 
     app: AppSettings = Field(default_factory=AppSettings)
+    vault: VaultSettings = Field(default_factory=VaultSettings)
     db: DatabaseSettings = Field(default_factory=DatabaseSettings)
     log: LogSettings = Field(default_factory=LogSettings)
     redis: RedisSettings = Field(default_factory=RedisSettings)

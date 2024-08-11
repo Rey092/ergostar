@@ -4,12 +4,12 @@ import logging
 from dataclasses import dataclass
 
 from admin.core.enums import DatabaseSeedingGroups
-from src.common.base.interactor import UseCase
+from src.common.base.interactor import Interactor
 from src.common.interfaces.database_session import IAlchemySession
 from src.common.interfaces.fixture_loader import IFixtureDatabaseLoader
 from src.features.core.enums import FixtureLoadingStrategy
 from src.features.subscriptions.entities import SubscriptionPlan
-from src.features.users.entities import User
+from src.features.users.entities.user import User
 
 logger = logging.getLogger(__name__)
 
@@ -22,8 +22,8 @@ class SeedDatabaseRequestModel:
     loading_strategy: FixtureLoadingStrategy = FixtureLoadingStrategy.SKIP
 
 
-class SeedDatabaseUseCase(UseCase[SeedDatabaseRequestModel, None]):
-    """Seed database use case."""
+class SeedDatabaseInteractor(Interactor[SeedDatabaseRequestModel, None]):
+    """Seed database interactor."""
 
     def __init__(
         self,
@@ -56,13 +56,11 @@ class SeedDatabaseUseCase(UseCase[SeedDatabaseRequestModel, None]):
                 loading_strategy=request_model.loading_strategy,
             )
             logger.info("Landing seeded.")
-
         if DatabaseSeedingGroups.users in request_model.groups:
             logger.info("Seeding users...")
-            await self._subscription_plan_fixture_loader_service.load_to_database(
+            await self._user_fixture_database_loader_service.load_to_database(
                 fixture_name="users",
                 loading_strategy=request_model.loading_strategy,
             )
             logger.info("Users seeded.")
-
         await self._session.commit()

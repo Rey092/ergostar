@@ -2,11 +2,11 @@
 
 from dataclasses import dataclass
 
-from src.common.base.entity import BigIntAuditEntity
+from src.common.base.entity import UUIDAuditEntity
 
 
 @dataclass(eq=False)
-class SubscriptionPlan(BigIntAuditEntity):
+class SubscriptionPlan(UUIDAuditEntity):
     """Subscription plan model."""
 
     title: str

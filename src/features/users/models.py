@@ -2,7 +2,7 @@
 
 from typing import TYPE_CHECKING
 
-from advanced_alchemy.base import BigIntAuditBase
+from advanced_alchemy.base import UUIDv7AuditBase
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from src.features.auth.models import ApiKeyModel
 
 
-class UserModel(BigIntAuditBase):
+class UserModel(UUIDv7AuditBase):
     """User model."""
 
     __tablename__ = "users"

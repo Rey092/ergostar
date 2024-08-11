@@ -8,8 +8,8 @@ from dishka import Scope
 from litestar import Litestar
 
 from admin.core.enums import DatabaseSeedingGroups
+from src.features.core.interactors.seed_database import SeedDatabaseInteractor
 from src.features.core.interactors.seed_database import SeedDatabaseRequestModel
-from src.features.core.interactors.seed_database import SeedDatabaseUseCase
 
 logger = logging.getLogger(__name__)
 
@@ -28,10 +28,13 @@ def seed_db(app: Litestar) -> None:
     async def _create_all_seed_data() -> None:
         """Create all seed data."""
         async with app.state.dishka_container(scope=Scope.REQUEST) as container:
-            seed_database = await container.get(SeedDatabaseUseCase)
-            await seed_database(
+            interactor = await container.get(SeedDatabaseInteractor)
+            await interactor(
                 request_model=SeedDatabaseRequestModel(
-                    groups=[DatabaseSeedingGroups.subscriptions],
+                    groups=[
+                        DatabaseSeedingGroups.subscriptions,
+                        DatabaseSeedingGroups.users,
+                    ],
                 ),
             )
 

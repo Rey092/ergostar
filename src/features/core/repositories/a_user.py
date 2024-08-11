@@ -3,7 +3,7 @@
 from collections.abc import Sequence
 
 from src.common.interfaces.fixture_loader_repository import ISeedManyEntries
-from src.features.users.entities import User
+from src.features.users.entities.user import User
 from src.features.users.repositories.user import UserRepository
 
 

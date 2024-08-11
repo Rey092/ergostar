@@ -37,7 +37,7 @@ def exception_to_http_response(
 
     Returns:
     -------
-        Exception response appropriate to the type of original exception.
+        Exception response appropriates to the type of original exception.
 
     """
     http_exc: type[HTTPException]

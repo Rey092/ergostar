@@ -4,13 +4,13 @@ from collections.abc import Sequence
 
 from sqlalchemy import select
 
-from src.common.base.repository import AlchemyRepository
+from src.common.base.basealchemyrepository import AlchemyMappedRepository
 from src.common.base.repository_generic import GenericSQLAlchemyRepository
-from src.features.users.entities import User
+from src.features.users.entities.user import User
 from src.features.users.models import UserModel
 
 
-class UserRepository(AlchemyRepository[User, UserModel]):
+class UserRepository(AlchemyMappedRepository[User, UserModel]):
     """Subscription Plan repository."""
 
     model_type = UserModel

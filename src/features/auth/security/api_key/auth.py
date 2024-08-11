@@ -3,9 +3,10 @@
 from typing import TYPE_CHECKING
 from typing import Any
 
+from src.features.auth.interactors.authenticate import AuthenticateApiKeyInteractor
+from src.features.auth.interactors.authenticate import AuthenticateApiKeyRequestModel
 from src.features.auth.security.api_key.config import ApiKeyAuth
-from src.features.users.entities import User
-from src.features.users.repositories.user import UserRepository
+from src.features.users.entities.user import User
 
 if TYPE_CHECKING:
     from litestar.connection import ASGIConnection
@@ -14,10 +15,14 @@ if TYPE_CHECKING:
 async def retrieve_user_handler(
     api_key: str,
     connection: "ASGIConnection[Any, Any, Any, Any]",
-) -> User | None:
+) -> User:
     """Retrieve a user from the token."""
-    user_repository = await connection.state.dishka_container.get(UserRepository)
-    return await user_repository.get_user_by_api_key(api_key)
+    interactor: AuthenticateApiKeyInteractor = (
+        await connection.state.dishka_container.get(AuthenticateApiKeyInteractor)
+    )
+    return await interactor(
+        request_model=AuthenticateApiKeyRequestModel(api_key=api_key),
+    )
 
 
 api_key_auth = ApiKeyAuth[User](

@@ -2,13 +2,13 @@
 
 from sqlalchemy import text
 
-from src.common.base.interactor import UseCase
+from src.common.base.interactor import Interactor
 from src.common.interfaces.database_session import IAlchemySession
 from src.config.settings import AppSettings
 
 
-class DropDatabaseTablesUseCase(UseCase[None, None]):
-    """Drop database tables use-case."""
+class DropDatabaseTablesInteractor(Interactor[None, None]):
+    """Drop database tables interactor."""
 
     def __init__(
         self,

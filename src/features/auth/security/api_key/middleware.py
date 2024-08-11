@@ -21,6 +21,8 @@ if TYPE_CHECKING:
     from litestar.types import Method
     from litestar.types import Scopes
 
+    from src.features.users.entities.user import User
+
 
 class ApiKeyMiddleware(AbstractAuthenticationMiddleware, Generic[BaseSessionBackendT]):
     """Litestar session middleware for storing session data."""
@@ -107,9 +109,5 @@ class ApiKeyMiddleware(AbstractAuthenticationMiddleware, Generic[BaseSessionBack
         Returns:
             AuthenticationResult
         """
-        user = await self.retrieve_user_handler(api_key, connection)
-
-        if not user:
-            raise NotAuthorizedException
-
+        user: User = await self.retrieve_user_handler(api_key, connection)
         return AuthenticationResult(user=user, auth=api_key)

@@ -1,4 +1,4 @@
-"""UseCase base."""
+"""Interactor base."""
 
 from abc import abstractmethod
 from typing import Any
@@ -9,8 +9,8 @@ RequestM = TypeVar("RequestM", bound=Any)
 ResponseM = TypeVar("ResponseM", bound=Any)
 
 
-class UseCase(Generic[RequestM, ResponseM]):
-    """Base use case class."""
+class Interactor(Generic[RequestM, ResponseM]):
+    """Base interactor class."""
 
     @abstractmethod
     async def __call__(
@@ -18,4 +18,4 @@ class UseCase(Generic[RequestM, ResponseM]):
         request_model: RequestM,
         **kwargs,
     ) -> ResponseM:
-        """Call a use case."""
+        """Call an interactor."""
