@@ -17,7 +17,6 @@ from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from src.apps.exception_handlers.base import exception_to_http_response
-from src.apps.shared import monkey_patch_advanced_alchemy
 from src.config.alchemy import get_alchemy_config
 from src.config.alchemy import get_alchemy_engine
 from src.config.cli import CLIPlugin
@@ -37,8 +36,6 @@ if TYPE_CHECKING:
 
 def create_app() -> Litestar:
     """Create application."""
-    # add a missing type for adaptix converter compatibility
-    monkey_patch_advanced_alchemy()
 
     # create settings
     settings = Settings()

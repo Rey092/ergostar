@@ -3,6 +3,7 @@
 from uuid import UUID
 
 import hvac
+import requests
 from hvac.exceptions import InvalidPath
 from litestar.concurrency import sync_to_thread
 
@@ -29,13 +30,14 @@ class VaultService(
         """Initialize service."""
         self._vault_url: str = vault_settings.URL
         self._vault_token: str = vault_settings.TOKEN
+        self._api_keys_mount_point = vault_settings.API_KEYS_MOUNT_POINT
         self._client = hvac.Client(
+            session=requests.Session(),
             url=self._vault_url,
             token=self._vault_token,
             # TODO: add TLS
         )
         self._get_api_keys_repository = get_api_keys_repository
-        self._api_keys_mount_point = "/api-keys"
 
     async def get_api_key_list(self, user_id: UUID) -> list[ApiKey]:
         """Get secret."""
@@ -64,11 +66,16 @@ class VaultService(
 
         Key is the ApiKey ID and value is the ApiKey original value.
         """
+        # get the secret data
         secret_version_response = self._client.secrets.kv.v2.read_secret_version(
             path=user_id,
             mount_point=self._api_keys_mount_point,
         )
         data: dict = secret_version_response["data"]["data"]
+
+        # close the session
+        self._client.session.close()
+
         return data
 
     async def add_api_key(self, user_id: UUID, api_key_id: str, api_key: str) -> None:
@@ -93,6 +100,11 @@ class VaultService(
         }
 
         try:
+            # create a kv store
+            self._client.sys.enable_secrets_engine(
+                backend_type="kv",
+                path=self._api_keys_mount_point,
+            )
             # Try to read the existing data
             self._client.secrets.kv.v2.read_secret_version(
                 path=user_id,
@@ -112,3 +124,6 @@ class VaultService(
                 secret=secret,
                 mount_point=self._api_keys_mount_point,
             )
+
+        # close the session
+        self._client.session.close()

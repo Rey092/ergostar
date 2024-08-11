@@ -1,12 +1,43 @@
+
+volumes:
+  local_postgres_data:
+
 services:
-  minio:
-    image: minio/minio
-    container_name: star_minio
-    ports:
-      - "9000:9000"
-    environment:
-      MINIO_ACCESS_KEY: minio_minio
-      MINIO_SECRET_KEY: minio_minio
+  postgres_db:
+    image: postgres:16.3
+    container_name: test_postgres_db
     volumes:
-      - ./media:/data
-    command: server /data
+      - local_postgres_data:/var/lib/postgresql/data:Z
+    restart: always
+
+  api: &api
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: test_api
+    depends_on:
+      - postgres_db
+#      - redis
+    restart: always
+    command: make run-docker
+    environment:
+      - CONTAINER_NAME=test_api
+
+  admin:
+    <<: *api
+    container_name: test_admin
+    command: make unfold-docker
+    environment:
+      - CONTAINER_NAME=test_admin
+
+  migrator:
+    <<: *api
+    container_name: test_migrator
+    command: make migrator-docker
+    restart: on-failure
+    environment:
+      - CONTAINER_NAME=test_migrator
+
+#  redis:
+#    image: redis:7.4
+#    container_name: test_redis

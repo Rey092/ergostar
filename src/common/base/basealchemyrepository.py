@@ -73,6 +73,8 @@ class AlchemyAdapterRepository(
 ):
     """AlchemyAdapterRepository."""
 
+    _adaptee: MappedRepoT
+
     def __init__(
         self,
         session: IAlchemySession,

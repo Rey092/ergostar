@@ -16,6 +16,7 @@ from litestar.repository.exceptions import NotFoundError
 from litestar.repository.exceptions import RepositoryError
 from litestar.response import Response
 from litestar.status_codes import HTTP_409_CONFLICT
+from sqlalchemy.exc import ProgrammingError, DatabaseError
 
 
 class _HTTPConflictException(HTTPException):
@@ -55,4 +56,29 @@ def exception_to_http_response(
     return create_exception_response(
         request,
         http_exc(detail=str(exc.__cause__)),
+    )
+
+
+def default_alchemy_exception_handler(
+    request: Request[Any, Any, Any],
+    exc: DatabaseError,
+) -> Response[ExceptionResponseContent]:
+    """Default exception handler.
+
+    Args:
+    ----
+        request: The request that experienced the exception.
+        exc: Exception raised during handling of the request.
+
+    Returns:
+    -------
+        Exception response appropriate to the type of original exception.
+
+    """
+    print(111111111111111111111111111111111111111, '------------------------------------------')
+    if request.app.debug:
+        return create_debug_response(request, exc)
+    return create_exception_response(
+        request,
+        InternalServerException(detail=str(exc)),
     )

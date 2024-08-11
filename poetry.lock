@@ -2652,6 +2652,20 @@ files = [
 ]
 
 [[package]]
+name = "whitenoise"
+version = "6.7.0"
+description = "Radically simplified static file serving for WSGI applications"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "whitenoise-6.7.0-py3-none-any.whl", hash = "sha256:a1ae85e01fdc9815d12fa33f17765bc132ed2c54fa76daf9e39e879dd93566f6"},
+    {file = "whitenoise-6.7.0.tar.gz", hash = "sha256:58c7a6cd811e275a6c91af22e96e87da0b1109e9a53bb7464116ef4c963bf636"},
+]
+
+[package.extras]
+brotli = ["brotli"]
+
+[[package]]
 name = "wtforms"
 version = "3.1.2"
 description = "Form validation and rendering for Python web development."
@@ -2671,4 +2685,4 @@ email = ["email-validator"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "0d45d517ee26e77b1e4fcab229ec8fed62985b25d91b659f7886892ae43969be"
+content-hash = "6f7c1c085785b3689f2d706947840369a2d2c5200a5f747f306a3fdb984a4496"

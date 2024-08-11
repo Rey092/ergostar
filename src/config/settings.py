@@ -200,6 +200,8 @@ class VaultSettings(LiteStarSettings):
     URL: str = "http://localhost:8200"
     """Token to access vault."""
     TOKEN: str
+    """Api Keys mount point path."""
+    API_KEYS_MOUNT_POINT: str = "/api-keys"
 
 
 class Settings(LiteStarSettings):

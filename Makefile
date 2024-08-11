@@ -7,14 +7,14 @@ UNFOLD_RUN_PARAMS=--pythonpath=. --settings=admin.config.settings
 # LITESTAR VARIABLES
 # ------------------------------------------
 LITESTAR_RUN_PARAMS=-r -I *.html -I *.css -I *.js -I *.svelte
-LITESTAR_DASHBOARD_APP=src.apps.dashboard:app
+LITESTAR_API_APP=src.apps.api:create_app
 
 # RUN COMMANDS
 # ------------------------------------------
 run:
 	litestar run $(LITESTAR_RUN_PARAMS)
 
-unfold-run:
+unfold:
 	django-admin runserver $(UNFOLD_RUN_PARAMS) 127.0.0.1:8000
 
 # DATABASE
@@ -47,6 +47,9 @@ unfold-seed:
 unfold-migrate:
 	django-admin migrate $(UNFOLD_RUN_PARAMS)
 
+unfold-migrations:
+	django-admin makemigrations $(UNFOLD_RUN_PARAMS)
+
 unfold-generate:
 	# generate a models from an existing database ('main') using django
 	django-admin inspectdb $(UNFOLD_RUN_PARAMS) --database=main $(PARAMS) > $(UNFOLD_MODELS)
@@ -57,11 +60,11 @@ unfold-generate:
 
 # DEPLOY
 # ------------------------------------------
-dashboard-docker:
-	gunicorn $(LITESTAR_DASHBOARD_APP) \
+run-docker:
+	gunicorn $(LITESTAR_API_APP) \
 		--bind 0.0.0.0:8000 \
 		--worker-class 'uvicorn.workers.UvicornWorker' \
-		--workers 4 \
+		--workers 1 \
 		--access-logfile '-' \
 		--error-log '-' \
 		--log-level 'info' \
@@ -70,7 +73,21 @@ dashboard-docker:
 
 unfold-docker:
 	# TODO: update the command
-	gunicorn app.unfold:app
+	gunicorn admin.config.wsgi:application \
+		--bind 0.0.0.0:8000 \
+		--workers 1 \
+		--access-logfile '-' \
+		--error-log '-' \
+		--log-level 'info' \
+		--forwarded-allow-ips '*' \
+		--access-logformat '%({x-forwarded-for}i)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'
+
+migrator-docker:
+	litestar database upgrade --no-prompt
+	litestar core seed-db
+	django-admin migrate --noinput $(UNFOLD_RUN_PARAMS)
+	django-admin collectstatic --noinput $(UNFOLD_RUN_PARAMS)
+	django-admin seed $(UNFOLD_RUN_PARAMS)
 
 # ETC.
 # ------------------------------------------

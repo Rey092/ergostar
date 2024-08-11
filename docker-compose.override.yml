@@ -1,0 +1,46 @@
+version: "3.3"
+
+volumes:
+  local_postgres_data:
+  local_static_data:
+
+services:
+  postgres_db:
+    build:
+      context: compose/postgres
+      dockerfile: Dockerfile
+    volumes:
+      - local_static_data:/usr/src/app/staticfiles
+    env_file:
+      - .env.docker
+
+  api:
+    env_file:
+      - .env.docker
+    ports:
+      - "8000:8000"
+
+  admin:
+    volumes:
+      - local_static_data:/usr/src/app/staticfiles
+    env_file:
+      - .env.docker
+    ports:
+      - "8001:8000"
+
+  migrator:
+    volumes:
+      - local_static_data:/usr/src/app/staticfiles
+    env_file:
+      - .env.docker
+
+  vault:
+    image: hashicorp/vault
+    container_name: test_vault
+    ports:
+      - "8202:8200"
+      - "8203:8201"
+    restart: always
+    env_file:
+      - .env.docker
+    privileged: true

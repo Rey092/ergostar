@@ -14,11 +14,11 @@ from litestar.openapi.plugins import SwaggerRenderPlugin
 from litestar.plugins.structlog import StructlogPlugin
 from litestar.static_files import create_static_files_router
 from redis.asyncio import Redis
+from sqlalchemy.exc import DatabaseError, DBAPIError
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from src.apps.exception_handlers.base import exception_to_http_response
+from src.apps.exception_handlers.base import exception_to_http_response, default_alchemy_exception_handler
 from src.apps.exception_handlers.vault import vault_exception_handler
-from src.apps.shared import monkey_patch_advanced_alchemy
 from src.config.alchemy import get_alchemy_config
 from src.config.alchemy import get_alchemy_engine
 from src.config.cli import CLIPlugin
@@ -41,9 +41,6 @@ if TYPE_CHECKING:
 
 def create_app() -> Litestar:
     """Create application."""
-    # add a missing type for adaptix converter compatibility
-    monkey_patch_advanced_alchemy()
-
     # create settings
     settings = Settings()
 
@@ -104,6 +101,7 @@ def create_app() -> Litestar:
         exception_handlers={
             RepositoryError: exception_to_http_response,
             VaultError: vault_exception_handler,
+            DatabaseError: default_alchemy_exception_handler,
         },
         on_app_init=[
             api_key_auth.on_app_init,

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 # Middleware
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -130,6 +131,12 @@ STATIC_ROOT = Path(BASE_DIR, "staticfiles/")
 STATICFILES_DIRS = [
     Path(BASE_DIR, "static"),
 ]
+STORAGES = {
+    # ...
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+    },
+}
 
 # Media files
 # https://docs.djangoproject.com/en/5.0/topics/files/
