@@ -25,6 +25,7 @@ class AuthController(Controller):
         interactor: FromDishka[CreateApiKeyInteractor],
     ) -> str:
         """Create an api key. Exclude from auth."""
+        a = 16 / 0
         return await interactor(
             CreateApiKeyRequestModel(
                 user_id=UUID("3165d5df-17a7-4562-b5f5-5f4bd16c97f3"),

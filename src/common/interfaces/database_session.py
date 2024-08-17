@@ -1,5 +1,5 @@
 """Common interfaces."""
-
+from abc import abstractmethod
 from collections.abc import Iterable
 from typing import Any
 from typing import Protocol
@@ -18,16 +18,19 @@ _T = TypeVar("_T", bound=Any)
 class IDatabaseSession(Protocol):
     """IDatabaseSession protocol."""
 
+    @abstractmethod
     async def commit(self) -> None:
         """Commit the transaction."""
         ...
 
-    async def rollback(self) -> None:
-        """Rollback the transaction."""
+    @abstractmethod
+    async def flush(self) -> None:
+        """Flush the session."""
         ...
 
-    async def close(self) -> None:
-        """Close the session."""
+    @abstractmethod
+    async def rollback(self) -> None:
+        """Rollback the transaction."""
         ...
 
 

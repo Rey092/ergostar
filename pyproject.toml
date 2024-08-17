@@ -41,6 +41,7 @@ django-unfold = "^0.34.0"  # admin interface
 
 
 whitenoise = "^6.7.0"
+aiogram = "^3.11.0"
 [tool.poetry.group.dev.dependencies]
 aiosqlite = "^0.20.0"
 pytest = "^8.2.2"

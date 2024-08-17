@@ -1,5 +1,5 @@
 """Base exception handler for repository exceptions."""
-
+import logging
 from typing import Any
 
 from advanced_alchemy.exceptions import IntegrityError
@@ -75,7 +75,22 @@ def default_alchemy_exception_handler(
         Exception response appropriate to the type of original exception.
 
     """
-    print(111111111111111111111111111111111111111, '------------------------------------------')
+    if request.app.debug:
+        return create_debug_response(request, exc)
+    return create_exception_response(
+        request,
+        InternalServerException(detail=str(exc)),
+    )
+
+
+def uncaught_handler(
+    request: Request[Any, Any, Any],
+    exc: Exception,
+) -> Response[ExceptionResponseContent]:
+    """
+    Uncaught exception handler.
+    """
+    logging.error("Uncaught exception", exc_info=exc)
     if request.app.debug:
         return create_debug_response(request, exc)
     return create_exception_response(

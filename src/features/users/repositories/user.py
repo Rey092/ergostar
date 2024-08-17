@@ -2,7 +2,7 @@
 
 from collections.abc import Sequence
 
-from sqlalchemy import select
+from sqlalchemy import select, func
 
 from src.common.base.basealchemyrepository import AlchemyMappedRepository
 from src.common.base.repository_generic import GenericSQLAlchemyRepository

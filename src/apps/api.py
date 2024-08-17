@@ -17,7 +17,8 @@ from redis.asyncio import Redis
 from sqlalchemy.exc import DatabaseError, DBAPIError
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from src.apps.exception_handlers.base import exception_to_http_response, default_alchemy_exception_handler
+from src.apps.exception_handlers.base import exception_to_http_response, default_alchemy_exception_handler, \
+    uncaught_handler
 from src.apps.exception_handlers.vault import vault_exception_handler
 from src.config.alchemy import get_alchemy_config
 from src.config.alchemy import get_alchemy_engine
@@ -102,6 +103,7 @@ def create_app() -> Litestar:
             RepositoryError: exception_to_http_response,
             VaultError: vault_exception_handler,
             DatabaseError: default_alchemy_exception_handler,
+            Exception: uncaught_handler,
         },
         on_app_init=[
             api_key_auth.on_app_init,
