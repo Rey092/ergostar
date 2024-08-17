@@ -5,11 +5,12 @@ import uuid
 from dataclasses import dataclass
 
 from src.common.base.interactor import Interactor
-from src.common.interfaces.database_session import IAlchemySession
+from src.common.interfaces.unit_of_work import IDatabaseSession
+from src.common.interfaces.unit_of_work import IVaultSession
 from src.features.auth.entities.api_key import ApiKey
 from src.features.auth.interfaces.hashers import IHasher
 from src.features.auth.interfaces.repositories import ICreateApiKeyRepository
-from src.features.auth.interfaces.services import IAddAPIKeyVaultService
+from src.features.auth.interfaces.services import IAddAPIKeyVaultRepository
 from src.features.auth.interfaces.services import IGenerateUUID7Service
 
 logger = logging.getLogger(__name__)
@@ -27,18 +28,20 @@ class CreateApiKeyInteractor(Interactor[CreateApiKeyRequestModel, str]):
 
     def __init__(
         self,
-        session: IAlchemySession,
+        db_session: IDatabaseSession,
+        vault_session: IVaultSession,
         create_api_key_repository: ICreateApiKeyRepository,
         uuid7_generator_service: IGenerateUUID7Service,
         hasher_service: IHasher,
-        vault_service: IAddAPIKeyVaultService,
+        vault_repository: IAddAPIKeyVaultRepository,
     ):
         """Initialize interactor."""
-        self._session = session
+        self._db_session = db_session
+        self._vault_session = vault_session
         self._create_api_key_repository = create_api_key_repository
         self._uuid7_generator_service = uuid7_generator_service
         self._hasher_service = hasher_service
-        self._vault_service = vault_service
+        self._vault_service = vault_repository
 
     async def __call__(
         self,
@@ -67,7 +70,9 @@ class CreateApiKeyInteractor(Interactor[CreateApiKeyRequestModel, str]):
             api_key=key,
         )
 
-        # commit
-        await self._session.commit()
+        # save changes
+        await self._vault_session.flush()
+        await self._db_session.commit()
+        await self._vault_session.commit()
 
         return key

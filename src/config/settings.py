@@ -136,6 +136,13 @@ class LogSettings(LiteStarSettings):
     """Level to log uvicorn error logs."""
     UVICORN_ERROR_LEVEL: int = 20
 
+    """Telegram bot token."""
+    LOG_TELEGRAM_BOT_TOKEN: str = ""
+    """Telegram chat id."""
+    LOG_TELEGRAM_CHAT_ID: str = ""
+    """Enable Telegram logging."""
+    LOG_TELEGRAM_LOGGING_ENABLED: bool = False
+
 
 class RedisSettings(LiteStarSettings):
     """Redis settings."""

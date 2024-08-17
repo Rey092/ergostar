@@ -4,8 +4,6 @@ from abc import abstractmethod
 from typing import Protocol
 from uuid import UUID
 
-from src.features.auth.entities.api_key import ApiKey
-
 
 class IGenerateUUID7Service(Protocol):
     """Generate UUID7 service interface."""
@@ -16,16 +14,16 @@ class IGenerateUUID7Service(Protocol):
         ...
 
 
-class IGetAPIKeyListVaultService(Protocol):
+class IGetAPIKeyListVaultRepository(Protocol):
     """IGetAPIKeyList."""
 
     @abstractmethod
-    async def get_api_key_list(self, user_id: UUID) -> list[ApiKey]:
+    async def get_user_api_keys(self, user_id: UUID) -> dict[str, str]:
         """Get api a key list."""
         ...
 
 
-class IAddAPIKeyVaultService(Protocol):
+class IAddAPIKeyVaultRepository(Protocol):
     """IAddAPIKey."""
 
     @abstractmethod

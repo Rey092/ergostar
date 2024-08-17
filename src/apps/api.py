@@ -7,18 +7,20 @@ from advanced_alchemy.extensions.litestar import SQLAlchemyPlugin
 from cashews import cache
 from dishka import make_async_container
 from dishka.integrations import litestar as litestar_integration
+from hvac import Client as VaultEngine
 from hvac.exceptions import VaultError
 from litestar import Litestar
 from litestar.openapi import OpenAPIConfig
 from litestar.openapi.plugins import SwaggerRenderPlugin
 from litestar.plugins.structlog import StructlogPlugin
 from litestar.static_files import create_static_files_router
-from redis.asyncio import Redis
-from sqlalchemy.exc import DatabaseError, DBAPIError
+from redis.asyncio import Redis as RedisEngine
+from sqlalchemy.exc import DatabaseError
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from src.apps.exception_handlers.base import exception_to_http_response, default_alchemy_exception_handler, \
-    uncaught_handler
+from src.apps.exception_handlers.base import default_alchemy_exception_handler
+from src.apps.exception_handlers.base import exception_to_http_response
+from src.apps.exception_handlers.base import uncaught_handler
 from src.apps.exception_handlers.vault import vault_exception_handler
 from src.config.alchemy import get_alchemy_config
 from src.config.alchemy import get_alchemy_engine
@@ -28,6 +30,7 @@ from src.config.litestar import get_cors_config
 from src.config.litestar import get_structlog_config
 from src.config.redis import get_redis_engine
 from src.config.settings import Settings
+from src.config.vault import get_vault_engine
 from src.features.auth.ioc import AuthProvider
 from src.features.auth.routing import auth_router
 from src.features.auth.security.api_key.auth import api_key_auth
@@ -49,7 +52,10 @@ def create_app() -> Litestar:
     alchemy_engine: AsyncEngine = get_alchemy_engine(db_settings=settings.db)
 
     # create redis engine
-    redis_engine: Redis = get_redis_engine(redis_settings=settings.redis)
+    redis_engine: RedisEngine = get_redis_engine(redis_settings=settings.redis)
+
+    # create vault engine
+    vault_engine: VaultEngine = get_vault_engine(vault_settings=settings.vault)
 
     # initialize cache
     cache.setup(
@@ -67,7 +73,8 @@ def create_app() -> Litestar:
         context={
             Settings: settings,
             AsyncEngine: alchemy_engine,
-            Redis: redis_engine,
+            RedisEngine: redis_engine,
+            VaultEngine: vault_engine,
         },
     )
 

@@ -11,7 +11,7 @@ from litestar import post
 
 from src.features.auth.interactors.create_api_key import CreateApiKeyInteractor
 from src.features.auth.interactors.create_api_key import CreateApiKeyRequestModel
-from src.features.auth.interfaces.services import IGetAPIKeyListVaultService
+from src.features.auth.interfaces.services import IGetAPIKeyListVaultRepository
 from src.features.users.entities.user import User
 
 
@@ -25,7 +25,6 @@ class AuthController(Controller):
         interactor: FromDishka[CreateApiKeyInteractor],
     ) -> str:
         """Create an api key. Exclude from auth."""
-        a = 16 / 0
         return await interactor(
             CreateApiKeyRequestModel(
                 user_id=UUID("3165d5df-17a7-4562-b5f5-5f4bd16c97f3"),
@@ -37,12 +36,14 @@ class AuthController(Controller):
     async def check_auth(
         self,
         request: Request[User, str, Any],
-        vault_service: FromDishka[IGetAPIKeyListVaultService],
+        vault_repository: FromDishka[IGetAPIKeyListVaultRepository],
     ) -> dict:
         """Test auth."""
         return {
             "user_id": request.user.id,
             "email": request.user.email,
             "token": request.auth,
-            "api_keys": await vault_service.get_api_key_list(user_id=request.user.id),
+            "api_keys": await vault_repository.get_user_api_keys(
+                user_id=request.user.id,
+            ),
         }

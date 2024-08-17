@@ -3,9 +3,10 @@
 import logging
 from dataclasses import dataclass
 
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from admin.core.enums import DatabaseSeedingGroups
 from src.common.base.interactor import Interactor
-from src.common.interfaces.database_session import IAlchemySession
 from src.common.interfaces.fixture_loader import IFixtureDatabaseLoader
 from src.features.core.enums import FixtureLoadingStrategy
 from src.features.subscriptions.entities import SubscriptionPlan
@@ -27,7 +28,7 @@ class SeedDatabaseInteractor(Interactor[SeedDatabaseRequestModel, None]):
 
     def __init__(
         self,
-        session: IAlchemySession,
+        session: AsyncSession,
         subscription_plan_fixture_database_loader_service: IFixtureDatabaseLoader[
             SubscriptionPlan
         ],

@@ -36,7 +36,6 @@ if TYPE_CHECKING:
 
 def create_app() -> Litestar:
     """Create application."""
-
     # create settings
     settings = Settings()
 

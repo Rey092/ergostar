@@ -3,7 +3,6 @@
 from abc import ABC
 from typing import Generic
 from typing import TypeVar
-from typing import cast
 
 from advanced_alchemy.repository import ModelT
 from sqlalchemy import select
@@ -13,7 +12,6 @@ from src.common.base.mapper import AdapterMapper
 from src.common.base.mapper import DefaultMapper
 from src.common.base.repository_generic import GenericSQLAlchemyRepository
 from src.common.base.repository_generic import GenericSQLAlchemyRepositoryProtocol
-from src.common.interfaces.database_session import IAlchemySession
 from src.common.interfaces.mapper import IMapper
 from src.common.types import EntityT
 
@@ -23,14 +21,14 @@ class BaseAlchemyRepository(Generic[EntityT, ModelT]):
 
     model_type: type[ModelT]
     entity_type: type[EntityT]
-    _session: IAlchemySession
+    _session: AsyncSession
 
     def __init__(
         self,
-        session: IAlchemySession,
+        session: AsyncSession,
     ) -> None:
         """Configure the repository object."""
-        self._session: AsyncSession = cast(AsyncSession, session)
+        self._session: AsyncSession = session
 
 
 class AlchemyRepository(BaseAlchemyRepository, IMapper, ABC, Generic[EntityT, ModelT]):
@@ -41,12 +39,12 @@ class AlchemyRepository(BaseAlchemyRepository, IMapper, ABC, Generic[EntityT, Mo
 
     def __init__(
         self,
-        session: IAlchemySession,
+        session: AsyncSession,
     ) -> None:
         """Configure the repository object."""
         super().__init__(session=session)
         self._repository = self.repository_type(
-            session=cast(AsyncSession, self._session),
+            session=self._session,
             statement=select(self.model_type),
             auto_expunge=False,
             auto_refresh=False,
@@ -77,7 +75,7 @@ class AlchemyAdapterRepository(
 
     def __init__(
         self,
-        session: IAlchemySession,
+        session: AsyncSession,
         mapped_repo: MappedRepoT,
     ) -> None:
         """Configure the repository object."""

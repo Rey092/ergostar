@@ -1,4 +1,5 @@
 """Base exception handler for repository exceptions."""
+
 import logging
 from typing import Any
 
@@ -16,7 +17,7 @@ from litestar.repository.exceptions import NotFoundError
 from litestar.repository.exceptions import RepositoryError
 from litestar.response import Response
 from litestar.status_codes import HTTP_409_CONFLICT
-from sqlalchemy.exc import ProgrammingError, DatabaseError
+from sqlalchemy.exc import DatabaseError
 
 
 class _HTTPConflictException(HTTPException):
@@ -87,9 +88,7 @@ def uncaught_handler(
     request: Request[Any, Any, Any],
     exc: Exception,
 ) -> Response[ExceptionResponseContent]:
-    """
-    Uncaught exception handler.
-    """
+    """Uncaught exception handler."""
     logging.error("Uncaught exception", exc_info=exc)
     if request.app.debug:
         return create_debug_response(request, exc)

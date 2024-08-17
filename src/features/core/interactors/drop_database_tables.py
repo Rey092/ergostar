@@ -1,9 +1,9 @@
 """Drop database tables interactor module."""
 
 from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.common.base.interactor import Interactor
-from src.common.interfaces.database_session import IAlchemySession
 from src.config.settings import AppSettings
 
 
@@ -12,7 +12,7 @@ class DropDatabaseTablesInteractor(Interactor[None, None]):
 
     def __init__(
         self,
-        session: IAlchemySession,
+        session: AsyncSession,
         app_settings: AppSettings,
     ):
         """Initialize interactor."""

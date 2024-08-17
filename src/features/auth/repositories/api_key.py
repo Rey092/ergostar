@@ -6,14 +6,14 @@ from src.common.base.basealchemyrepository import AlchemyMappedRepository
 from src.common.base.repository_generic import GenericSQLAlchemyRepository
 from src.features.auth.entities.api_key import ApiKey
 from src.features.auth.interfaces.repositories import ICreateApiKeyRepository
-from src.features.auth.interfaces.repositories import IGetAPIKeysRepository
+from src.features.auth.interfaces.repositories import IGetAPIKeysAlchemyRepository
 from src.features.auth.models import ApiKeyModel
 
 
 class ApiKeyRepository(
     AlchemyMappedRepository[ApiKey, ApiKeyModel],
     ICreateApiKeyRepository,
-    IGetAPIKeysRepository,
+    IGetAPIKeysAlchemyRepository,
 ):
     """ApiKey repository."""
 

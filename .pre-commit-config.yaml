@@ -67,3 +67,4 @@ repos:
           - types-click
           - types-PyYAML
           - types-aiofiles
+          - types-requests

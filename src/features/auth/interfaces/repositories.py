@@ -26,7 +26,7 @@ class IGetUserByApiKeyRepository(Protocol):
         ...
 
 
-class IGetAPIKeysRepository(Protocol):
+class IGetAPIKeysAlchemyRepository(Protocol):
     """Interface for getting API keys."""
 
     @abstractmethod
