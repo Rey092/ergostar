@@ -2,29 +2,18 @@
 
 from collections.abc import Sequence
 
-from sqlalchemy import select
-
 from src.common.base.repositories.alchemy import AlchemyRepository
 from src.common.base.repositories.alchemy import GenericSQLAlchemyRepository
 from src.features.users.entities.userentity import UserEntity
 from src.features.users.models import UserModel
 
 
+# noinspection DuplicatedCode
 class UserRepository(AlchemyRepository[UserEntity, UserModel]):
     """Subscription Plan repository."""
 
     model_type = UserModel
     repository_type = GenericSQLAlchemyRepository[UserModel]
-
-    async def get_user_by_api_key(self, api_key: str) -> UserEntity | None:
-        """Get user by api key."""
-        model: UserModel | None = await self._repository.get_one_or_none(
-            statement=select(UserModel)
-            .join(UserModel.api_keys)
-            .where(UserModel.api_keys.any(key=api_key))
-            .distinct(),
-        )
-        return self.model_to_entity(model) if model else None
 
     async def add_many(
         self,

@@ -4,6 +4,7 @@ from sqlalchemy import select
 
 from src.common.base.repositories.alchemy import AlchemyAdapterRepository
 from src.common.base.repositories.alchemy import GenericSQLAlchemyRepository
+from src.features.auth import ApiKeyModel
 from src.features.auth.interfaces.repositories import IGetUserByApiKeyRepository
 from src.features.users import UserModel
 from src.features.users.entities.userentity import UserEntity
@@ -24,7 +25,6 @@ class AuthUserAdapterRepository(
         model: UserModel | None = await self._repository.get_one_or_none(
             statement=select(UserModel)
             .join(UserModel.api_keys)
-            .where(UserModel.api_keys.any(key_hashed=api_key_hashed))
-            .distinct(),
+            .where(ApiKeyModel.key_hashed.like(api_key_hashed)),
         )
         return self.model_to_entity(model) if model else None
