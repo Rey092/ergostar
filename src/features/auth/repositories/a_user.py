@@ -25,6 +25,8 @@ class AuthUserAdapterRepository(
         model: UserModel | None = await self._repository.get_one_or_none(
             statement=select(UserModel)
             .join(UserModel.api_keys)
-            .where(ApiKeyModel.key_hashed.like(api_key_hashed)),
+            .where(
+                ApiKeyModel.key_hashed == api_key_hashed,
+            ),
         )
         return self.model_to_entity(model) if model else None
