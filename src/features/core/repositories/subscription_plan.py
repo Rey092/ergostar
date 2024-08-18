@@ -3,13 +3,13 @@
 from collections.abc import Sequence
 
 from src.common.interfaces.fixture_loader_repository import ISeedManyEntries
-from src.features.subscriptions.entities import SubscriptionPlan
+from src.features.subscriptions.entities import SubscriptionPlanEntity
 from src.features.subscriptions.repositories.subscription_plan import (
     SubscriptionPlanRepository,
 )
 
 
-class SubscriptionPlanRepositoryAdapter(ISeedManyEntries[SubscriptionPlan]):
+class SubscriptionPlanRepositoryAdapter(ISeedManyEntries[SubscriptionPlanEntity]):
     """SubscriptionPlanRepositoryAdapter."""
 
     def __init__(
@@ -21,8 +21,8 @@ class SubscriptionPlanRepositoryAdapter(ISeedManyEntries[SubscriptionPlan]):
 
     async def add_many(
         self,
-        data: list[SubscriptionPlan],
-    ) -> Sequence[SubscriptionPlan]:
+        data: list[SubscriptionPlanEntity],
+    ) -> Sequence[SubscriptionPlanEntity]:
         """Add many entries."""
         return await self._subscription_plan_repository.add_many(data)
 

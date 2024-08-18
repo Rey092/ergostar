@@ -17,7 +17,7 @@ from litestar.openapi.spec import SecurityScheme
 from litestar.security.base import AbstractSecurityConfig
 
 from src.features.auth.security.api_key.middleware import ApiKeyMiddleware
-from src.features.users.entities.user import User
+from src.features.users.entities.userentity import UserEntity
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -33,7 +33,7 @@ if TYPE_CHECKING:
     from litestar.types import SyncOrAsyncUnion
     from litestar.types import TypeEncodersMap
 
-UserType = TypeVar("UserType", bound=User)
+UserType = TypeVar("UserType", bound=UserEntity)
 
 __all__ = ("ApiKeyAuth",)
 

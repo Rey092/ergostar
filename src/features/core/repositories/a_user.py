@@ -3,12 +3,12 @@
 from collections.abc import Sequence
 
 from src.common.interfaces.fixture_loader_repository import ISeedManyEntries
-from src.features.users.entities.user import User
+from src.features.users.entities.userentity import UserEntity
 from src.features.users.repositories.user import UserRepository
 
 
 class UserRepositoryAdapter(
-    ISeedManyEntries[User],
+    ISeedManyEntries[UserEntity],
 ):
     """UserRepositoryAdapter."""
 
@@ -21,8 +21,8 @@ class UserRepositoryAdapter(
 
     async def add_many(
         self,
-        data: list[User],
-    ) -> Sequence[User]:
+        data: list[UserEntity],
+    ) -> Sequence[UserEntity]:
         """Add many entries."""
         return await self._user_repository.add_many(data)
 

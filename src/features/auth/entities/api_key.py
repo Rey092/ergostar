@@ -7,7 +7,7 @@ from src.common.base.entity import UUIDAuditEntity
 
 
 @dataclass(eq=False)
-class ApiKey(UUIDAuditEntity):
+class ApiKeyEntity(UUIDAuditEntity):
     """API key entity."""
 
     user_id: uuid.UUID

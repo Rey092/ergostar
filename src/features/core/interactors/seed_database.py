@@ -9,8 +9,8 @@ from admin.core.enums import DatabaseSeedingGroups
 from src.common.base.interactor import Interactor
 from src.common.interfaces.fixture_loader import IFixtureDatabaseLoader
 from src.features.core.enums import FixtureLoadingStrategy
-from src.features.subscriptions.entities import SubscriptionPlan
-from src.features.users.entities.user import User
+from src.features.subscriptions.entities import SubscriptionPlanEntity
+from src.features.users.entities.userentity import UserEntity
 
 logger = logging.getLogger(__name__)
 
@@ -30,9 +30,9 @@ class SeedDatabaseInteractor(Interactor[SeedDatabaseRequestModel, None]):
         self,
         session: AsyncSession,
         subscription_plan_fixture_database_loader_service: IFixtureDatabaseLoader[
-            SubscriptionPlan
+            SubscriptionPlanEntity
         ],
-        user_fixture_database_loader_service: IFixtureDatabaseLoader[User],
+        user_fixture_database_loader_service: IFixtureDatabaseLoader[UserEntity],
     ):
         """Initialize interactor."""
         self._session = session

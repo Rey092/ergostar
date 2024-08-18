@@ -5,11 +5,11 @@ from collections.abc import Sequence
 from src.common.base.repository_alchemy import AlchemyMappedRepository
 from src.common.base.repository_alchemy import GenericSQLAlchemyRepository
 from src.features.subscriptions import SubscriptionPlanModel
-from src.features.subscriptions.entities import SubscriptionPlan
+from src.features.subscriptions.entities import SubscriptionPlanEntity
 
 
 class SubscriptionPlanRepository(
-    AlchemyMappedRepository[SubscriptionPlan, SubscriptionPlanModel],
+    AlchemyMappedRepository[SubscriptionPlanEntity, SubscriptionPlanModel],
 ):
     """Subscription Plan repository."""
 
@@ -18,8 +18,8 @@ class SubscriptionPlanRepository(
 
     async def add_many(
         self,
-        data: list[SubscriptionPlan],
-    ) -> Sequence[SubscriptionPlan]:
+        data: list[SubscriptionPlanEntity],
+    ) -> Sequence[SubscriptionPlanEntity]:
         """Add many entries."""
         models = [self.entity_to_model(item) for item in data]
         entities = await self._repository.add_many(models)

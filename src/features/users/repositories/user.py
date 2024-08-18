@@ -6,17 +6,17 @@ from sqlalchemy import select
 
 from src.common.base.repository_alchemy import AlchemyMappedRepository
 from src.common.base.repository_alchemy import GenericSQLAlchemyRepository
-from src.features.users.entities.user import User
+from src.features.users.entities.userentity import UserEntity
 from src.features.users.models import UserModel
 
 
-class UserRepository(AlchemyMappedRepository[User, UserModel]):
+class UserRepository(AlchemyMappedRepository[UserEntity, UserModel]):
     """Subscription Plan repository."""
 
     model_type = UserModel
     repository_type = GenericSQLAlchemyRepository[UserModel]
 
-    async def get_user_by_api_key(self, api_key: str) -> User | None:
+    async def get_user_by_api_key(self, api_key: str) -> UserEntity | None:
         """Get user by api key."""
         model: UserModel | None = await self._repository.get_one_or_none(
             statement=select(UserModel)
@@ -28,8 +28,8 @@ class UserRepository(AlchemyMappedRepository[User, UserModel]):
 
     async def add_many(
         self,
-        data: list[User],
-    ) -> Sequence[User]:
+        data: list[UserEntity],
+    ) -> Sequence[UserEntity]:
         """Add many entries."""
         models = [self.entity_to_model(item) for item in data]
         entities = await self._repository.add_many(models)

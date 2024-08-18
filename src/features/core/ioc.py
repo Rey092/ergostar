@@ -20,8 +20,8 @@ from src.features.core.services.fixture_loaders import (
 )
 from src.features.core.services.fixture_loaders import UserFixtureDatabaseLoaderService
 from src.features.core.services.uuid_generator import UUIDGeneratorService
-from src.features.subscriptions.entities import SubscriptionPlan
-from src.features.users.entities.user import User
+from src.features.subscriptions.entities import SubscriptionPlanEntity
+from src.features.users.entities.userentity import UserEntity
 
 
 class CoreProvider(Provider):
@@ -40,25 +40,25 @@ class CoreProvider(Provider):
     subscription_plan_repository = provide(
         source=SubscriptionPlanRepositoryAdapter,
         scope=Scope.REQUEST,
-        provides=AnyOf[ISeedManyEntries[SubscriptionPlan]],
+        provides=AnyOf[ISeedManyEntries[SubscriptionPlanEntity]],
     )
 
     user_repository = provide(
         source=UserRepositoryAdapter,
         scope=Scope.REQUEST,
-        provides=AnyOf[ISeedManyEntries[User]],
+        provides=AnyOf[ISeedManyEntries[UserEntity]],
     )
 
     subscription_plan_fixture_database_loader_service = provide(
         source=SubscriptionPlanFixtureDatabaseLoaderService,
         scope=Scope.REQUEST,
-        provides=IFixtureDatabaseLoader[SubscriptionPlan],
+        provides=IFixtureDatabaseLoader[SubscriptionPlanEntity],
     )
 
     user_fixture_database_loader_service = provide(
         source=UserFixtureDatabaseLoaderService,
         scope=Scope.REQUEST,
-        provides=IFixtureDatabaseLoader[User],
+        provides=IFixtureDatabaseLoader[UserEntity],
     )
 
     uuid_generator_service = provide(

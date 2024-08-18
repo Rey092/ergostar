@@ -14,7 +14,7 @@ from src.features.auth.interactors.create_api_key import CreateApiKeyRequestMode
 from src.features.auth.interactors.get_user_api_keys import GetUserApiKeysInteractor
 from src.features.auth.interactors.get_user_api_keys import GetUserApiKeysRequestModel
 from src.features.auth.interactors.get_user_api_keys import GetUserApiKeysResponseModel
-from src.features.users.entities.user import User
+from src.features.users.entities.userentity import UserEntity
 
 
 class AuthController(Controller):
@@ -37,7 +37,7 @@ class AuthController(Controller):
     @inject
     async def check_auth(
         self,
-        request: Request[User, str, Any],
+        request: Request[UserEntity, str, Any],
         interactor: FromDishka[GetUserApiKeysInteractor],
     ) -> GetUserApiKeysResponseModel:
         """Test auth."""

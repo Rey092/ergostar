@@ -8,7 +8,7 @@ from src.common.base.interactor import Interactor
 from src.features.auth.interfaces.hashers import IHasher
 from src.features.auth.interfaces.repositories import IGetUserByApiKeyRepository
 from src.features.auth.interfaces.services import IGenerateUUID7Service
-from src.features.users.entities.user import User
+from src.features.users.entities.userentity import UserEntity
 
 
 @dataclass
@@ -18,7 +18,9 @@ class AuthenticateApiKeyRequestModel:
     api_key: str
 
 
-class AuthenticateApiKeyInteractor(Interactor[AuthenticateApiKeyRequestModel, User]):
+class AuthenticateApiKeyInteractor(
+    Interactor[AuthenticateApiKeyRequestModel, UserEntity],
+):
     """AuthenticateApiKeyInteractor."""
 
     def __init__(
@@ -36,13 +38,13 @@ class AuthenticateApiKeyInteractor(Interactor[AuthenticateApiKeyRequestModel, Us
         self,
         request_model: AuthenticateApiKeyRequestModel,
         **kwargs,
-    ) -> User:
+    ) -> UserEntity:
         """Authenticate an API key."""
         # get api key hash
         api_key_hashed: str = self._hash_service.hash(request_model.api_key.encode())
 
         # get user by api key hash
-        user: User | None = await self._user_repository.get_user_by_api_key_hash(
+        user: UserEntity | None = await self._user_repository.get_user_by_api_key_hash(
             api_key_hashed=api_key_hashed,
         )
 

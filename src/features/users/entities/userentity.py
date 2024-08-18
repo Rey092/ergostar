@@ -6,7 +6,7 @@ from src.common.base.entity import UUIDAuditEntity
 
 
 @dataclass(eq=False)
-class User(UUIDAuditEntity):
+class UserEntity(UUIDAuditEntity):
     """User entity."""
 
     email: str

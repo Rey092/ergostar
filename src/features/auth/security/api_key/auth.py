@@ -6,7 +6,7 @@ from typing import Any
 from src.features.auth.interactors.authenticate import AuthenticateApiKeyInteractor
 from src.features.auth.interactors.authenticate import AuthenticateApiKeyRequestModel
 from src.features.auth.security.api_key.config import ApiKeyAuth
-from src.features.users.entities.user import User
+from src.features.users.entities.userentity import UserEntity
 
 if TYPE_CHECKING:
     from litestar.connection import ASGIConnection
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 async def retrieve_user_handler(
     api_key: str,
     connection: "ASGIConnection[Any, Any, Any, Any]",
-) -> User:
+) -> UserEntity:
     """Retrieve a user from the token."""
     interactor: AuthenticateApiKeyInteractor = (
         await connection.state.dishka_container.get(AuthenticateApiKeyInteractor)
@@ -25,7 +25,7 @@ async def retrieve_user_handler(
     )
 
 
-api_key_auth = ApiKeyAuth[User](
+api_key_auth = ApiKeyAuth[UserEntity](
     retrieve_user_handler=retrieve_user_handler,
     exclude=["/docs"],
 )

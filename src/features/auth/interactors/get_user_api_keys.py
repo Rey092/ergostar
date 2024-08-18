@@ -11,7 +11,7 @@ from src.features.auth.interfaces.repositories import IGetAPIKeysAlchemyReposito
 from src.features.auth.interfaces.services import IGetAPIKeyListVaultRepository
 
 if TYPE_CHECKING:
-    from src.features.auth.entities.api_key import ApiKey
+    from src.features.auth.entities.api_key import ApiKeyEntity
 
 
 @dataclass
@@ -52,7 +52,7 @@ class GetUserApiKeysInteractor(
     ) -> GetUserApiKeysResponseModel:
         """Get user api keys."""
         # get api keys entities
-        api_keys: list[ApiKey] = await self._get_api_keys_repository.get_api_keys(
+        api_keys: list[ApiKeyEntity] = await self._get_api_keys_repository.get_api_keys(
             user_id=request_model.user_id,
         )
 

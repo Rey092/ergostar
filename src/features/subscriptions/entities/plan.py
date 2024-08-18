@@ -6,7 +6,7 @@ from src.common.base.entity import UUIDAuditEntity
 
 
 @dataclass(eq=False)
-class SubscriptionPlan(UUIDAuditEntity):
+class SubscriptionPlanEntity(UUIDAuditEntity):
     """Subscription plan model."""
 
     title: str

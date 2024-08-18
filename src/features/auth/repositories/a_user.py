@@ -6,12 +6,12 @@ from src.common.base.repository_alchemy import AlchemyAdapterRepository
 from src.common.base.repository_alchemy import GenericSQLAlchemyRepository
 from src.features.auth.interfaces.repositories import IGetUserByApiKeyRepository
 from src.features.users import UserModel
-from src.features.users.entities.user import User
+from src.features.users.entities.userentity import UserEntity
 from src.features.users.repositories.user import UserRepository
 
 
 class AuthUserAdapterRepository(
-    AlchemyAdapterRepository[User, UserModel, UserRepository],
+    AlchemyAdapterRepository[UserEntity, UserModel, UserRepository],
     IGetUserByApiKeyRepository,
 ):
     """Auth user repository."""
@@ -19,7 +19,7 @@ class AuthUserAdapterRepository(
     model_type = UserModel
     repository_type = GenericSQLAlchemyRepository[UserModel]
 
-    async def get_user_by_api_key_hash(self, api_key_hashed: str) -> User | None:
+    async def get_user_by_api_key_hash(self, api_key_hashed: str) -> UserEntity | None:
         """Get user by API key."""
         model: UserModel | None = await self._repository.get_one_or_none(
             statement=select(UserModel)

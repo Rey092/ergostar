@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from litestar.types import Method
     from litestar.types import Scopes
 
-    from src.features.users.entities.user import User
+    from src.features.users.entities.userentity import UserEntity
 
 
 class ApiKeyMiddleware(AbstractAuthenticationMiddleware, Generic[BaseSessionBackendT]):
@@ -109,5 +109,5 @@ class ApiKeyMiddleware(AbstractAuthenticationMiddleware, Generic[BaseSessionBack
         Returns:
             AuthenticationResult
         """
-        user: User = await self.retrieve_user_handler(api_key, connection)
+        user: UserEntity = await self.retrieve_user_handler(api_key, connection)
         return AuthenticationResult(user=user, auth=api_key)

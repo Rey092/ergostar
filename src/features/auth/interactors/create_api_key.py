@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from src.common.base.interactor import Interactor
 from src.common.interfaces.unit_of_work import IDatabaseSession
 from src.common.interfaces.unit_of_work import IVaultSession
-from src.features.auth.entities.api_key import ApiKey
+from src.features.auth.entities.api_key import ApiKeyEntity
 from src.features.auth.interfaces.hashers import IHasher
 from src.features.auth.interfaces.repositories import ICreateApiKeyRepository
 from src.features.auth.interfaces.services import IAddAPIKeyVaultRepository
@@ -56,8 +56,8 @@ class CreateApiKeyInteractor(Interactor[CreateApiKeyRequestModel, str]):
         key_hashed: str = self._hasher_service.hash(key.encode())
 
         # create one
-        api_key: ApiKey = await self._create_api_key_repository.create_one(
-            ApiKey(
+        api_key: ApiKeyEntity = await self._create_api_key_repository.create_one(
+            ApiKeyEntity(
                 user_id=request_model.user_id,
                 key_hashed=key_hashed,
             ),
