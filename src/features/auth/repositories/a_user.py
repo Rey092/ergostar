@@ -1,8 +1,5 @@
 """Auth user repository adapter."""
 
-from typing import cast
-
-from sqlalchemy import ColumnElement
 from sqlalchemy import select
 
 from src.common.base.repositories.alchemy import AlchemyAdapterRepository
@@ -23,17 +20,15 @@ class AuthUserAdapterRepository(
     model_type = UserModel
     repository_type = GenericSQLAlchemyRepository[UserModel]
 
+    # TODO: https://youtrack.jetbrains.com/issue/PY-71748/SQLAlchemy-2.0-ORM-filter-show-wrong-type-hints-in-Pycharm
+    # noinspection PyTypeChecker
     async def get_user_by_api_key_hash(self, api_key_hashed: str) -> UserEntity | None:
         """Get user by API key."""
         model: UserModel | None = await self._repository.get_one_or_none(
             statement=select(UserModel)
             .join(UserModel.api_keys)
             .where(
-                # TODO: https://youtrack.jetbrains.com/issue/PY-71748/SQLAlchemy-2.0-ORM-filter-show-wrong-type-hints-in-Pycharm
-                cast(  # type: ignore[redundant-cast]
-                    ColumnElement[bool],
-                    ApiKeyModel.key_hashed == api_key_hashed,
-                ),
+                ApiKeyModel.key_hashed == api_key_hashed,
             ),
         )
         return self.model_to_entity(model) if model else None
