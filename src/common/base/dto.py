@@ -1,4 +1,4 @@
-"""Common configuration for the application."""
+"""Common DTOs."""
 
 from pydantic import BaseModel
 
