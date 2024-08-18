@@ -51,7 +51,7 @@ class ModelEntityProtocol(Protocol[ModelT, EntityT]):
     entity_type: type[EntityT]
 
 
-class AlchemyMappedRepository(
+class AbstractAlchemyRepository(
     BaseAlchemyRepository,
     ModelEntityProtocol,
     IMapper,
@@ -86,7 +86,7 @@ class AlchemyMappedRepository(
 
 class AlchemyRepository(
     DefaultMapper[EntityT, ModelT],
-    AlchemyMappedRepository[EntityT, ModelT],
+    AbstractAlchemyRepository[EntityT, ModelT],
 ):
     """AlchemyMappedRepository."""
 
