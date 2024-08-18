@@ -2,8 +2,8 @@
 
 from collections.abc import Sequence
 
-from src.common.base.repository_alchemy import AlchemyMappedRepository
-from src.common.base.repository_alchemy import GenericSQLAlchemyRepository
+from src.common.base.repositories.alchemy import AlchemyMappedRepository
+from src.common.base.repositories.alchemy import GenericSQLAlchemyRepository
 from src.features.subscriptions import SubscriptionPlanModel
 from src.features.subscriptions.entities import SubscriptionPlanEntity
 

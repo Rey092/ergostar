@@ -2,8 +2,8 @@
 
 from sqlalchemy import select
 
-from src.common.base.repository_alchemy import AlchemyAdapterRepository
-from src.common.base.repository_alchemy import GenericSQLAlchemyRepository
+from src.common.base.repositories.alchemy import AlchemyAdapterRepository
+from src.common.base.repositories.alchemy import GenericSQLAlchemyRepository
 from src.features.auth.interfaces.repositories import IGetUserByApiKeyRepository
 from src.features.users import UserModel
 from src.features.users.entities.userentity import UserEntity

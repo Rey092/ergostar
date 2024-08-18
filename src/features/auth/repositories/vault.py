@@ -2,7 +2,7 @@
 
 from uuid import UUID
 
-from src.common.base.repository_vault import VaultRepository
+from src.common.base.repositories.vault import VaultRepository
 from src.common.base.vault_uow import VaultSession
 from src.config.settings import VaultSettings
 from src.features.auth.interfaces.services import IAddAPIKeyVaultRepository

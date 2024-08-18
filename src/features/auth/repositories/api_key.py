@@ -2,8 +2,8 @@
 
 from uuid import UUID
 
-from src.common.base.repository_alchemy import AlchemyMappedRepository
-from src.common.base.repository_alchemy import GenericSQLAlchemyRepository
+from src.common.base.repositories.alchemy import AlchemyMappedRepository
+from src.common.base.repositories.alchemy import GenericSQLAlchemyRepository
 from src.features.auth.entities.api_key import ApiKeyEntity
 from src.features.auth.interfaces.repositories import ICreateApiKeyRepository
 from src.features.auth.interfaces.repositories import IGetAPIKeysAlchemyRepository

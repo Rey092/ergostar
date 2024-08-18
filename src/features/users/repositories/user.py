@@ -4,8 +4,8 @@ from collections.abc import Sequence
 
 from sqlalchemy import select
 
-from src.common.base.repository_alchemy import AlchemyMappedRepository
-from src.common.base.repository_alchemy import GenericSQLAlchemyRepository
+from src.common.base.repositories.alchemy import AlchemyMappedRepository
+from src.common.base.repositories.alchemy import GenericSQLAlchemyRepository
 from src.features.users.entities.userentity import UserEntity
 from src.features.users.models import UserModel
 
