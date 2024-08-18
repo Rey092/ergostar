@@ -23,10 +23,12 @@ class ApiKeyModel(UUIDv7AuditBase):
         String(128),
         nullable=False,
         unique=True,
+        index=True,
     )
     user_id: Mapped[UUID] = mapped_column(
         ForeignKey("users.id"),
         nullable=False,
+        index=True,
     )
     user: Mapped["UserModel"] = relationship(
         "UserModel",
