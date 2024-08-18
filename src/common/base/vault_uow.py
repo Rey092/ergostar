@@ -10,7 +10,7 @@ from hvac.exceptions import InvalidPath
 from litestar.concurrency import sync_to_thread
 from requests import Session
 
-from src.common.interfaces.unit_of_work import IVaultSession
+from src.common.interfaces.uow import IVaultSession
 
 logger = logging.getLogger(__name__)
 

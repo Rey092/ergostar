@@ -14,8 +14,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from src.common.base.vault_uow import VaultSession
-from src.common.interfaces.unit_of_work import IDatabaseSession
-from src.common.interfaces.unit_of_work import IVaultSession
+from src.common.interfaces.uow import IDatabaseSession
+from src.common.interfaces.uow import IVaultSession
 from src.config.settings import AppSettings
 from src.config.settings import Settings
 from src.config.settings import VaultSettings

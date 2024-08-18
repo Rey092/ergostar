@@ -5,8 +5,8 @@ import uuid
 from dataclasses import dataclass
 
 from src.common.base.interactor import Interactor
-from src.common.interfaces.unit_of_work import IDatabaseSession
-from src.common.interfaces.unit_of_work import IVaultSession
+from src.common.interfaces.uow import IDatabaseSession
+from src.common.interfaces.uow import IVaultSession
 from src.features.auth.entities.api_key import ApiKeyEntity
 from src.features.auth.interfaces.hashers import IHasher
 from src.features.auth.interfaces.repositories import ICreateApiKeyRepository

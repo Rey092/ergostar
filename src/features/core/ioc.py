@@ -5,8 +5,8 @@ from dishka import Provider
 from dishka import Scope
 from dishka import provide
 
-from src.common.interfaces.fixture_loader import IFixtureDatabaseLoader
-from src.common.interfaces.fixture_loader_repository import ISeedManyEntries
+from src.common.interfaces.fixture_loader.repository import ISeedManyEntries
+from src.common.interfaces.fixture_loader.service import IFixtureDatabaseLoader
 from src.features.core.interactors.drop_database_tables import (
     DropDatabaseTablesInteractor,
 )

@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from admin.core.enums import DatabaseSeedingGroups
 from src.common.base.interactor import Interactor
-from src.common.interfaces.fixture_loader import IFixtureDatabaseLoader
+from src.common.interfaces.fixture_loader.service import IFixtureDatabaseLoader
 from src.features.core.enums import FixtureLoadingStrategy
 from src.features.subscriptions.entities import SubscriptionPlanEntity
 from src.features.users.entities.userentity import UserEntity

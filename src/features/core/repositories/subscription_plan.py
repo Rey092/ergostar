@@ -2,7 +2,7 @@
 
 from collections.abc import Sequence
 
-from src.common.interfaces.fixture_loader_repository import ISeedManyEntries
+from src.common.interfaces.fixture_loader.repository import ISeedManyEntries
 from src.features.subscriptions.entities import SubscriptionPlanEntity
 from src.features.subscriptions.repositories.subscription_plan import (
     SubscriptionPlanRepository,

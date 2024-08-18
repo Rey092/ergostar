@@ -10,11 +10,11 @@ from typing import cast
 import aiofiles
 
 from src.common.base.service import Service
-from src.common.interfaces.fixture_loader import EntityT
-from src.common.interfaces.fixture_loader import IFixtureDatabaseLoader
-from src.common.interfaces.fixture_loader import IFixtureEntityLoader
-from src.common.interfaces.fixture_loader import IFixtureLoader
-from src.common.interfaces.fixture_loader_repository import ISeedManyEntries
+from src.common.interfaces.fixture_loader.repository import ISeedManyEntries
+from src.common.interfaces.fixture_loader.service import EntityT
+from src.common.interfaces.fixture_loader.service import IFixtureDatabaseLoader
+from src.common.interfaces.fixture_loader.service import IFixtureEntityLoader
+from src.common.interfaces.fixture_loader.service import IFixtureLoader
 from src.config.settings import AppSettings
 from src.features.core.enums import FixtureLoadingStrategy
 
