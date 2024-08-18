@@ -12,7 +12,7 @@ from admin.config.unfold import UNFOLD  # noqa: F401
 env = Env()
 
 # Read environment variables from .env file
-if env.bool("READ_ENV_FILE", default=True):
+if env.bool("UNFOLD_READ_ENV_FILE", default=True):
     env.read_env(".env")
 
 # Routes
