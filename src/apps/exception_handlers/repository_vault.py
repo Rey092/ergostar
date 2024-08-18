@@ -29,20 +29,9 @@ from litestar.exceptions.responses import create_debug_response
 from litestar.exceptions.responses import create_exception_response
 from litestar.middleware.exceptions.middleware import ExceptionResponseContent
 from litestar.response import Response
-from litestar.status_codes import HTTP_409_CONFLICT
-from litestar.status_codes import HTTP_502_BAD_GATEWAY
 
-
-class _HTTPConflictException(HTTPException):
-    """Request conflict with the current state of the target resource."""
-
-    status_code = HTTP_409_CONFLICT
-
-
-class _HTTPBadGatewayException(HTTPException):
-    """The Server received an invalid response from an upstream server."""
-
-    status_code = HTTP_502_BAD_GATEWAY
+from src.apps.exception_handlers import _HTTPBadGatewayException
+from src.apps.exception_handlers import _HTTPConflictException
 
 
 def repository_vault_exception_handler(

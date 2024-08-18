@@ -1,6 +1,7 @@
 """Interactor to get user api keys."""
 
 from dataclasses import dataclass
+from datetime import datetime
 from typing import TYPE_CHECKING
 from uuid import UUID
 
@@ -22,11 +23,22 @@ class GetUserApiKeysRequestModel:
 
 
 @dataclass
+class UserApiKey:
+    """User api key."""
+
+    api_key_id: str
+    api_key_value: str | None
+    date_created: datetime
+    useless_field_two: str
+
+
+@dataclass
 class GetUserApiKeysResponseModel:
     """Get user api keys response model."""
 
     user_id: UUID
-    api_keys: list[dict[str, str]]
+    api_keys: list[UserApiKey]
+    useless_field_one: str = "This field should be hidden."
 
 
 class GetUserApiKeysInteractor(
@@ -72,16 +84,17 @@ class GetUserApiKeysInteractor(
 
         # create a dict with keys: api_key_id, api_key_value,
         # date_created using api_keys and data
-        api_keys_data: list[dict] = []
+        api_keys_data: list[UserApiKey] = []
 
         for api_key in api_keys:
             vault_api_key_value: str | None = vault_api_keys.get(str(api_key.id), None)
             api_keys_data.append(
-                {
-                    "api_key_id": str(api_key.id),
-                    "api_key_value": vault_api_key_value,
-                    "date_created": api_key.created_at,
-                },
+                UserApiKey(
+                    api_key_id=str(api_key.id),
+                    api_key_value=vault_api_key_value,
+                    date_created=api_key.created_at,
+                    useless_field_two="This field should be hidden.",
+                ),
             )
 
         return GetUserApiKeysResponseModel(

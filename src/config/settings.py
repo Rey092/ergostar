@@ -159,7 +159,7 @@ class AppSettings(LiteStarSettings):
     CSRF_COOKIE_SECURE: bool = False
     """JWT Encryption Algorithm"""
     JWT_ENCRYPTION_ALGORITHM: str = "HS256"
-    """Redis cache status."""
+    """Cache status."""
     CACHE_ENABLED: bool = True
 
     @property

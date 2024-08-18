@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 from advanced_alchemy.exceptions import RepositoryError
 from advanced_alchemy.extensions.litestar import SQLAlchemyPlugin
 from cashews import cache
+from cashews.exceptions import CacheError
 from dishka.integrations import litestar as litestar_integration
 from hvac.exceptions import VaultError
 from litestar import Litestar
@@ -15,6 +16,7 @@ from litestar.static_files import create_static_files_router
 from litestar.status_codes import HTTP_500_INTERNAL_SERVER_ERROR
 from litestar.status_codes import HTTP_503_SERVICE_UNAVAILABLE
 
+from src.apps.exception_handlers.cache import cache_exception_handler
 from src.apps.exception_handlers.repository_alchemy import (
     repository_alchemy_exception_handler,
 )
@@ -59,7 +61,7 @@ def create_app() -> Litestar:
     # initialize cache
     cache.setup(
         settings_url=settings.redis.URL,
-        disable=settings.app.CACHE_ENABLED,
+        disable=not settings.app.CACHE_ENABLED,
     )
 
     # create dependency container
@@ -101,6 +103,7 @@ def create_app() -> Litestar:
         exception_handlers={
             RepositoryError: repository_alchemy_exception_handler,
             VaultError: repository_vault_exception_handler,
+            CacheError: cache_exception_handler,
             HTTP_500_INTERNAL_SERVER_ERROR: server_exception_handler,
             HTTP_503_SERVICE_UNAVAILABLE: server_exception_handler,
         },

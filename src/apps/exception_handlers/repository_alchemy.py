@@ -15,13 +15,8 @@ from litestar.repository.exceptions import ConflictError
 from litestar.repository.exceptions import NotFoundError
 from litestar.repository.exceptions import RepositoryError
 from litestar.response import Response
-from litestar.status_codes import HTTP_409_CONFLICT
 
-
-class _HTTPConflictException(HTTPException):
-    """Request conflict with the current state of the target resource."""
-
-    status_code = HTTP_409_CONFLICT
+from src.apps.exception_handlers import _HTTPConflictException
 
 
 def repository_alchemy_exception_handler(
@@ -37,7 +32,7 @@ def repository_alchemy_exception_handler(
 
     Returns:
     -------
-        Exception response appropriate to the type of original exception.
+        Exception response is appropriate to the type of original exception.
 
     """
     http_exc: type[HTTPException]
