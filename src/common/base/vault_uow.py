@@ -58,8 +58,8 @@ class VaultSession(IVaultSession):
     start_commit_message = "Committing Vault operations"
     committed_message = "Vault operations committed"
     creating_kv_engine_message = "Creating KV engine at mount point %s"
-    patching_kv_data_message = "Use path %s to patch a KV"
-    creating_kv_data_message = "Use path %s to create a KV"
+    patching_kv_data_message = "Patch KV data at path %s"
+    creating_kv_data_message = "Creating KV pair at path %s"
 
     def __init__(self, vault_engine: VaultEngine):
         """Initialize the Vault session."""
