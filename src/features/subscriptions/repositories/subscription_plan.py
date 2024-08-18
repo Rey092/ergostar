@@ -3,7 +3,7 @@
 from collections.abc import Sequence
 
 from src.common.base.repositories.alchemy import AlchemyRepository
-from src.common.base.repositories.alchemy import GenericSQLAlchemyRepository
+from src.common.base.repositories.alchemy import GenericAlchemyRepository
 from src.features.subscriptions import SubscriptionPlanModel
 from src.features.subscriptions.entities import SubscriptionPlanEntity
 
@@ -14,7 +14,7 @@ class SubscriptionPlanRepository(
     """Subscription Plan repository."""
 
     model_type = SubscriptionPlanModel
-    repository_type = GenericSQLAlchemyRepository[SubscriptionPlanModel]
+    repository_type = GenericAlchemyRepository[SubscriptionPlanModel]
 
     async def add_many(
         self,

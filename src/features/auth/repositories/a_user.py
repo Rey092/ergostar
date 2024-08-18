@@ -3,7 +3,7 @@
 from sqlalchemy import select
 
 from src.common.base.repositories.alchemy import AlchemyAdapterRepository
-from src.common.base.repositories.alchemy import GenericSQLAlchemyRepository
+from src.common.base.repositories.alchemy import GenericAlchemyRepository
 from src.features.auth import ApiKeyModel
 from src.features.auth.interfaces.repositories import IGetUserByApiKeyRepository
 from src.features.users import UserModel
@@ -18,7 +18,7 @@ class AuthUserAdapterRepository(
     """Auth user repository."""
 
     model_type = UserModel
-    repository_type = GenericSQLAlchemyRepository[UserModel]
+    repository_type = GenericAlchemyRepository[UserModel]
 
     # TODO: https://youtrack.jetbrains.com/issue/PY-71748/SQLAlchemy-2.0-ORM-filter-show-wrong-type-hints-in-Pycharm
     # noinspection PyTypeChecker

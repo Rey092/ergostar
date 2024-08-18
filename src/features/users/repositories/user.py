@@ -3,7 +3,7 @@
 from collections.abc import Sequence
 
 from src.common.base.repositories.alchemy import AlchemyRepository
-from src.common.base.repositories.alchemy import GenericSQLAlchemyRepository
+from src.common.base.repositories.alchemy import GenericAlchemyRepository
 from src.features.users.entities.userentity import UserEntity
 from src.features.users.models import UserModel
 
@@ -13,7 +13,7 @@ class UserRepository(AlchemyRepository[UserEntity, UserModel]):
     """Subscription Plan repository."""
 
     model_type = UserModel
-    repository_type = GenericSQLAlchemyRepository[UserModel]
+    repository_type = GenericAlchemyRepository[UserModel]
 
     async def add_many(
         self,

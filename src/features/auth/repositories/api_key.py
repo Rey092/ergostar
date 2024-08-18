@@ -3,7 +3,7 @@
 from uuid import UUID
 
 from src.common.base.repositories.alchemy import AlchemyRepository
-from src.common.base.repositories.alchemy import GenericSQLAlchemyRepository
+from src.common.base.repositories.alchemy import GenericAlchemyRepository
 from src.features.auth.entities.api_key import ApiKeyEntity
 from src.features.auth.interfaces.repositories import ICreateApiKeyRepository
 from src.features.auth.interfaces.repositories import IGetAPIKeysAlchemyRepository
@@ -18,7 +18,7 @@ class ApiKeyRepository(
     """ApiKey repository."""
 
     model_type = ApiKeyModel
-    repository_type = GenericSQLAlchemyRepository[ApiKeyModel]
+    repository_type = GenericAlchemyRepository[ApiKeyModel]
 
     async def create_one(self, data: ApiKeyEntity) -> ApiKeyEntity:
         """Delete all entries."""

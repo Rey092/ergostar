@@ -18,15 +18,15 @@ from src.common.interfaces.repository import IRepository
 from src.common.types import EntityT
 
 
-class GenericSQLAlchemyRepositoryProtocol(
+class GenericAlchemyRepositoryProtocol(
     SQLAlchemyAsyncSlugRepositoryProtocol[ModelT],
 ):
     """Generic repository protocol for SQLAlchemy."""
 
 
-class GenericSQLAlchemyRepository(
+class GenericAlchemyRepository(
     SQLAlchemyAsyncSlugRepository[ModelT],
-    GenericSQLAlchemyRepositoryProtocol[ModelT],
+    GenericAlchemyRepositoryProtocol[ModelT],
 ):
     """Generic repository for SQLAlchemy."""
 
@@ -60,8 +60,8 @@ class AbstractAlchemyRepository(
 ):
     """Base repository class with generic repository support."""
 
-    repository_type = GenericSQLAlchemyRepository
-    _repository: GenericSQLAlchemyRepositoryProtocol[ModelT]
+    repository_type = GenericAlchemyRepository
+    _repository: GenericAlchemyRepositoryProtocol[ModelT]
 
     def __init__(
         self,
@@ -79,7 +79,7 @@ class AbstractAlchemyRepository(
         self._repository.model_type = self.model_type
 
     @property
-    def generic_repository(self) -> GenericSQLAlchemyRepositoryProtocol[ModelT]:
+    def generic_repository(self) -> GenericAlchemyRepositoryProtocol[ModelT]:
         """Return the generic repository."""
         return self._repository
 
@@ -103,7 +103,7 @@ class AlchemyAdapterRepository(
     """AlchemyAdapterRepository."""
 
     _adaptee: MappedRepoT
-    _repository: GenericSQLAlchemyRepositoryProtocol[ModelT]
+    _repository: GenericAlchemyRepositoryProtocol[ModelT]
 
     def __init__(
         self,
