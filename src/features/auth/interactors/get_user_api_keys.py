@@ -4,8 +4,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING
 from uuid import UUID
 
-from hvac.exceptions import InvalidPath
-from litestar.exceptions import ServiceUnavailableException
+from litestar.exceptions import ClientException
 
 from src.common.base.interactor import Interactor
 from src.features.auth.interfaces.repositories import IGetAPIKeysAlchemyRepository
@@ -33,22 +32,28 @@ class GetUserApiKeysInteractor(Interactor[GetUserApiKeysRequestModel, dict]):
         """Configure the interactor."""
         self._api_key_vault_repository = api_key_vault_repository
         self._get_api_keys_repository = api_key_alchemy_repository
+        self._message_create_api_key_first = (
+            "Before you can use this feature, you need to create an API key first."
+        )
 
     async def __call__(self, request_model: GetUserApiKeysRequestModel) -> dict:
         """Get user api keys."""
-        # get raw data from vault
-        try:
-            vault_api_keys: dict[
-                str,
-                str,
-            ] = await self._api_key_vault_repository.get_user_api_keys(
-                user_id=request_model.user_id,
-            )
-        except InvalidPath as error:
-            raise ServiceUnavailableException from error
-
         # get api keys entities
         api_keys: list[ApiKey] = await self._get_api_keys_repository.get_api_keys(
+            user_id=request_model.user_id,
+        )
+
+        # if no api keys found raise exception
+        if not api_keys:
+            raise ClientException(
+                detail=self._message_create_api_key_first,
+            )
+
+        # get raw data from vault
+        vault_api_keys: dict[
+            str,
+            str,
+        ] = await self._api_key_vault_repository.get_user_api_keys(
             user_id=request_model.user_id,
         )
 

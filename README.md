@@ -5,8 +5,9 @@
 - [x] логирование
 - [x] uow vault
 - [x] пересмотреть настройки лишние
-- [ ] рефактор конфигов и коммон
+- [x] рефактор конфигов и коммон
 - [ ] Добавить плейграунд для sql
+- [ ] tests
 - [ ] pycharm testrun with coverage
 
 # Отмененные задачи:
@@ -16,6 +17,20 @@
 - [ ] ~~Вынести логику криптографии апи-ключей.~~
 - [ ] ~~Покрасивее сделать передачу ключа для таблиц с криптографией ?~~
 - [ ] ~~infisical docker~~
+
+# Docker Installation
+
+## 1. Copy .env.example.docker to .env.docker
+
+```bash
+cp .env.example.docker .env.docker
+```
+
+## 2. Start the app
+
+```bash
+docker compose up --build
+```
 
 # Local Installation
 
