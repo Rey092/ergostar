@@ -65,6 +65,11 @@ class AlchemyRepository(BaseAlchemyRepository, IMapper, ABC, Generic[EntityT, Mo
         )
         self._repository.model_type = self.model_type
 
+    @property
+    def repository(self):
+        """Return the repository object."""
+        return self._repository
+
 
 class AlchemyMappedRepository(
     DefaultMapper[EntityT, ModelT],
@@ -79,12 +84,13 @@ MappedRepoT = TypeVar("MappedRepoT", bound=AlchemyMappedRepository)
 
 class AlchemyAdapterRepository(
     AdapterMapper[EntityT, ModelT],
-    AlchemyRepository[EntityT, ModelT],
+    BaseAlchemyRepository[EntityT, ModelT],
     Generic[EntityT, ModelT, MappedRepoT],
 ):
     """AlchemyAdapterRepository."""
 
     _adaptee: MappedRepoT
+    _repository: GenericSQLAlchemyRepositoryProtocol[ModelT]
 
     def __init__(
         self,
@@ -94,3 +100,4 @@ class AlchemyAdapterRepository(
         """Configure the repository object."""
         super().__init__(session=session)
         self._adaptee = mapped_repo
+        self._repository = self._adaptee.repository
