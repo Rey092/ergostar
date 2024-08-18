@@ -138,10 +138,12 @@ class AppSettings(LiteStarSettings):
     """Application configuration."""
 
     """Project name."""
-    PROJECT_NAME: str = "Litestar"
+    PROJECT_NAME: str = "Default"
+    """Current container name."""
+    CONTAINER_NAME: str = "Default"
     """The API base URL"""
     API_URL: str = "http://localhost:3000/docs"
-    """Run `Litestar` with `debug=True`."""
+    """Debug mode."""
     DEBUG: bool = True
     """Application secret key."""
     SECRET_KEY: str = Field(

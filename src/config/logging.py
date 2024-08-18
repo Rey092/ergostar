@@ -29,6 +29,7 @@ def get_structlog_config(
             "backend_url": app_settings.API_URL,
             "bot_token": log_settings.TELEGRAM_BOT_TOKEN,
             "chat_id": log_settings.TELEGRAM_CHAT_ID,
+            "container_name": app_settings.CONTAINER_NAME,
         }
 
     return StructlogConfig(

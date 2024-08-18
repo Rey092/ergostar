@@ -2,7 +2,6 @@
 
 import asyncio
 import logging
-import os
 import re
 
 from aiogram import Bot
@@ -17,6 +16,7 @@ class TelegramHandler(logging.Handler):
         backend_url,
         bot_token,
         chat_id,
+        container_name,
         *args,
         **kwargs,
     ):
@@ -25,11 +25,12 @@ class TelegramHandler(logging.Handler):
         self._bot_token = bot_token
         self._project_name = project_name
         self._backend_url = backend_url
+        self._container_name = container_name
         self._chat_id = chat_id
         self._bot = Bot(token=self._bot_token)
         self._main_first_part = (
             f"Project: {self._project_name}\n"
-            f"Container: {os.environ.get('CONTAINER_NAME')}\n"
+            f"Container: {self._container_name}\n"
             f"URL: {self._backend_url}\n"
             f"Huston, we have a problem! 🚀\n"
             "- - - - -\n\n"
