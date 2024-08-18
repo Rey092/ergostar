@@ -47,6 +47,7 @@ class VaultOperation:
         """Run the rollback operation, if provided."""
         if self.rollback and self.is_executed and not self.is_rolled_back:
             await self.rollback()
+            self.is_rolled_back = True
 
 
 class VaultSession(IVaultSession):
@@ -54,6 +55,11 @@ class VaultSession(IVaultSession):
 
     rolling_back_message = "Vault operations failed, rolling back: %s"
     rollback_failed_message = "Rollback failed: %s"
+    start_commit_message = "Committing Vault operations"
+    committed_message = "Vault operations committed"
+    creating_kv_engine_message = "Creating KV engine at mount point %s"
+    patching_kv_data_message = "Use path %s to patch a KV"
+    creating_kv_data_message = "Use path %s to create a KV"
 
     def __init__(self, vault_engine: VaultEngine):
         """Initialize the Vault session."""
@@ -103,12 +109,12 @@ class VaultSession(IVaultSession):
 
     async def commit(self) -> None:
         """Commit all operations."""
-        logger.info("Committing Vault operations")
+        logger.info(self.start_commit_message)
         try:
             await self.flush()
             self._clear()
             self._committed = True
-            logger.info("Vault operations committed")
+            logger.info(self.committed_message)
         except Exception as error:
             logger.info(self.rolling_back_message, error)
             await self.rollback()
@@ -131,12 +137,13 @@ class VaultSession(IVaultSession):
             await operation.run()
 
     async def _check_mount_path(self, mount_point: str = "secret") -> None:
+        """Ensure the KV engine with the specified mount point exists."""
         # Check if the KV engine with the specified mount point exists
         mounts = await sync_to_thread(
             self.vault_engine.sys.list_mounted_secrets_engines,
         )
         if f"{mount_point.replace('/', '')}/" not in mounts:
-            logger.info("Creating KV engine at mount point %s", mount_point)
+            logger.info(self.creating_kv_engine_message, mount_point)
             await sync_to_thread(
                 lambda: self.vault_engine.sys.enable_secrets_engine(
                     backend_type="kv",
@@ -159,7 +166,7 @@ class VaultSession(IVaultSession):
             """Execute the operation."""
             try:
                 # Try to patch the secret
-                logger.info("Patching secret %s", path)
+                logger.info(self.patching_kv_data_message, path)
                 await sync_to_thread(
                     lambda: self.vault_engine.secrets.kv.v2.patch(
                         path=path,
@@ -168,7 +175,7 @@ class VaultSession(IVaultSession):
                     ),
                 )
             except InvalidPath:
-                logger.info("Creating secret %s", path)
+                logger.info(self.creating_kv_data_message, path)
                 # If the secret does not exist, create it
                 await sync_to_thread(
                     lambda: self.vault_engine.secrets.kv.v2.create_or_update_secret(
