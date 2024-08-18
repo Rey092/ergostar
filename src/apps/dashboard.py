@@ -1,6 +1,6 @@
 """Prepare ASGI application for landing.
 
-TODO: App in development.Need to be refactored.
+TODO: App in development
 """
 
 from pathlib import Path
