@@ -13,7 +13,7 @@ from src.features.auth.interactors.create_api_key import CreateApiKeyInteractor
 from src.features.auth.interactors.create_api_key import CreateApiKeyRequestModel
 from src.features.auth.interactors.get_user_api_keys import GetUserApiKeysInteractor
 from src.features.auth.interactors.get_user_api_keys import GetUserApiKeysRequestModel
-from src.features.auth.interfaces.services import IGetAPIKeyListVaultRepository
+from src.features.auth.interactors.get_user_api_keys import GetUserApiKeysResponseModel
 from src.features.users.entities.user import User
 
 
@@ -38,9 +38,8 @@ class AuthController(Controller):
     async def check_auth(
         self,
         request: Request[User, str, Any],
-        vault_repository: FromDishka[IGetAPIKeyListVaultRepository],
         interactor: FromDishka[GetUserApiKeysInteractor],
-    ) -> dict:
+    ) -> GetUserApiKeysResponseModel:
         """Test auth."""
         return await interactor(
             GetUserApiKeysRequestModel(

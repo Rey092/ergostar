@@ -21,7 +21,17 @@ class GetUserApiKeysRequestModel:
     user_id: UUID
 
 
-class GetUserApiKeysInteractor(Interactor[GetUserApiKeysRequestModel, dict]):
+@dataclass
+class GetUserApiKeysResponseModel:
+    """Get user api keys response model."""
+
+    user_id: UUID
+    api_keys: list[dict[str, str]]
+
+
+class GetUserApiKeysInteractor(
+    Interactor[GetUserApiKeysRequestModel, GetUserApiKeysResponseModel],
+):
     """Get user api keys."""
 
     def __init__(
@@ -36,7 +46,10 @@ class GetUserApiKeysInteractor(Interactor[GetUserApiKeysRequestModel, dict]):
             "Before you can use this feature, you need to create an API key first."
         )
 
-    async def __call__(self, request_model: GetUserApiKeysRequestModel) -> dict:
+    async def __call__(
+        self,
+        request_model: GetUserApiKeysRequestModel,
+    ) -> GetUserApiKeysResponseModel:
         """Get user api keys."""
         # get api keys entities
         api_keys: list[ApiKey] = await self._get_api_keys_repository.get_api_keys(
@@ -71,7 +84,7 @@ class GetUserApiKeysInteractor(Interactor[GetUserApiKeysRequestModel, dict]):
                 },
             )
 
-        return {
-            "user_id": request_model.user_id,
-            "api_keys": api_keys_data,
-        }
+        return GetUserApiKeysResponseModel(
+            user_id=request_model.user_id,
+            api_keys=api_keys_data,
+        )
