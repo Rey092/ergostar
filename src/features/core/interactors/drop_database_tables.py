@@ -1,5 +1,6 @@
 """Drop database tables interactor module."""
 
+from litestar.exceptions import InternalServerException
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -28,7 +29,7 @@ class DropDatabaseTablesInteractor(Interactor[None, None]):
         """Drop database tables."""
         # check if we are in production
         if not self._debug:
-            raise ValueError(self._message_can_not_drop)
+            raise InternalServerException(self._message_can_not_drop)
 
         # drop and create the public schema, this will drop all tables
         drop_command = text("DROP SCHEMA IF EXISTS public CASCADE;")

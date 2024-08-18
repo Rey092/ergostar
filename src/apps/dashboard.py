@@ -1,4 +1,7 @@
-"""Prepare ASGI application for landing."""
+"""Prepare ASGI application for landing.
+
+TODO: App in development.Need to be refactored.
+"""
 
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -16,7 +19,9 @@ from litestar.template import TemplateConfig
 from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from src.apps.exception_handlers.base import exception_to_http_response
+from src.apps.exception_handlers.repository_alchemy import (
+    repository_alchemy_exception_handler,
+)
 from src.config.alchemy import get_alchemy_config
 from src.config.alchemy import get_alchemy_engine
 from src.config.cli import CLIPlugin
@@ -48,7 +53,7 @@ def create_app() -> Litestar:
     # initialize cache
     cache.setup(
         settings_url=settings.redis.URL,
-        disable=settings.redis.CACHE_ENABLED,
+        disable=settings.app.CACHE_ENABLED,
     )
 
     # create dependency container
@@ -100,7 +105,7 @@ def create_app() -> Litestar:
             engine=JinjaTemplateEngine,
         ),
         exception_handlers={
-            RepositoryError: exception_to_http_response,
+            RepositoryError: repository_alchemy_exception_handler,
         },
         compression_config=get_compression_config(),
     )

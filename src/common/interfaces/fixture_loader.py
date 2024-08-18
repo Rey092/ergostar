@@ -4,12 +4,9 @@ from abc import abstractmethod
 from collections.abc import Sequence
 from typing import Any
 from typing import Protocol
-from typing import TypeVar
 
-from src.common.base.entity import Entity
+from src.common.types import EntityT
 from src.features.core.enums import FixtureLoadingStrategy
-
-EntityT = TypeVar("EntityT", bound=Entity)
 
 
 class IFixtureLoader(Protocol):

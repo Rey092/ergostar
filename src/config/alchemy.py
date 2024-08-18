@@ -97,8 +97,8 @@ def get_alchemy_config(
         before_send_handler=async_autocommit_before_send_handler,
         session_config=AsyncSessionConfig(expire_on_commit=False),
         alembic_config=AlembicAsyncConfig(
-            version_table_name=db_settings.migration_ddl_version_table,
-            script_config=db_settings.migration_config,
-            script_location=db_settings.migration_path,
+            version_table_name=db_settings.MIGRATION_DDL_VERSION_TABLE,
+            script_config=db_settings.MIGRATION_CONFIG,
+            script_location=db_settings.MIGRATION_PATH,
         ),
     )

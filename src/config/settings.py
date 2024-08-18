@@ -4,8 +4,6 @@ import binascii
 import os
 from pathlib import Path
 
-from litestar.data_extractors import RequestExtractorField
-from litestar.data_extractors import ResponseExtractorField
 from pydantic import Field
 from pydantic_settings import BaseSettings
 from pydantic_settings import SettingsConfigDict
@@ -73,62 +71,33 @@ class DatabaseSettings(LiteStarSettings):
     POOL_RECYCLE: int = 300
     """Optionally ping database before fetching a session from the connection pool."""
     POOL_PRE_PING: bool = False
+    """The name to use for the `alembic` versions table name."""
+    MIGRATION_DDL_VERSION_TABLE: str = "ddl_version"
 
     @property
-    def migration_ddl_version_table(self) -> str:
-        """The name to use for the `alembic` versions table name."""
-        return "ddl_version"
-
-    @property
-    def migration_config(self) -> str:
+    def MIGRATION_CONFIG(self) -> str:
         """The path to the `alembic.ini` configuration file."""
         return f"{BASE_DIR}/src/config/migrations/alembic.ini"
 
     @property
-    def migration_path(self) -> str:
+    def MIGRATION_PATH(self) -> str:
         """The path to the `alembic` database migrations."""
         return f"{BASE_DIR}/src/config/migrations"
-
-    @property
-    def fixture_path(self) -> str:
-        """The path to JSON fixture files to load into tables."""
-        return f"{BASE_DIR}/src/config/fixtures"
 
 
 class LogSettings(LiteStarSettings):
     """Logger configuration."""
 
-    """Regex to exclude paths from logging."""
-    EXCLUDE_PATHS: str = r"\A(?!x)x"
-    """Log event name for logs from Litestar handlers."""
-    HTTP_EVENT: str = "HTTP"
-    """Include 'body' of compressed responses in log output."""
-    INCLUDE_COMPRESSED_BODY: bool = False
+    """Model configuration."""
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_prefix="LOG_",
+        extra="ignore",
+        env_file_encoding="utf-8",
+    )
+
     """Stdlib log levels. Only emit logs at this level, or higher."""
     LEVEL: int = 10
-    """Request cookie keys to obfuscate."""
-    OBFUSCATE_COOKIES: set[str] = {"session"}
-    """Request header keys to obfuscate."""
-    OBFUSCATE_HEADERS: set[str] = {"Authorization", "X-API-KEY"}
-    """Attributes of the [Request][litestar.connection.request.Request] to be logged."""
-    REQUEST_FIELDS: list[RequestExtractorField] = [
-        "path",
-        "method",
-        "headers",
-        "cookies",
-        "query",
-        "path_params",
-        "body",
-    ]
-    """Attributes of the [Response][litestar.response.Response] to be logged."""
-    RESPONSE_FIELDS: list[ResponseExtractorField] = [
-        "status_code",
-        "cookies",
-        "headers",
-        "body",
-    ]
-    """Log event name for logs from SAQ worker."""
-    WORKER_EVENT: str = "Worker"
     """Level to log SQLAlchemy logs."""
     SQLALCHEMY_LEVEL: int = 20
     """Level to log uvicorn access logs."""
@@ -137,15 +106,23 @@ class LogSettings(LiteStarSettings):
     UVICORN_ERROR_LEVEL: int = 20
 
     """Telegram bot token."""
-    LOG_TELEGRAM_BOT_TOKEN: str = ""
+    TELEGRAM_BOT_TOKEN: str = ""
     """Telegram chat id."""
-    LOG_TELEGRAM_CHAT_ID: str = ""
+    TELEGRAM_CHAT_ID: str = ""
     """Enable Telegram logging."""
-    LOG_TELEGRAM_LOGGING_ENABLED: bool = False
+    TELEGRAM_LOGGING_ENABLED: bool = False
 
 
 class RedisSettings(LiteStarSettings):
     """Redis settings."""
+
+    """Model configuration."""
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_prefix="REDIS_",
+        extra="ignore",
+        env_file_encoding="utf-8",
+    )
 
     """A Redis connection URL."""
     URL: str = "redis://localhost:6379/0"
@@ -156,15 +133,14 @@ class RedisSettings(LiteStarSettings):
     """Length of time to wait (in seconds) between keepalive commands."""
     SOCKET_KEEPALIVE: bool = True
 
-    """Redis cache status."""
-    CACHE_ENABLED: bool = True
-
 
 class AppSettings(LiteStarSettings):
     """Application configuration."""
 
-    """The frontend base URL"""
-    URL: str = "http://localhost:8000"
+    """Project name."""
+    PROJECT_NAME: str = "Litestar"
+    """The API base URL"""
+    API_URL: str = "http://localhost:3000/docs"
     """Run `Litestar` with `debug=True`."""
     DEBUG: bool = True
     """Application secret key."""
@@ -183,8 +159,8 @@ class AppSettings(LiteStarSettings):
     CSRF_COOKIE_SECURE: bool = False
     """JWT Encryption Algorithm"""
     JWT_ENCRYPTION_ALGORITHM: str = "HS256"
-    """Default cache key expiration in seconds."""
-    DEFAULT_CACHE_EXPIRATION: int = 60
+    """Redis cache status."""
+    CACHE_ENABLED: bool = True
 
     @property
     def FEATURES_PATH(self) -> str:
@@ -208,7 +184,7 @@ class VaultSettings(LiteStarSettings):
     """Token to access vault."""
     TOKEN: str
     """Api Keys mount point path."""
-    API_KEYS_MOUNT_POINT: str = "/api-keys"
+    API_KEYS_MOUNT_POINT: str = "api-keys"
 
 
 class Settings(LiteStarSettings):

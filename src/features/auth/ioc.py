@@ -7,6 +7,7 @@ from dishka import provide
 
 from src.features.auth.interactors.authenticate import AuthenticateApiKeyInteractor
 from src.features.auth.interactors.create_api_key import CreateApiKeyInteractor
+from src.features.auth.interactors.get_user_api_keys import GetUserApiKeysInteractor
 from src.features.auth.interfaces.hashers import IHasher
 from src.features.auth.interfaces.hashers import IHashVerifier
 from src.features.auth.interfaces.repositories import ICreateApiKeyRepository
@@ -35,6 +36,11 @@ class AuthProvider(Provider):
         scope=Scope.REQUEST,
     )
 
+    get_user_api_keys_interactor = provide(
+        source=GetUserApiKeysInteractor,
+        scope=Scope.REQUEST,
+    )
+
     api_key_repository = provide(
         source=ApiKeyRepository,
         scope=Scope.REQUEST,
@@ -47,6 +53,12 @@ class AuthProvider(Provider):
         provides=IGetUserByApiKeyRepository,
     )
 
+    vault_repository = provide(
+        source=ApiKeyVaultRepository,
+        scope=Scope.REQUEST,
+        provides=AnyOf[IGetAPIKeyListVaultRepository, IAddAPIKeyVaultRepository],
+    )
+
     auth_generate_uuid7_service = provide(
         source=AuthUUIDGeneratorAdapterService,
         scope=Scope.APP,
@@ -57,10 +69,4 @@ class AuthProvider(Provider):
         source=HasherBlake2b,
         scope=Scope.APP,
         provides=AnyOf[IHasher, IHashVerifier],
-    )
-
-    vault_service = provide(
-        source=ApiKeyVaultRepository,
-        scope=Scope.REQUEST,
-        provides=AnyOf[IGetAPIKeyListVaultRepository, IAddAPIKeyVaultRepository],
     )

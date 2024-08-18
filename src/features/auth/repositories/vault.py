@@ -2,14 +2,15 @@
 
 from uuid import UUID
 
+from src.common.base.repository_vault import VaultRepository
 from src.common.base.vault_uow import VaultSession
 from src.config.settings import VaultSettings
-from src.features.auth.interfaces.repositories import IGetAPIKeysAlchemyRepository
 from src.features.auth.interfaces.services import IAddAPIKeyVaultRepository
 from src.features.auth.interfaces.services import IGetAPIKeyListVaultRepository
 
 
 class ApiKeyVaultRepository(
+    VaultRepository,
     IGetAPIKeyListVaultRepository,
     IAddAPIKeyVaultRepository,
 ):
@@ -19,12 +20,10 @@ class ApiKeyVaultRepository(
         self,
         session: VaultSession,
         vault_settings: VaultSettings,
-        get_api_keys_repository: IGetAPIKeysAlchemyRepository,
     ):
         """Initialize service."""
         self._session = session
-        self._api_keys_mount_point = vault_settings.API_KEYS_MOUNT_POINT
-        self._get_api_keys_repository = get_api_keys_repository
+        self._mount_point = vault_settings.API_KEYS_MOUNT_POINT
 
     async def get_user_api_keys(self, user_id: UUID) -> dict[str, str]:
         """Get user api keys as a dictionary.
@@ -32,10 +31,9 @@ class ApiKeyVaultRepository(
         Key is the api key id stored in the database.
         Value is the real api key value.
         """
-        # get data from vault
         data: dict[str, str] = await self._session.read_secret(
             path=str(user_id),
-            mount_point=self._api_keys_mount_point,
+            mount_point=self._mount_point,
         )
 
         return data
@@ -46,5 +44,5 @@ class ApiKeyVaultRepository(
             path=str(user_id),
             key=api_key_id,
             value=api_key,
-            mount_point=self._api_keys_mount_point,
+            mount_point=self._mount_point,
         )

@@ -1,6 +1,5 @@
 """Base exception handler for repository exceptions."""
 
-import logging
 from typing import Any
 
 from advanced_alchemy.exceptions import IntegrityError
@@ -17,7 +16,6 @@ from litestar.repository.exceptions import NotFoundError
 from litestar.repository.exceptions import RepositoryError
 from litestar.response import Response
 from litestar.status_codes import HTTP_409_CONFLICT
-from sqlalchemy.exc import DatabaseError
 
 
 class _HTTPConflictException(HTTPException):
@@ -26,7 +24,7 @@ class _HTTPConflictException(HTTPException):
     status_code = HTTP_409_CONFLICT
 
 
-def exception_to_http_response(
+def repository_alchemy_exception_handler(
     request: Request[Any, Any, Any],
     exc: RepositoryError,
 ) -> Response[ExceptionResponseContent]:
@@ -39,60 +37,26 @@ def exception_to_http_response(
 
     Returns:
     -------
-        Exception response appropriates to the type of original exception.
+        Exception response appropriate to the type of original exception.
 
     """
     http_exc: type[HTTPException]
-    if isinstance(exc, NotFoundError):
-        http_exc = NotFoundException
-    elif isinstance(exc, ConflictError | RepositoryError | IntegrityError):
-        http_exc = _HTTPConflictException
-    else:
-        http_exc = InternalServerException
+
+    match exc:
+        case NotFoundError():
+            http_exc = NotFoundException
+        case ConflictError() | RepositoryError() | IntegrityError():
+            http_exc = _HTTPConflictException
+        case _:
+            http_exc = InternalServerException
+
     if request.app.debug and http_exc not in (
         PermissionDeniedException,
         NotFoundError,
     ):
         return create_debug_response(request, exc)
+
     return create_exception_response(
         request,
         http_exc(detail=str(exc.__cause__)),
-    )
-
-
-def default_alchemy_exception_handler(
-    request: Request[Any, Any, Any],
-    exc: DatabaseError,
-) -> Response[ExceptionResponseContent]:
-    """Default exception handler.
-
-    Args:
-    ----
-        request: The request that experienced the exception.
-        exc: Exception raised during handling of the request.
-
-    Returns:
-    -------
-        Exception response appropriate to the type of original exception.
-
-    """
-    if request.app.debug:
-        return create_debug_response(request, exc)
-    return create_exception_response(
-        request,
-        InternalServerException(detail=str(exc)),
-    )
-
-
-def uncaught_handler(
-    request: Request[Any, Any, Any],
-    exc: Exception,
-) -> Response[ExceptionResponseContent]:
-    """Uncaught exception handler."""
-    logging.error("Uncaught exception", exc_info=exc)
-    if request.app.debug:
-        return create_debug_response(request, exc)
-    return create_exception_response(
-        request,
-        InternalServerException(detail=str(exc)),
     )

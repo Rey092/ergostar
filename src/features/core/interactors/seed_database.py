@@ -47,7 +47,6 @@ class SeedDatabaseInteractor(Interactor[SeedDatabaseRequestModel, None]):
     async def __call__(
         self,
         request_model: SeedDatabaseRequestModel,
-        **kwargs,
     ) -> None:
         """Seed database."""
         if DatabaseSeedingGroups.subscriptions in request_model.groups:

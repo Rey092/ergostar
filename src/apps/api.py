@@ -14,14 +14,18 @@ from litestar.openapi import OpenAPIConfig
 from litestar.openapi.plugins import SwaggerRenderPlugin
 from litestar.plugins.structlog import StructlogPlugin
 from litestar.static_files import create_static_files_router
+from litestar.status_codes import HTTP_500_INTERNAL_SERVER_ERROR
+from litestar.status_codes import HTTP_503_SERVICE_UNAVAILABLE
 from redis.asyncio import Redis as RedisEngine
-from sqlalchemy.exc import DatabaseError
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from src.apps.exception_handlers.base import default_alchemy_exception_handler
-from src.apps.exception_handlers.base import exception_to_http_response
-from src.apps.exception_handlers.base import uncaught_handler
-from src.apps.exception_handlers.vault import vault_exception_handler
+from src.apps.exception_handlers.repository_alchemy import (
+    repository_alchemy_exception_handler,
+)
+from src.apps.exception_handlers.repository_vault import (
+    repository_vault_exception_handler,
+)
+from src.apps.exception_handlers.server import server_exception_handler
 from src.config.alchemy import get_alchemy_config
 from src.config.alchemy import get_alchemy_engine
 from src.config.cli import CLIPlugin
@@ -60,7 +64,7 @@ def create_app() -> Litestar:
     # initialize cache
     cache.setup(
         settings_url=settings.redis.URL,
-        disable=settings.redis.CACHE_ENABLED,
+        disable=settings.app.CACHE_ENABLED,
     )
 
     # create dependency container
@@ -107,10 +111,10 @@ def create_app() -> Litestar:
             CLIPlugin(),
         ],
         exception_handlers={
-            RepositoryError: exception_to_http_response,
-            VaultError: vault_exception_handler,
-            DatabaseError: default_alchemy_exception_handler,
-            Exception: uncaught_handler,
+            RepositoryError: repository_alchemy_exception_handler,
+            VaultError: repository_vault_exception_handler,
+            HTTP_500_INTERNAL_SERVER_ERROR: server_exception_handler,
+            HTTP_503_SERVICE_UNAVAILABLE: server_exception_handler,
         },
         on_app_init=[
             api_key_auth.on_app_init,

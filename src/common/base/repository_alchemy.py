@@ -5,15 +5,28 @@ from typing import Generic
 from typing import TypeVar
 
 from advanced_alchemy.repository import ModelT
+from advanced_alchemy.repository import SQLAlchemyAsyncSlugRepository
+from advanced_alchemy.repository import SQLAlchemyAsyncSlugRepositoryProtocol
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.common.base.mapper import AdapterMapper
 from src.common.base.mapper import DefaultMapper
-from src.common.base.repository_generic import GenericSQLAlchemyRepository
-from src.common.base.repository_generic import GenericSQLAlchemyRepositoryProtocol
 from src.common.interfaces.mapper import IMapper
 from src.common.types import EntityT
+
+
+class GenericSQLAlchemyRepositoryProtocol(
+    SQLAlchemyAsyncSlugRepositoryProtocol[ModelT],
+):
+    """Generic repository protocol for SQLAlchemy."""
+
+
+class GenericSQLAlchemyRepository(
+    SQLAlchemyAsyncSlugRepository[ModelT],
+    GenericSQLAlchemyRepositoryProtocol[ModelT],
+):
+    """Generic repository for SQLAlchemy."""
 
 
 class BaseAlchemyRepository(Generic[EntityT, ModelT]):

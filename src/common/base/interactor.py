@@ -16,6 +16,5 @@ class Interactor(Generic[RequestM, ResponseM]):
     async def __call__(
         self,
         request_model: RequestM,
-        **kwargs,
     ) -> ResponseM:
         """Call an interactor."""

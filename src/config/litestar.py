@@ -48,25 +48,25 @@ def get_structlog_config(
 ) -> StructlogConfig:
     """Get structlog configuration."""
     handlers = ["queue_listener"]
-    if log_settings.LOG_TELEGRAM_LOGGING_ENABLED:
+    if log_settings.TELEGRAM_LOGGING_ENABLED:
         handlers.append("telegram")
+
+    handlers_configs = {}
+    if log_settings.TELEGRAM_LOGGING_ENABLED:
+        handlers_configs["telegram"] = {
+            "level": "ERROR",
+            "class": "src.config.logging_handlers.telegram.TelegramHandler",
+            "project_name": app_settings.PROJECT_NAME,
+            "backend_url": app_settings.API_URL,
+            "bot_token": log_settings.TELEGRAM_BOT_TOKEN,
+            "chat_id": log_settings.TELEGRAM_CHAT_ID,
+        }
 
     return StructlogConfig(
         structlog_logging_config=StructLoggingConfig(
             log_exceptions="always",
             standard_lib_logging_config=LoggingConfig(
-                handlers={
-                    "telegram": {
-                        "level": "ERROR",
-                        "class": "src.config.logging_handlers.telegram.TelegramHandler",
-                        "project_name": "litestar!!!",
-                        "backend_url": "http://localhost:8000",
-                        "bot_token": log_settings.LOG_TELEGRAM_BOT_TOKEN,
-                        "chat_id": log_settings.LOG_TELEGRAM_CHAT_ID,
-                    }
-                    if log_settings.LOG_TELEGRAM_LOGGING_ENABLED
-                    else {},
-                },
+                handlers=handlers_configs,
                 root={
                     "level": logging.getLevelName(log_settings.LEVEL),
                     "handlers": handlers,

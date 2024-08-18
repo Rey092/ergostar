@@ -9,8 +9,6 @@ services:
     build:
       context: compose/postgres
       dockerfile: Dockerfile
-    volumes:
-      - local_static_data:/usr/src/app/staticfiles
     env_file:
       - .env.docker
 

@@ -11,6 +11,8 @@ from litestar import post
 
 from src.features.auth.interactors.create_api_key import CreateApiKeyInteractor
 from src.features.auth.interactors.create_api_key import CreateApiKeyRequestModel
+from src.features.auth.interactors.get_user_api_keys import GetUserApiKeysInteractor
+from src.features.auth.interactors.get_user_api_keys import GetUserApiKeysRequestModel
 from src.features.auth.interfaces.services import IGetAPIKeyListVaultRepository
 from src.features.users.entities.user import User
 
@@ -37,13 +39,11 @@ class AuthController(Controller):
         self,
         request: Request[User, str, Any],
         vault_repository: FromDishka[IGetAPIKeyListVaultRepository],
+        interactor: FromDishka[GetUserApiKeysInteractor],
     ) -> dict:
         """Test auth."""
-        return {
-            "user_id": request.user.id,
-            "email": request.user.email,
-            "token": request.auth,
-            "api_keys": await vault_repository.get_user_api_keys(
-                user_id=request.user.id,
+        return await interactor(
+            GetUserApiKeysRequestModel(
+                user_id=UUID(str(request.user.id)),
             ),
-        }
+        )

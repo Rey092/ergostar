@@ -22,10 +22,18 @@ class VaultOperation:
         self,
         execute: Callable[[], Any],
         rollback: Callable[[], Any] | None = None,
+        mount_point: str = "secret",
     ):
-        """Initialize the operation."""
+        """Initialize the operation.
+
+        Args:
+            execute: The operation to execute.
+            rollback: The operation to roll back the execute operation.
+            mount_point: The Vault mount point to use.
+        """
         self.execute = execute
         self.rollback = rollback
+        self.mount_point = mount_point
         self.is_executed = False
         self.is_rolled_back = False
 
@@ -88,9 +96,10 @@ class VaultSession(IVaultSession):
         self,
         execute: Callable[[], Any],
         rollback: Callable[[], Any] | None = None,
+        mount_point: str = "secret",
     ) -> None:
         """Add an operation and its rollback to the unit of work."""
-        self._operations.append(VaultOperation(execute, rollback))
+        self._operations.append(VaultOperation(execute, rollback, mount_point))
 
     async def commit(self) -> None:
         """Commit all operations."""
@@ -115,8 +124,27 @@ class VaultSession(IVaultSession):
 
     async def flush(self) -> None:
         """Execute all operations without committing."""
+        mount_points = {operation.mount_point for operation in self._operations}
+        for mount_point in mount_points:
+            await self._check_mount_path(mount_point=mount_point)
         for operation in self._operations:
             await operation.run()
+
+    async def _check_mount_path(self, mount_point: str = "secret") -> None:
+        # Check if the KV engine with the specified mount point exists
+        mounts = await sync_to_thread(
+            self.vault_engine.sys.list_mounted_secrets_engines,
+        )
+        if f"{mount_point.replace('/', '')}/" not in mounts:
+            logger.info("Creating KV engine at mount point %s", mount_point)
+            await sync_to_thread(
+                lambda: self.vault_engine.sys.enable_secrets_engine(
+                    backend_type="kv",
+                    path=mount_point,
+                    options={"version": "2"},
+                    description=f"KV engine for {mount_point}",
+                ),
+            )
 
     def create_or_patch(
         self,
@@ -130,20 +158,24 @@ class VaultSession(IVaultSession):
         async def execute():
             """Execute the operation."""
             try:
-                # try to patch the secret
+                # Try to patch the secret
+                logger.info("Patching secret %s", path)
                 await sync_to_thread(
-                    self.vault_engine.secrets.kv.v2.patch,
-                    path=path,
-                    secret={key: value},
-                    mount_point=mount_point,
+                    lambda: self.vault_engine.secrets.kv.v2.patch(
+                        path=path,
+                        secret={key: value},
+                        mount_point=mount_point,
+                    ),
                 )
             except InvalidPath:
-                # if the secret does not exist, create it
+                logger.info("Creating secret %s", path)
+                # If the secret does not exist, create it
                 await sync_to_thread(
-                    self.vault_engine.secrets.kv.v2.create_or_update_secret,
-                    path,
-                    {key: value},
-                    mount_point=mount_point,
+                    lambda: self.vault_engine.secrets.kv.v2.create_or_update_secret(
+                        path=path,
+                        secret={key: value},
+                        mount_point=mount_point,
+                    ),
                 )
 
         async def rollback():
@@ -160,20 +192,22 @@ class VaultSession(IVaultSession):
             if key in current_data:
                 del current_data[key]
                 await sync_to_thread(
-                    self.vault_engine.secrets.kv.v2.create_or_update_secret,
-                    path=path,
-                    secret=current_data,
-                    mount_point=mount_point,
+                    lambda: self.vault_engine.secrets.kv.v2.create_or_update_secret(
+                        path=path,
+                        secret=current_data,
+                        mount_point=mount_point,
+                    ),
                 )
 
-        self.add_operation(execute, rollback)
+        self.add_operation(execute, rollback, mount_point)
 
     async def read_secret(self, path: str, mount_point: str = "") -> dict:
         """Add an operation to read a secret from the Vault."""
         response = await sync_to_thread(
-            self.vault_engine.secrets.kv.v2.read_secret,
-            path=path,
-            mount_point=mount_point,
+            lambda: self.vault_engine.secrets.kv.v2.read_secret(
+                path=path,
+                mount_point=mount_point,
+            ),
         )
         return response["data"]["data"]
 

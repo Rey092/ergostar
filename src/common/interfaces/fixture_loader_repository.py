@@ -3,11 +3,8 @@
 from abc import abstractmethod
 from collections.abc import Sequence
 from typing import Protocol
-from typing import TypeVar
 
-from src.common.base.entity import Entity
-
-EntityT = TypeVar("EntityT", bound=Entity)
+from src.common.types import EntityT
 
 
 class ISeedManyEntries(Protocol[EntityT]):
