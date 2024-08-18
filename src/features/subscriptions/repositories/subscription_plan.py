@@ -2,14 +2,14 @@
 
 from collections.abc import Sequence
 
-from src.common.base.repositories.alchemy import AlchemyMappedRepository
+from src.common.base.repositories.alchemy import AlchemyRepository
 from src.common.base.repositories.alchemy import GenericSQLAlchemyRepository
 from src.features.subscriptions import SubscriptionPlanModel
 from src.features.subscriptions.entities import SubscriptionPlanEntity
 
 
 class SubscriptionPlanRepository(
-    AlchemyMappedRepository[SubscriptionPlanEntity, SubscriptionPlanModel],
+    AlchemyRepository[SubscriptionPlanEntity, SubscriptionPlanModel],
 ):
     """Subscription Plan repository."""
 

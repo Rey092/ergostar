@@ -1,15 +1,9 @@
 """Repository interface."""
 
-from abc import ABC
-
-from advanced_alchemy.repository import ModelT
-
-from src.common.interfaces.mapper import IMapper
-from src.common.types import EntityT
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
-class IRepository(
-    IMapper[EntityT, ModelT],
-    ABC,
-):
+class IRepository:
     """Repository interface."""
+
+    _session: AsyncSession

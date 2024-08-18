@@ -1,11 +1,11 @@
 """Drop database tables interactor module."""
 
 from litestar.exceptions import InternalServerException
-from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.common.base.interactor import Interactor
 from src.config.settings import AppSettings
+from src.features.core.interfaces.repositories import IDropDatabaseTablesRepository
 
 
 class DropDatabaseTablesInteractor(Interactor[None, None]):
@@ -15,10 +15,12 @@ class DropDatabaseTablesInteractor(Interactor[None, None]):
         self,
         session: AsyncSession,
         app_settings: AppSettings,
+        drop_database_tables_repository: IDropDatabaseTablesRepository,
     ):
         """Initialize interactor."""
         self._session = session
         self._debug: bool = app_settings.DEBUG
+        self._drop_database_tables_repository = drop_database_tables_repository
         self._message_can_not_drop = "Cannot drop database in production."
 
     async def __call__(
@@ -31,13 +33,8 @@ class DropDatabaseTablesInteractor(Interactor[None, None]):
         if not self._debug:
             raise InternalServerException(self._message_can_not_drop)
 
-        # drop and create the public schema, this will drop all tables
-        drop_command = text("DROP SCHEMA IF EXISTS public CASCADE;")
-        await self._session.execute(drop_command)
-
-        # recreate the public schema, so we can migrate the database from scratch
-        create_command = text("CREATE SCHEMA public;")
-        await self._session.execute(create_command)
+        # drop and create the public schema
+        await self._drop_database_tables_repository.drop_database_tables()
 
         # commit the transaction
         await self._session.commit()

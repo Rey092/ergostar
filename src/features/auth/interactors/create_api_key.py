@@ -49,6 +49,9 @@ class CreateApiKeyInteractor(Interactor[CreateApiKeyRequestModel, str]):
         **kwargs,
     ) -> str:
         """Create an api key."""
+        # TODO: limit API keys to N per user.
+        #  prevent race condition with rate limit or FOR UPDATE
+
         # generate UUID7 key
         key: str = self._uuid7_generator_service.generate_uuid7()
 

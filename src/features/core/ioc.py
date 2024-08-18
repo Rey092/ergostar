@@ -11,9 +11,13 @@ from src.features.core.interactors.drop_database_tables import (
     DropDatabaseTablesInteractor,
 )
 from src.features.core.interactors.seed_database import SeedDatabaseInteractor
-from src.features.core.repositories.a_user import UserRepositoryAdapter
-from src.features.core.repositories.subscription_plan import (
+from src.features.core.interfaces.repositories import IDropDatabaseTablesRepository
+from src.features.core.repositories.a_subscription_plan import (
     SubscriptionPlanRepositoryAdapter,
+)
+from src.features.core.repositories.a_user import UserRepositoryAdapter
+from src.features.core.repositories.drop_database_tables import (
+    DropDatabaseTablesRepository,
 )
 from src.features.core.services.fixture_loaders import (
     SubscriptionPlanFixtureDatabaseLoaderService,
@@ -27,7 +31,7 @@ from src.features.users.entities.userentity import UserEntity
 class CoreProvider(Provider):
     """Core provider (DI)."""
 
-    drop_database_interactor = provide(
+    drop_database_tables_interactor = provide(
         source=DropDatabaseTablesInteractor,
         scope=Scope.REQUEST,
     )
@@ -47,6 +51,12 @@ class CoreProvider(Provider):
         source=UserRepositoryAdapter,
         scope=Scope.REQUEST,
         provides=AnyOf[ISeedManyEntries[UserEntity]],
+    )
+
+    drop_database_tables_repository = provide(
+        source=DropDatabaseTablesRepository,
+        scope=Scope.REQUEST,
+        provides=IDropDatabaseTablesRepository,
     )
 
     subscription_plan_fixture_database_loader_service = provide(

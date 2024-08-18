@@ -2,7 +2,7 @@
 
 from uuid import UUID
 
-from src.common.base.repositories.alchemy import AlchemyMappedRepository
+from src.common.base.repositories.alchemy import AlchemyRepository
 from src.common.base.repositories.alchemy import GenericSQLAlchemyRepository
 from src.features.auth.entities.api_key import ApiKeyEntity
 from src.features.auth.interfaces.repositories import ICreateApiKeyRepository
@@ -11,7 +11,7 @@ from src.features.auth.models import ApiKeyModel
 
 
 class ApiKeyRepository(
-    AlchemyMappedRepository[ApiKeyEntity, ApiKeyModel],
+    AlchemyRepository[ApiKeyEntity, ApiKeyModel],
     ICreateApiKeyRepository,
     IGetAPIKeysAlchemyRepository,
 ):

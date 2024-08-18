@@ -37,7 +37,7 @@ class AuthController(Controller):
         Excluded from auth.
 
         Rate limit: One request per 2 seconds.
-        Rate limit is used to prevent spam.
+        Rate limit is used to prevent spam and race conditions.
         """
         return await interactor(
             CreateApiKeyRequestModel(
