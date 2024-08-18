@@ -9,7 +9,7 @@ from src.features.auth.interfaces.hashers import IHashVerifier
 
 
 class HasherBlake2b(Service, IHasher, IHashVerifier):
-    """Hasher using Blake algorithm."""
+    """Hasher using Blake-2b algorithm."""
 
     def __init__(
         self,
