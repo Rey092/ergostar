@@ -25,7 +25,7 @@ class AuthController(Controller):
     @inject
     @cache.rate_limit(
         limit=1,
-        period="5s",
+        period="2s",
         key="create_api_key:3165d5df-17a7-4562-b5f5-5f4bd16c97f3",
     )
     async def create_api_key(
@@ -36,7 +36,7 @@ class AuthController(Controller):
 
         Excluded from auth.
 
-        Rate limit: One request per 5 seconds.
+        Rate limit: One request per 2 seconds.
         Rate limit is used to prevent spam and race conditions.
         """
         return await interactor(
