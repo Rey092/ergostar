@@ -1,9 +1,9 @@
 """Drop database tables interactor module."""
 
 from litestar.exceptions import InternalServerException
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.common.base.interactor import Interactor
+from src.common.interfaces.uow import IDatabaseSession
 from src.config.settings import AppSettings
 from src.features.core.interfaces.repositories import IDropDatabaseTablesRepository
 
@@ -13,7 +13,7 @@ class DropDatabaseTablesInteractor(Interactor[None, None]):
 
     def __init__(
         self,
-        session: AsyncSession,
+        session: IDatabaseSession,
         app_settings: AppSettings,
         drop_database_tables_repository: IDropDatabaseTablesRepository,
     ):
