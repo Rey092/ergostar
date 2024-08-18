@@ -22,13 +22,13 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 from src.apps.exception_handlers.repository_alchemy import (
     repository_alchemy_exception_handler,
 )
+from src.common.ioc import BasicProvider
 from src.config.alchemy import get_alchemy_config
 from src.config.alchemy import get_alchemy_engine
 from src.config.cli import CLIPlugin
-from src.config.ioc import BasicProvider
-from src.config.litestar import get_compression_config
-from src.config.litestar import get_cors_config
-from src.config.litestar import get_structlog_config
+from src.config.compression import get_compression_config
+from src.config.cors import get_cors_config
+from src.config.logging import get_structlog_config
 from src.config.redis import get_redis_engine
 from src.config.settings import Settings
 from src.features.core.ioc import CoreProvider

@@ -5,9 +5,7 @@ from typing import TYPE_CHECKING
 from advanced_alchemy.exceptions import RepositoryError
 from advanced_alchemy.extensions.litestar import SQLAlchemyPlugin
 from cashews import cache
-from dishka import make_async_container
 from dishka.integrations import litestar as litestar_integration
-from hvac import Client as VaultEngine
 from hvac.exceptions import VaultError
 from litestar import Litestar
 from litestar.openapi import OpenAPIConfig
@@ -16,8 +14,6 @@ from litestar.plugins.structlog import StructlogPlugin
 from litestar.static_files import create_static_files_router
 from litestar.status_codes import HTTP_500_INTERNAL_SERVER_ERROR
 from litestar.status_codes import HTTP_503_SERVICE_UNAVAILABLE
-from redis.asyncio import Redis as RedisEngine
-from sqlalchemy.ext.asyncio import AsyncEngine
 
 from src.apps.exception_handlers.repository_alchemy import (
     repository_alchemy_exception_handler,
@@ -29,22 +25,21 @@ from src.apps.exception_handlers.server import server_exception_handler
 from src.config.alchemy import get_alchemy_config
 from src.config.alchemy import get_alchemy_engine
 from src.config.cli import CLIPlugin
-from src.config.ioc import BasicProvider
-from src.config.litestar import get_cors_config
-from src.config.litestar import get_structlog_config
+from src.config.container import get_async_container
+from src.config.cors import get_cors_config
+from src.config.logging import get_structlog_config
 from src.config.redis import get_redis_engine
 from src.config.settings import Settings
 from src.config.vault import get_vault_engine
-from src.features.auth.ioc import AuthProvider
 from src.features.auth.routing import auth_router
 from src.features.auth.security.api_key.auth import api_key_auth
-from src.features.core.ioc import CoreProvider
 from src.features.core.routing import health_router
-from src.features.subscriptions.ioc import SubscriptionsProvider
-from src.features.users.ioc import UserProvider
 
 if TYPE_CHECKING:
     from dishka import AsyncContainer
+    from hvac import Client as VaultEngine
+    from redis.asyncio import Redis as RedisEngine
+    from sqlalchemy.ext.asyncio import AsyncEngine
 
 
 def create_app() -> Litestar:
@@ -68,18 +63,11 @@ def create_app() -> Litestar:
     )
 
     # create dependency container
-    container: AsyncContainer = make_async_container(
-        CoreProvider(),
-        BasicProvider(),
-        SubscriptionsProvider(),
-        UserProvider(),
-        AuthProvider(),
-        context={
-            Settings: settings,
-            AsyncEngine: alchemy_engine,
-            RedisEngine: redis_engine,
-            VaultEngine: vault_engine,
-        },
+    container: AsyncContainer = get_async_container(
+        settings=settings,
+        alchemy_engine=alchemy_engine,
+        redis_engine=redis_engine,
+        vault_engine=vault_engine,
     )
 
     # create app
