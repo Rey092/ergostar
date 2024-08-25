@@ -38,11 +38,11 @@ class ApiKeyVaultRepository(
 
         return data
 
-    async def add_api_key(self, user_id: UUID, api_key_id: str, api_key: str) -> None:
+    async def add_api_key(self, user_id: UUID, api_key_id: str, api_key: UUID) -> None:
         """Add api key."""
         self._session.create_or_patch(
             path=str(user_id),
             key=api_key_id,
-            value=api_key,
+            value=str(api_key),
             mount_point=self._mount_point,
         )

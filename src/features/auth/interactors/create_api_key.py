@@ -1,8 +1,8 @@
 """Create api key interactor."""
 
 import logging
-import uuid
 from dataclasses import dataclass
+from uuid import UUID
 
 from src.common.base.interactor import Interactor
 from src.common.interfaces.uow import IDatabaseSession
@@ -11,7 +11,7 @@ from src.features.auth.entities.api_key import ApiKeyEntity
 from src.features.auth.interfaces.hashers import IHasher
 from src.features.auth.interfaces.repositories import ICreateApiKeyRepository
 from src.features.auth.interfaces.services import IAddAPIKeyVaultRepository
-from src.features.auth.interfaces.services import IGenerateUUID7Service
+from src.features.auth.interfaces.services import IAuthGenerateUUID7Service
 
 logger = logging.getLogger(__name__)
 
@@ -20,10 +20,10 @@ logger = logging.getLogger(__name__)
 class CreateApiKeyRequestModel:
     """Create api key input data."""
 
-    user_id: uuid.UUID
+    user_id: UUID
 
 
-class CreateApiKeyInteractor(Interactor[CreateApiKeyRequestModel, str]):
+class CreateApiKeyInteractor(Interactor[CreateApiKeyRequestModel, UUID]):
     """Create api key interactor."""
 
     def __init__(
@@ -31,7 +31,7 @@ class CreateApiKeyInteractor(Interactor[CreateApiKeyRequestModel, str]):
         db_session: IDatabaseSession,
         vault_session: IVaultSession,
         create_api_key_repository: ICreateApiKeyRepository,
-        uuid7_generator_service: IGenerateUUID7Service,
+        uuid7_generator_service: IAuthGenerateUUID7Service,
         hasher_service: IHasher,
         vault_repository: IAddAPIKeyVaultRepository,
     ):
@@ -46,17 +46,16 @@ class CreateApiKeyInteractor(Interactor[CreateApiKeyRequestModel, str]):
     async def __call__(
         self,
         request_model: CreateApiKeyRequestModel,
-        **kwargs,
-    ) -> str:
+    ) -> UUID:
         """Create an api key."""
         # TODO: limit API keys to N per user.
         #  prevent race condition with rate limit or FOR UPDATE
 
         # generate UUID7 key
-        key: str = self._uuid7_generator_service.generate_uuid7()
+        api_key_value: UUID = self._uuid7_generator_service.generate_uuid7()
 
         # hash key
-        key_hashed: str = self._hasher_service.hash(key.encode())
+        key_hashed: str = self._hasher_service.hash(str(api_key_value).encode())
 
         # create one
         api_key: ApiKeyEntity = await self._create_api_key_repository.create_one(
@@ -70,7 +69,7 @@ class CreateApiKeyInteractor(Interactor[CreateApiKeyRequestModel, str]):
         await self._vault_service.add_api_key(
             user_id=request_model.user_id,
             api_key_id=str(api_key.id),
-            api_key=key,
+            api_key=api_key_value,
         )
 
         # save changes
@@ -78,4 +77,4 @@ class CreateApiKeyInteractor(Interactor[CreateApiKeyRequestModel, str]):
         await self._db_session.commit()
         await self._vault_session.commit()
 
-        return key
+        return api_key_value

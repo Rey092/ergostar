@@ -7,11 +7,22 @@ from dataclasses import field
 from dataclasses import fields
 from datetime import UTC
 from datetime import datetime
+from typing import TYPE_CHECKING
+from typing import Any
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm import Mapper
+    from sqlalchemy.sql import FromClause
 
 
 @dataclass(kw_only=True)
 class Entity:
     """Base entity class."""
+
+    if TYPE_CHECKING:
+        __table__: FromClause = field(init=False)
+        __mapper__: Mapper[Any] = field(init=False)
+        __name__: str = field(init=False)
 
     # noinspection PyArgumentList
     @classmethod
@@ -26,9 +37,14 @@ class Entity:
         # Create and return an instance of the dataclass
         return cls(**filtered_data)
 
-    def to_dict(self) -> dict:
+    def to_dict(self, exclude: set[str] | None = None) -> dict[str, Any]:
         """Convert entity to dictionary."""
-        return asdict(self)
+        if exclude is None:
+            exclude = set()
+        return asdict(
+            self,
+            dict_factory=lambda _: {k: v for k, v in _ if k not in exclude},
+        )
 
 
 @dataclass(kw_only=True, eq=False)

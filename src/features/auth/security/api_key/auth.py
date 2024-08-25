@@ -6,7 +6,7 @@ from typing import Any
 from src.features.auth.interactors.authenticate import AuthenticateApiKeyInteractor
 from src.features.auth.interactors.authenticate import AuthenticateApiKeyRequestModel
 from src.features.auth.security.api_key.config import ApiKeyAuth
-from src.features.users.entities.userentity import UserEntity
+from src.features.users.public.entities.user import UserEntity
 
 if TYPE_CHECKING:
     from litestar.connection import ASGIConnection

@@ -3,15 +3,17 @@
 from collections.abc import Sequence
 
 from src.common.base.repositories.alchemy import AlchemyAdapterRepository
-from src.common.interfaces.fixture_loader.repository import ISeedManyEntries
-from src.features.users import UserModel
-from src.features.users.entities.userentity import UserEntity
-from src.features.users.repositories.user import UserRepository
+from src.common.interfaces.fixture_loader.repository import ISeedRepository
+from src.features.users.public.entities.user import UserEntity
+from src.features.users.public.interfaces import IUserRepositoryContract
 
 
 class UserRepositoryAdapter(
-    AlchemyAdapterRepository[UserEntity, UserModel, UserRepository],
-    ISeedManyEntries[UserEntity],
+    AlchemyAdapterRepository[
+        UserEntity,
+        IUserRepositoryContract[UserEntity],
+    ],
+    ISeedRepository[UserEntity],
 ):
     """UserRepositoryAdapter."""
 

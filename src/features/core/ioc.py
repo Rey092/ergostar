@@ -5,13 +5,14 @@ from dishka import Provider
 from dishka import Scope
 from dishka import provide
 
-from src.common.interfaces.fixture_loader.repository import ISeedManyEntries
+from src.common.interfaces.fixture_loader.repository import ISeedRepository
 from src.common.interfaces.fixture_loader.service import IFixtureDatabaseLoader
 from src.features.core.interactors.drop_database_tables import (
     DropDatabaseTablesInteractor,
 )
 from src.features.core.interactors.seed_database import SeedDatabaseInteractor
 from src.features.core.interfaces.repositories import IDropDatabaseTablesRepository
+from src.features.core.public.interfaces import IGenerateUUID7Service
 from src.features.core.repositories.a_subscription_plan import (
     SubscriptionPlanRepositoryAdapter,
 )
@@ -24,8 +25,8 @@ from src.features.core.services.fixture_loaders import (
 )
 from src.features.core.services.fixture_loaders import UserFixtureDatabaseLoaderService
 from src.features.core.services.uuid_generator import UUIDGeneratorService
-from src.features.subscriptions.entities import SubscriptionPlanEntity
-from src.features.users.entities.userentity import UserEntity
+from src.features.subscriptions.public.entities import SubscriptionPlanEntity
+from src.features.users.public.entities import UserEntity
 
 
 class CoreProvider(Provider):
@@ -44,13 +45,13 @@ class CoreProvider(Provider):
     subscription_plan_repository = provide(
         source=SubscriptionPlanRepositoryAdapter,
         scope=Scope.REQUEST,
-        provides=AnyOf[ISeedManyEntries[SubscriptionPlanEntity]],
+        provides=AnyOf[ISeedRepository[SubscriptionPlanEntity]],
     )
 
     user_repository = provide(
         source=UserRepositoryAdapter,
         scope=Scope.REQUEST,
-        provides=AnyOf[ISeedManyEntries[UserEntity]],
+        provides=AnyOf[ISeedRepository[UserEntity]],
     )
 
     drop_database_tables_repository = provide(
@@ -74,4 +75,5 @@ class CoreProvider(Provider):
     uuid_generator_service = provide(
         source=UUIDGeneratorService,
         scope=Scope.APP,
+        provides=IGenerateUUID7Service,
     )

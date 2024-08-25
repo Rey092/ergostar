@@ -4,26 +4,28 @@ from collections.abc import Sequence
 
 from src.common.base.repositories.alchemy import AlchemyRepository
 from src.common.base.repositories.alchemy import GenericAlchemyRepository
-from src.features.subscriptions import SubscriptionPlanModel
-from src.features.subscriptions.entities import SubscriptionPlanEntity
+from src.features.subscriptions.public.entities import SubscriptionPlanEntity
+from src.features.subscriptions.public.interfaces import (
+    ISubscriptionPlanRepositoryContract,
+)
 
 
+# noinspection DuplicatedCode
 class SubscriptionPlanRepository(
-    AlchemyRepository[SubscriptionPlanEntity, SubscriptionPlanModel],
+    AlchemyRepository[SubscriptionPlanEntity],
+    ISubscriptionPlanRepositoryContract[SubscriptionPlanEntity],
 ):
     """Subscription Plan repository."""
 
-    model_type = SubscriptionPlanModel
-    repository_type = GenericAlchemyRepository[SubscriptionPlanModel]
+    entity_type = SubscriptionPlanEntity
+    repository_type = GenericAlchemyRepository[SubscriptionPlanEntity]
 
     async def add_many(
         self,
         data: list[SubscriptionPlanEntity],
     ) -> Sequence[SubscriptionPlanEntity]:
         """Add many entries."""
-        models = [self.entity_to_model(item) for item in data]
-        entities = await self._repository.add_many(models)
-        return [self.model_to_entity(item) for item in entities]
+        return await self._repository.add_many(data)
 
     async def delete_everything(self) -> None:
         """Delete all entries."""

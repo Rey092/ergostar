@@ -7,26 +7,22 @@ from src.common.base.repositories.alchemy import GenericAlchemyRepository
 from src.features.auth.entities.api_key import ApiKeyEntity
 from src.features.auth.interfaces.repositories import ICreateApiKeyRepository
 from src.features.auth.interfaces.repositories import IGetAPIKeysAlchemyRepository
-from src.features.auth.models import ApiKeyModel
 
 
 class ApiKeyRepository(
-    AlchemyRepository[ApiKeyEntity, ApiKeyModel],
+    AlchemyRepository[ApiKeyEntity],
     ICreateApiKeyRepository,
     IGetAPIKeysAlchemyRepository,
 ):
     """ApiKey repository."""
 
-    model_type = ApiKeyModel
-    repository_type = GenericAlchemyRepository[ApiKeyModel]
+    entity_type = ApiKeyEntity
+    repository_type = GenericAlchemyRepository[ApiKeyEntity]
 
     async def create_one(self, data: ApiKeyEntity) -> ApiKeyEntity:
         """Delete all entries."""
-        model = self.entity_to_model(data)
-        await self._repository.add(model, auto_refresh=True)
-        return self.model_to_entity(model)
+        return await self._repository.add(data, auto_refresh=True)
 
     async def get_api_keys(self, user_id: UUID) -> list[ApiKeyEntity]:
         """Get API keys for user."""
-        models = await self._repository.list(user_id=user_id)
-        return [self.model_to_entity(model) for model in models]
+        return await self._repository.list(user_id=user_id)

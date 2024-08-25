@@ -4,26 +4,24 @@ from collections.abc import Sequence
 
 from src.common.base.repositories.alchemy import AlchemyAdapterRepository
 from src.common.base.repositories.alchemy import GenericAlchemyRepository
-from src.common.interfaces.fixture_loader.repository import ISeedManyEntries
-from src.features.subscriptions import SubscriptionPlanModel
-from src.features.subscriptions.entities import SubscriptionPlanEntity
-from src.features.subscriptions.repositories.subscription_plan import (
-    SubscriptionPlanRepository,
+from src.common.interfaces.fixture_loader.repository import ISeedRepository
+from src.features.subscriptions.public.entities import SubscriptionPlanEntity
+from src.features.subscriptions.public.interfaces import (
+    ISubscriptionPlanRepositoryContract,
 )
 
 
 class SubscriptionPlanRepositoryAdapter(
     AlchemyAdapterRepository[
         SubscriptionPlanEntity,
-        SubscriptionPlanModel,
-        SubscriptionPlanRepository,
+        ISubscriptionPlanRepositoryContract[SubscriptionPlanEntity],
     ],
-    ISeedManyEntries[SubscriptionPlanEntity],
+    ISeedRepository[SubscriptionPlanEntity],
 ):
     """SubscriptionPlanRepositoryAdapter."""
 
-    model_type = SubscriptionPlanModel
-    repository_type = GenericAlchemyRepository[SubscriptionPlanModel]
+    entity_type = SubscriptionPlanEntity
+    repository_type = GenericAlchemyRepository[SubscriptionPlanEntity]
 
     async def add_many(
         self,

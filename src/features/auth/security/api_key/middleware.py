@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from litestar.types import Method
     from litestar.types import Scopes
 
-    from src.features.users.entities.userentity import UserEntity
+    from src.features.users.public.entities.user import UserEntity
 
 
 class ApiKeyMiddleware(AbstractAuthenticationMiddleware, Generic[BaseSessionBackendT]):

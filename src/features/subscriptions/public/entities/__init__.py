@@ -1,6 +1,6 @@
 """Subscriptions entities module."""
 
-from .plan import SubscriptionPlanEntity
+from .subscription_plan import SubscriptionPlanEntity
 
 __all__ = [
     "SubscriptionPlanEntity",

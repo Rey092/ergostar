@@ -5,7 +5,7 @@ from typing import Protocol
 from uuid import UUID
 
 from src.features.auth.entities.api_key import ApiKeyEntity
-from src.features.users.entities.userentity import UserEntity
+from src.features.users.public.entities.user import UserEntity
 
 
 class ICreateApiKeyRepository(Protocol):

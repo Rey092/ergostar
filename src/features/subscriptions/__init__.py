@@ -1,3 +1,3 @@
 """Used to import the necessary modules."""
 
-from .models import *  # noqa: F403
+from .tables import *  # noqa: F403

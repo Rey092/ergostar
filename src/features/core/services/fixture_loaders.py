@@ -1,8 +1,8 @@
 """Fixture database loader services."""
 
 from src.common.base.fixture_loader import FixtureDatabaseLoaderService
-from src.features.subscriptions.entities import SubscriptionPlanEntity
-from src.features.users.entities.userentity import UserEntity
+from src.features.subscriptions.public.entities import SubscriptionPlanEntity
+from src.features.users.public.entities import UserEntity
 
 
 class SubscriptionPlanFixtureDatabaseLoaderService(

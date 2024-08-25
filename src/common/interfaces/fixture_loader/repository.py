@@ -7,7 +7,7 @@ from typing import Protocol
 from src.common.types import EntityT
 
 
-class ISeedManyEntries(Protocol[EntityT]):
+class ISeedRepository(Protocol[EntityT]):
     """ISeedManyEntries."""
 
     @abstractmethod

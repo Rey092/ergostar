@@ -10,7 +10,7 @@ from typing import cast
 import aiofiles
 
 from src.common.base.service import Service
-from src.common.interfaces.fixture_loader.repository import ISeedManyEntries
+from src.common.interfaces.fixture_loader.repository import ISeedRepository
 from src.common.interfaces.fixture_loader.service import EntityT
 from src.common.interfaces.fixture_loader.service import IFixtureDatabaseLoader
 from src.common.interfaces.fixture_loader.service import IFixtureEntityLoader
@@ -98,7 +98,7 @@ class FixtureDatabaseLoaderService(
     def __init__(
         self,
         app_settings: AppSettings,
-        repository: ISeedManyEntries[EntityT],
+        repository: ISeedRepository[EntityT],
     ):
         """Initialize service."""
         super().__init__(app_settings=app_settings)

@@ -5,11 +5,11 @@ from typing import Protocol
 from uuid import UUID
 
 
-class IGenerateUUID7Service(Protocol):
+class IAuthGenerateUUID7Service(Protocol):
     """Generate UUID7 service interface."""
 
     @abstractmethod
-    def generate_uuid7(self) -> str:
+    def generate_uuid7(self) -> UUID:
         """Generate UUID7."""
         ...
 
@@ -27,6 +27,6 @@ class IAddAPIKeyVaultRepository(Protocol):
     """IAddAPIKey."""
 
     @abstractmethod
-    async def add_api_key(self, user_id: UUID, api_key_id: str, api_key: str) -> None:
+    async def add_api_key(self, user_id: UUID, api_key_id: str, api_key: UUID) -> None:
         """Add api key."""
         ...

@@ -14,9 +14,9 @@ from src.features.auth.interfaces.repositories import ICreateApiKeyRepository
 from src.features.auth.interfaces.repositories import IGetAPIKeysAlchemyRepository
 from src.features.auth.interfaces.repositories import IGetUserByApiKeyRepository
 from src.features.auth.interfaces.services import IAddAPIKeyVaultRepository
-from src.features.auth.interfaces.services import IGenerateUUID7Service
+from src.features.auth.interfaces.services import IAuthGenerateUUID7Service
 from src.features.auth.interfaces.services import IGetAPIKeyListVaultRepository
-from src.features.auth.repositories.a_user import AuthUserAdapterRepository
+from src.features.auth.repositories.a_user import AuthUserRepository
 from src.features.auth.repositories.api_key import ApiKeyRepository
 from src.features.auth.repositories.vault import ApiKeyVaultRepository
 from src.features.auth.services.a_uuid_generator import AuthUUIDGeneratorAdapterService
@@ -48,7 +48,7 @@ class AuthProvider(Provider):
     )
 
     auth_user_repository = provide(
-        source=AuthUserAdapterRepository,
+        source=AuthUserRepository,
         scope=Scope.REQUEST,
         provides=IGetUserByApiKeyRepository,
     )
@@ -62,7 +62,7 @@ class AuthProvider(Provider):
     auth_generate_uuid7_service = provide(
         source=AuthUUIDGeneratorAdapterService,
         scope=Scope.APP,
-        provides=IGenerateUUID7Service,
+        provides=IAuthGenerateUUID7Service,
     )
 
     hasher_service = provide(

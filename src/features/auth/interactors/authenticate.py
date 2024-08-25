@@ -7,8 +7,8 @@ from litestar.exceptions import NotAuthorizedException
 from src.common.base.interactor import Interactor
 from src.features.auth.interfaces.hashers import IHasher
 from src.features.auth.interfaces.repositories import IGetUserByApiKeyRepository
-from src.features.auth.interfaces.services import IGenerateUUID7Service
-from src.features.users.entities.userentity import UserEntity
+from src.features.auth.interfaces.services import IAuthGenerateUUID7Service
+from src.features.users.public.entities.user import UserEntity
 
 
 @dataclass
@@ -26,7 +26,7 @@ class AuthenticateApiKeyInteractor(
     def __init__(
         self,
         user_repository: IGetUserByApiKeyRepository,
-        generate_uuid7_service: IGenerateUUID7Service,
+        generate_uuid7_service: IAuthGenerateUUID7Service,
         hash_service: IHasher,
     ):
         """Initialize interactor."""

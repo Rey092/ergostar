@@ -9,8 +9,8 @@ from admin.core.enums import DatabaseSeedingGroups
 from src.common.base.interactor import Interactor
 from src.common.interfaces.fixture_loader.service import IFixtureDatabaseLoader
 from src.features.core.enums import FixtureLoadingStrategy
-from src.features.subscriptions.entities import SubscriptionPlanEntity
-from src.features.users.entities.userentity import UserEntity
+from src.features.subscriptions.public.entities import SubscriptionPlanEntity
+from src.features.users.public.entities.user import UserEntity
 
 logger = logging.getLogger(__name__)
 

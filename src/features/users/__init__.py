@@ -1,7 +1,7 @@
 """Users module."""
 
-from .models import UserModel
+from .tables import UserTable
 
 __all__ = [
-    "UserModel",
+    "UserTable",
 ]

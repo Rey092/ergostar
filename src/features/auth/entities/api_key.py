@@ -1,7 +1,7 @@
 """API key entity."""
 
-import uuid
 from dataclasses import dataclass
+from uuid import UUID
 
 from src.common.base.entity import UUIDAuditEntity
 
@@ -10,6 +10,11 @@ from src.common.base.entity import UUIDAuditEntity
 class ApiKeyEntity(UUIDAuditEntity):
     """API key entity."""
 
-    user_id: uuid.UUID
+    user_id: UUID
     key_hashed: str
-    key_original: uuid.UUID | None = None
+    key_original: UUID | None = None
+
+    def __post_init__(self):
+        """Convert 'user_id' to UUID if it is a string."""
+        if isinstance(self.id, str):
+            self.user_id = UUID(self.id)

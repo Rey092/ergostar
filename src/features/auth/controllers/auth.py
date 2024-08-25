@@ -15,7 +15,7 @@ from src.features.auth.interactors.create_api_key import CreateApiKeyInteractor
 from src.features.auth.interactors.create_api_key import CreateApiKeyRequestModel
 from src.features.auth.interactors.get_user_api_keys import GetUserApiKeysInteractor
 from src.features.auth.interactors.get_user_api_keys import GetUserApiKeysRequestModel
-from src.features.users.entities.userentity import UserEntity
+from src.features.users.public.entities.user import UserEntity
 
 
 class AuthController(Controller):
@@ -31,7 +31,7 @@ class AuthController(Controller):
     async def create_api_key(
         self,
         interactor: FromDishka[CreateApiKeyInteractor],
-    ) -> str:
+    ) -> UUID:
         """Create an api key.
 
         Excluded from auth.

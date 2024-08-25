@@ -1,7 +1,7 @@
 """Auth module."""
 
-from .models import ApiKeyModel
+from src.features.auth.public.tables import ApiKeyTable
 
 __all__ = [
-    "ApiKeyModel",
+    "ApiKeyTable",
 ]
