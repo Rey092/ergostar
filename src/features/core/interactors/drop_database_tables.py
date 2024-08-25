@@ -26,7 +26,6 @@ class DropDatabaseTablesInteractor(Interactor[None, None]):
     async def __call__(
         self,
         request_model: None = None,
-        **kwargs,
     ) -> None:
         """Drop database tables."""
         # check if we are in production

@@ -37,7 +37,6 @@ class AuthenticateApiKeyInteractor(
     async def __call__(
         self,
         request_model: AuthenticateApiKeyRequestModel,
-        **kwargs,
     ) -> UserEntity:
         """Authenticate an API key."""
         # get api key hash
