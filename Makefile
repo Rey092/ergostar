@@ -7,7 +7,7 @@ UNFOLD_RUN_PARAMS=--pythonpath=. --settings=admin.config.settings
 # LITESTAR VARIABLES
 # ------------------------------------------
 LITESTAR_RUN_PARAMS=-r -I *.html -I *.css -I *.js -I *.svelte
-LITESTAR_API_APP=src.apps.api:create_app
+LITESTAR_API_APP=src.main.api:create_app
 
 # RUN COMMANDS
 # ------------------------------------------
