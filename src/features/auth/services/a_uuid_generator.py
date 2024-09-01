@@ -7,7 +7,7 @@ from src.features.auth.interfaces.services import IAuthGenerateUUID7Service
 from src.features.core.public.interfaces import IGenerateUUID7Service
 
 
-class AuthUUIDGeneratorAdapterService(
+class AuthUUIDGeneratorService(
     Service,
     IAuthGenerateUUID7Service,
 ):

@@ -14,9 +14,9 @@ from src.features.core.interactors.seed_database import SeedDatabaseInteractor
 from src.features.core.interfaces.repositories import IDropDatabaseTablesRepository
 from src.features.core.public.interfaces import IGenerateUUID7Service
 from src.features.core.repositories.a_subscription_plan import (
-    SubscriptionPlanRepositoryAdapter,
+    SubscriptionPlanRepository,
 )
-from src.features.core.repositories.a_user import UserRepositoryAdapter
+from src.features.core.repositories.a_user import UserRepository
 from src.features.core.repositories.drop_database_tables import (
     DropDatabaseTablesRepository,
 )
@@ -43,13 +43,13 @@ class CoreProvider(Provider):
     )
 
     subscription_plan_repository = provide(
-        source=SubscriptionPlanRepositoryAdapter,
+        source=SubscriptionPlanRepository,
         scope=Scope.REQUEST,
         provides=AnyOf[ISeedRepository[SubscriptionPlanEntity]],
     )
 
     user_repository = provide(
-        source=UserRepositoryAdapter,
+        source=UserRepository,
         scope=Scope.REQUEST,
         provides=AnyOf[ISeedRepository[UserEntity]],
     )

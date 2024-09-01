@@ -19,7 +19,7 @@ from src.features.auth.interfaces.services import IGetAPIKeyListVaultRepository
 from src.features.auth.repositories.a_user import AuthUserRepository
 from src.features.auth.repositories.api_key import ApiKeyRepository
 from src.features.auth.repositories.vault import ApiKeyVaultRepository
-from src.features.auth.services.a_uuid_generator import AuthUUIDGeneratorAdapterService
+from src.features.auth.services.a_uuid_generator import AuthUUIDGeneratorService
 from src.features.auth.services.hasher_blake2b import HasherBlake2b
 
 
@@ -60,7 +60,7 @@ class AuthProvider(Provider):
     )
 
     auth_generate_uuid7_service = provide(
-        source=AuthUUIDGeneratorAdapterService,
+        source=AuthUUIDGeneratorService,
         scope=Scope.APP,
         provides=IAuthGenerateUUID7Service,
     )

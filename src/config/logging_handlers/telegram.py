@@ -17,11 +17,9 @@ class TelegramHandler(logging.Handler):
         bot_token,
         chat_id,
         container_name,
-        *args,
-        **kwargs,
     ):
         """Init TelegramHandler."""
-        super().__init__(*args, **kwargs)
+        super().__init__()
         self._bot_token = bot_token
         self._project_name = project_name
         self._backend_url = backend_url

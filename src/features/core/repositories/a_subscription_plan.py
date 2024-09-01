@@ -11,14 +11,14 @@ from src.features.subscriptions.public.interfaces import (
 )
 
 
-class SubscriptionPlanRepositoryAdapter(
+class SubscriptionPlanRepository(
     AlchemyAdapterRepository[
         SubscriptionPlanEntity,
         ISubscriptionPlanRepositoryContract[SubscriptionPlanEntity],
     ],
     ISeedRepository[SubscriptionPlanEntity],
 ):
-    """SubscriptionPlanRepositoryAdapter."""
+    """SubscriptionPlanRepository."""
 
     entity_type = SubscriptionPlanEntity
     repository_type = GenericAlchemyRepository[SubscriptionPlanEntity]

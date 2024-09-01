@@ -100,9 +100,9 @@ class VaultSession(IVaultSession):
 
     def add_operation(
         self,
+        mount_point,
         execute: Callable[[], Any],
         rollback: Callable[[], Any] | None = None,
-        mount_point: str = "secret",
     ) -> None:
         """Add an operation and its rollback to the unit of work."""
         self._operations.append(VaultOperation(execute, rollback, mount_point))
@@ -158,7 +158,7 @@ class VaultSession(IVaultSession):
         path: str,
         key: str,
         value: str,
-        mount_point: str = "",
+        mount_point: str,
     ) -> None:
         """Add an operation to create or update a key in the Vault."""
 
@@ -206,7 +206,7 @@ class VaultSession(IVaultSession):
                     ),
                 )
 
-        self.add_operation(execute, rollback, mount_point)
+        self.add_operation(mount_point, execute, rollback)
 
     async def read_secret(self, path: str, mount_point: str = "") -> dict:
         """Add an operation to read a secret from the Vault."""

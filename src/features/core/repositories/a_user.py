@@ -8,7 +8,7 @@ from src.features.users.public.entities.user import UserEntity
 from src.features.users.public.interfaces import IUserRepositoryContract
 
 
-class UserRepositoryAdapter(
+class UserRepository(
     AlchemyAdapterRepository[
         UserEntity,
         IUserRepositoryContract[UserEntity],
