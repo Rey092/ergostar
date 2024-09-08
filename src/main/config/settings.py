@@ -167,7 +167,7 @@ class AppSettings(LiteStarSettings):
     @property
     def FIXTURES_PATH(self) -> str:
         """The path to JSON fixture files to load into tables."""
-        return f"{BASE_DIR}/src/infrastructure/fixtures"
+        return f"{BASE_DIR}/src/infrastructure/disk/fixtures"
 
 
 class VaultSettings(LiteStarSettings):

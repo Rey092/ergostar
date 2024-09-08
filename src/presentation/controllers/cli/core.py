@@ -63,10 +63,10 @@ def seed_db(app: Litestar) -> None:
             seed_database = await container.get(SeedDatabaseInteractor)
             await seed_database(
                 request_model=SeedDatabaseRequestModel(
-                    groups=[
+                    groups={
                         DatabaseSeedingGroups.subscriptions,
                         DatabaseSeedingGroups.users,
-                    ],
+                    },
                 ),
             )
 

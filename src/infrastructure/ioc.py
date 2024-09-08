@@ -19,6 +19,9 @@ from src.application.interfaces.repositories.api_key import IGetUserByApiKeyRepo
 from src.application.interfaces.repositories.database import (
     IDropDatabaseTablesRepository,
 )
+from src.application.interfaces.repositories.fixture_loaders import (
+    IEntityFixtureRepository,
+)
 from src.application.interfaces.repositories.seed import ISeedRepository
 from src.application.interfaces.services.api_key import ICreateAPIKeyVaultRepository
 from src.application.interfaces.services.api_key import IGetAPIKeysVaultRepository
@@ -32,6 +35,10 @@ from src.infrastructure.database.repositories.subscriptions.subscription_plan im
     SubscriptionPlanRepository,
 )
 from src.infrastructure.database.repositories.users.user import UserRepository
+from src.infrastructure.disk.repositories.fixture_loaders import (
+    SubscriptionPlanFixtureRepository,
+)
+from src.infrastructure.disk.repositories.fixture_loaders import UserFixtureRepository
 from src.infrastructure.interfaces.uow import IDatabaseSession
 from src.infrastructure.interfaces.uow import IVaultSession
 from src.infrastructure.vault.base import VaultSession
@@ -48,6 +55,18 @@ class InfrastructureProvider(Provider):
     async_engine = from_context(provides=AsyncEngine, scope=Scope.APP)
     redis_engine = from_context(provides=RedisEngine, scope=Scope.APP)
     vault_engine = from_context(provides=VaultEngine, scope=Scope.APP)
+
+    subscription_plan_fixture_repository = provide(
+        source=SubscriptionPlanFixtureRepository,
+        scope=Scope.REQUEST,
+        provides=IEntityFixtureRepository[SubscriptionPlan],
+    )
+
+    user_fixture_repository = provide(
+        source=UserFixtureRepository,
+        scope=Scope.REQUEST,
+        provides=IEntityFixtureRepository[User],
+    )
 
     user_repository = provide(
         source=UserRepository,
