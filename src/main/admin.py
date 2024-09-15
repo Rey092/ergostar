@@ -17,7 +17,7 @@ from litestar.static_files import create_static_files_router
 from litestar.template import TemplateConfig
 
 from src.infrastructure.database.engine import get_alchemy_engine
-from src.infrastructure.redis import get_redis_engine
+from src.infrastructure.redis.engine import get_redis_engine
 from src.infrastructure.vault.engine import get_vault_engine
 from src.main.config.alchemy import get_alchemy_config
 from src.main.config.cli import CLIPlugin
@@ -29,7 +29,7 @@ from src.main.config.settings import Settings
 from src.main.exception_handlers.repository_alchemy import (
     repository_alchemy_exception_handler,
 )
-from src.presentation.routing import health_router
+from src.presentation.routing import admin_router
 
 if TYPE_CHECKING:
     from dishka import AsyncContainer
@@ -71,10 +71,10 @@ def create_app() -> Litestar:
         cors_config=get_cors_config(app_settings=settings.app),
         debug=settings.app.DEBUG,
         route_handlers=[
-            health_router,
+            admin_router,
             create_static_files_router(
                 path="/static",
-                directories=["static/landing"],
+                directories=["static/admin"],
                 name="static",
             ),
             create_static_files_router(

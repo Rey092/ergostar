@@ -1,4 +1,4 @@
-"""Vault Unit of Work."""
+"""Vault Session."""
 
 import logging
 import types
@@ -10,48 +10,14 @@ from hvac.exceptions import InvalidPath
 from litestar.concurrency import sync_to_thread
 from requests import Session
 
-from src.infrastructure.interfaces.uow import IVaultSession
+from src.infrastructure.common.interfaces import IVaultSession
+from src.infrastructure.vault.session.operation import VaultOperation
 
 logger = logging.getLogger(__name__)
 
 
-class VaultOperation:
-    """Encapsulates a Vault operation and its corresponding rollback."""
-
-    def __init__(
-        self,
-        execute: Callable[[], Any],
-        rollback: Callable[[], Any] | None = None,
-        mount_point: str = "secret",
-    ):
-        """Initialize the operation.
-
-        Args:
-            execute: The operation to execute.
-            rollback: The operation to roll back the execute operation.
-            mount_point: The Vault mount point to use.
-        """
-        self.execute = execute
-        self.rollback = rollback
-        self.mount_point = mount_point
-        self.is_executed = False
-        self.is_rolled_back = False
-
-    async def run(self):
-        """Run the operation."""
-        if not self.is_executed:
-            await self.execute()
-            self.is_executed = True
-
-    async def undo(self):
-        """Run the rollback operation, if provided."""
-        if self.rollback and self.is_executed and not self.is_rolled_back:
-            await self.rollback()
-            self.is_rolled_back = True
-
-
 class VaultSession(IVaultSession):
-    """Vault Unit of Work."""
+    """Vault session."""
 
     rolling_back_message = "Vault operations failed, rolling back: %s"
     rollback_failed_message = "Rollback failed: %s"
@@ -220,7 +186,7 @@ class VaultSession(IVaultSession):
 
 
 class VaultSessionContextManager:
-    """Vault Unit of Work context manager."""
+    """Vault session context manager."""
 
     __slots__ = ("vault_session",)
 

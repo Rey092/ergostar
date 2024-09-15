@@ -5,6 +5,7 @@ from dishka import Provider
 from dishka import Scope
 from dishka import provide
 
+from src.application.interactors.admin.get_dashboard import GetDashboardInteractor
 from src.application.interactors.auth.authenticate import AuthenticateApiKeyInteractor
 from src.application.interactors.auth.create_api_key import CreateApiKeyInteractor
 from src.application.interactors.auth.get_user_api_keys import GetUserApiKeysInteractor
@@ -19,6 +20,11 @@ from src.application.services.core.uuid_generator import UUIDGeneratorService
 
 class ApplicationProvider(Provider):
     """Auth provider (DI)."""
+
+    get_dashboard_interactor = provide(
+        source=GetDashboardInteractor,
+        scope=Scope.REQUEST,
+    )
 
     drop_database_tables_interactor = provide(
         source=DropDatabaseInteractor,

@@ -1,12 +1,12 @@
-"""Common interfaces."""
+"""Common interfaces for infrastructure layer."""
 
 from abc import ABC
 from abc import abstractmethod
 from typing import Protocol
 
 
-class IUnitOfWork(Protocol):
-    """IUnitOfWork protocol."""
+class ISession(Protocol):
+    """Session interface."""
 
     @abstractmethod
     async def commit(self) -> None:
@@ -24,9 +24,15 @@ class IUnitOfWork(Protocol):
         ...
 
 
-class IDatabaseSession(IUnitOfWork, ABC):
+class IDatabaseSession(ISession, ABC):
     """IDatabaseSession protocol."""
 
 
-class IVaultSession(IUnitOfWork, ABC):
+class IVaultSession(ISession, ABC):
     """IVaultSession protocol."""
+
+
+class IRepository:
+    """Repository interface."""
+
+    _session: ISession

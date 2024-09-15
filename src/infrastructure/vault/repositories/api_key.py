@@ -4,8 +4,8 @@ from uuid import UUID
 
 from src.application.interfaces.services.api_key import ICreateAPIKeyVaultRepository
 from src.application.interfaces.services.api_key import IGetAPIKeysVaultRepository
-from src.infrastructure.vault.base import VaultSession
 from src.infrastructure.vault.interfaces import VaultRepository
+from src.infrastructure.vault.session import VaultSession
 from src.main.config.settings import VaultSettings
 
 
@@ -22,7 +22,7 @@ class ApiKeyVaultRepository(
         vault_settings: VaultSettings,
     ):
         """Initialize service."""
-        self._session = session
+        super().__init__(session)
         self._mount_point = vault_settings.API_KEYS_MOUNT_POINT
 
     async def get_user_api_keys(self, user_id: UUID) -> dict[str, str]:

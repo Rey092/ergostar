@@ -17,8 +17,8 @@ from litestar.status_codes import HTTP_500_INTERNAL_SERVER_ERROR
 from litestar.status_codes import HTTP_503_SERVICE_UNAVAILABLE
 
 from src.infrastructure.database.engine import get_alchemy_engine
-from src.infrastructure.redis import get_redis_engine
-from src.infrastructure.security.api_key.auth import api_key_auth
+from src.infrastructure.framework.security.api_key.auth import api_key_auth
+from src.infrastructure.redis.engine import get_redis_engine
 from src.infrastructure.vault.engine import get_vault_engine
 from src.main.config.alchemy import get_alchemy_config
 from src.main.config.cli import CLIPlugin
@@ -76,6 +76,7 @@ def create_app() -> Litestar:
     litestar_app = Litestar(
         cors_config=get_cors_config(app_settings=settings.app),
         debug=settings.app.DEBUG,
+        path="/api",
         route_handlers=[
             health_router,
             auth_router,

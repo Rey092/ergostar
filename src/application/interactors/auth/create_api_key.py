@@ -10,8 +10,8 @@ from src.application.interfaces.services.api_key import ICreateAPIKeyVaultReposi
 from src.application.interfaces.services.hashers import IHasher
 from src.application.interfaces.services.uuid import IGenerateUUID7Service
 from src.domain.entities.auth.api_key import ApiKey
-from src.infrastructure.interfaces.uow import IDatabaseSession
-from src.infrastructure.interfaces.uow import IVaultSession
+from src.infrastructure.common.interfaces import IDatabaseSession
+from src.infrastructure.common.interfaces import IVaultSession
 
 logger = logging.getLogger(__name__)
 

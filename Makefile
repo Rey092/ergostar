@@ -12,7 +12,10 @@ LITESTAR_API_APP=src.main.api:create_app
 # RUN COMMANDS
 # ------------------------------------------
 run:
-	litestar run $(LITESTAR_RUN_PARAMS)
+	litestar --app src.main.admin:create_app run $(LITESTAR_RUN_PARAMS)
+
+api:
+	litestar --app src.api.admin:create_app run $(LITESTAR_RUN_PARAMS)
 
 unfold:
 	django-admin runserver $(UNFOLD_RUN_PARAMS) 127.0.0.1:8000

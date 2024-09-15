@@ -11,7 +11,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.domain.common.types import EntityT
-from src.infrastructure.interfaces.repository import IRepository
+from src.infrastructure.common.interfaces import IRepository
 
 
 class GenericAlchemyRepositoryProtocol(

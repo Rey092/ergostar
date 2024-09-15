@@ -24,7 +24,8 @@ def get_structlog_config(
     if log_settings.TELEGRAM_LOGGING_ENABLED:
         handlers_configs["telegram"] = {
             "level": "ERROR",
-            "class": "src.infrastructure.logging_handlers.telegram.TelegramHandler",
+            "class": "src.infrastructure.framework."
+            "logging_handlers.telegram.TelegramHandler",
             "project_name": app_settings.PROJECT_NAME,
             "backend_url": app_settings.API_URL,
             "bot_token": log_settings.TELEGRAM_BOT_TOKEN,

@@ -6,7 +6,7 @@ from src.application.common.interactor import Interactor
 from src.application.interfaces.repositories.database import (
     IDropDatabaseTablesRepository,
 )
-from src.infrastructure.interfaces.uow import IDatabaseSession
+from src.infrastructure.common.interfaces import IDatabaseSession
 from src.main.config.settings import AppSettings
 
 

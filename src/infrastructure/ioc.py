@@ -27,6 +27,8 @@ from src.application.interfaces.services.api_key import ICreateAPIKeyVaultReposi
 from src.application.interfaces.services.api_key import IGetAPIKeysVaultRepository
 from src.domain.entities.subscriptions import SubscriptionPlan
 from src.domain.entities.users import User
+from src.infrastructure.common.interfaces import IDatabaseSession
+from src.infrastructure.common.interfaces import IVaultSession
 from src.infrastructure.database.repositories.auth.api_key import ApiKeyRepository
 from src.infrastructure.database.repositories.core.drop_database_tables import (
     DropDatabaseTablesRepository,
@@ -39,10 +41,8 @@ from src.infrastructure.disk.repositories.fixture_loaders import (
     SubscriptionPlanFixtureRepository,
 )
 from src.infrastructure.disk.repositories.fixture_loaders import UserFixtureRepository
-from src.infrastructure.interfaces.uow import IDatabaseSession
-from src.infrastructure.interfaces.uow import IVaultSession
-from src.infrastructure.vault.base import VaultSession
 from src.infrastructure.vault.repositories.api_key import ApiKeyVaultRepository
+from src.infrastructure.vault.session import VaultSession
 from src.main.config.settings import AppSettings
 from src.main.config.settings import Settings
 from src.main.config.settings import VaultSettings
